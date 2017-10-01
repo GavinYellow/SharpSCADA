@@ -1,0 +1,22 @@
+﻿<Window x:Class="CoreTest.Login"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+        AllowsTransparency="True" Background="Transparent" Topmost="True" Loaded="Window_Loaded" ShowInTaskbar="False"
+        Height="346" Width="300" WindowStyle="None" FontWeight="Bold" FontSize="16" WindowStartupLocation="CenterScreen">
+    <Canvas>
+        <Canvas.Background>
+            <ImageBrush ImageSource="Resources/Login1.png"/>
+        </Canvas.Background>
+        <Button Style="{StaticResource ButtonGeneric}" Canvas.Left="30" Canvas.Top="233" Content="登录" Height="42" Name="button1" Width="95" IsDefault="True" Click="button1_Click" Background="DarkGreen" Foreground="White"/>
+        <Button Style="{StaticResource ButtonGeneric}" Canvas.Left="138" Canvas.Top="233" Content="退出" Height="42" Name="button2" Width="93" IsCancel="True" Click="button2_Click" Background="DarkRed" Foreground="White"/>
+        <TextBlock Canvas.Left="79" Canvas.Top="81" Height="51" Name="textBlock2" Text="登录系统" Width="130" FontSize="28"/>
+        <TextBlock Canvas.Left="33" Canvas.Top="129"  Height="26" Name="textBlock3" Text="用户名：" Width="72" />
+        <TextBox Canvas.Left="106" Canvas.Top="129" FontSize="18" Height="30" Name="txtUser" Width="128" Text="op"/>
+        <TextBlock Canvas.Left="47" Canvas.Top="182"  Height="26" Name="textBlock4" Text="密码：" Width="58" />
+        <PasswordBox Canvas.Left="106" Canvas.Top="178" FontSize="18" Height="30" Name="txtPassword" Width="128" Password="1"/>
+        <TextBlock Canvas.Left="15" Canvas.Top="70" Height="23" Name="txterr" Foreground="Red"/>
+        <Button  Canvas.Left="234" Canvas.Top="178" ContentTemplate="{StaticResource EditButton}" FontSize="8"  Height="27" IsDefault="True" Name="button3"
+                 Style="{StaticResource ButtonGeneric}" Width="29" Click="button3_Click" ToolTip="修改密码"/>
+    </Canvas>
+</Window>
+

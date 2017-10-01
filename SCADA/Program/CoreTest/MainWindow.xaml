@@ -1,0 +1,133 @@
+﻿<Window x:Class="CoreTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:my="clr-namespace:HMIControl;assembly=HMIControl"
+        xmlns:my1="clr-namespace:CoreTest"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="1080" Width="1920" Tag="CoreTest.MaterialRecivingLine"
+        WindowState="Normal" WindowStyle="None" Loaded="Window_Loaded" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="CheckBoxListStyle" TargetType="{x:Type ListBox}">
+            <Setter Property="SelectionMode" Value="Multiple"></Setter>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Margin" Value="2"></Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <CheckBox Focusable="False"
+                                              IsChecked="{Binding Path=IsSelected,Mode=TwoWay,
+                                        RelativeSource={RelativeSource TemplatedParent}}">
+                                        <ContentPresenter></ContentPresenter>
+                                    </CheckBox>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ContextMenu x:Key="editMenu" >
+            <!--<MenuItem Header="维护" Command="{x:Static local:MyCommands.Select}"/>
+            <MenuItem Header="参数" Command="{x:Static local:MyCommands.Edit}" />-->
+        </ContextMenu>
+        <Storyboard x:Key="AlarmOn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="label2" AutoReverse="true" RepeatBehavior="Forever">
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <DiscreteDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="OnLostFocus">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="toolBarTray">
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="-68"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="OnGotFocus">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="toolBarTray">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <CollectionViewSource x:Key="item_list"
+                              Source="{Binding Source={x:Static Application.Current}, Path=TNames}"/>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard RepeatBehavior="Forever">
+                    <DoubleAnimation From="0" To="{Binding Path=ActualWidth,ElementName=cvsAlarm}" Storyboard.TargetProperty="(Canvas.Right)" Storyboard.TargetName="txtAlarm" Duration="0:0:20"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="toolBarTray">
+            <BeginStoryboard Storyboard="{StaticResource OnGotFocus}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="toolBarTray">
+            <BeginStoryboard Storyboard="{StaticResource OnLostFocus}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="toolBarTray">
+            <BeginStoryboard Storyboard="{StaticResource OnLostFocus}"/>
+        </EventTrigger>
+
+    </Window.Triggers>
+    <Grid x:Name="grd1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Canvas Panel.ZIndex="1000">
+            <Label Canvas.Left="1449" Canvas.Top="2" Content="SharpSCADA" Height="96" Name="label1" Width="448" FontSize="72" FontWeight="Bold" Foreground="#FF007DBE" FontFamily="Segoe UI" />
+            <Label Canvas.Left="1704" Canvas.Top="92" Content="测 试 系 统 演 示" Height="42" Name="label2" Width="194" FontSize="24" FontWeight="Bold" FontFamily="Microsoft Tai Le" Foreground="#FF67B6DE" IsEnabled="False" />
+        </Canvas>
+        <Border x:Name="cvs1" Margin="0,0,0,0" Grid.RowSpan="2">
+        </Border>
+        <ToolBarTray x:Name="toolBarTray" Orientation="Horizontal" Height="68" VerticalAlignment="Top" Background="Transparent" Margin="567,0,557,0" Panel.ZIndex="200">
+            <ToolBarTray.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </ToolBarTray.RenderTransform>
+            <ToolBar Opacity="0.8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0">
+                <ToolBar.Resources>
+                    <Style TargetType="my:HMIButton" BasedOn="{StaticResource ButtonGeneric}">
+                        <Setter Property="Height" Value="64"/>
+                        <Setter Property="Width" Value="100"/>
+                        <Setter Property="Background" Value="#FF1A7889"/>
+                        <Setter Property="Foreground" Value="white"/>
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Margin" Value="2"/>
+                    </Style>
+                </ToolBar.Resources>
+                <Separator />
+                <my:HMIButton Content="Receiving" x:Name="btngrind1" TagWindowText="CoreTest.MaterialRecivingLine;" FontWeight="Bold" FontSize="20" IsUnique="True"  />
+                <my:HMIButton Content="Silo1" x:Name="btngrind2" TagWindowText="CoreTest.SiloProductLine;" FontSize="20" />
+                <Separator />
+            </ToolBar>
+        </ToolBarTray>
+        <ToolBarTray Background="Transparent" Canvas.Left="0" Canvas.Bottom="0" Name="cvs3" Orientation="Vertical" Width="Auto" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="100" Visibility="Hidden">
+            <ToolBar>
+                <my:HMIButton Content="实时曲线" IsUnique="False" Name="btnRT" Height="36" FontWeight="Normal" FontSize="15" TagWindowText="CoreTest.RuntimeChart;"/>
+                <my:HMIButton Content="数据归档" IsUnique="True" Name="btnTrend" Height="36" FontWeight="Normal" FontSize="15" TagWriteText="" TagWindowText="CoreTest.Trend;" />
+                <my:HMIButton Content="变量跟踪" IsUnique="True" Name="btnTag" TagWindowText="CoreTest.TagMonitor;" Height="36" FontWeight="Normal" FontSize="15" IsModel="True"/>
+                <my:HMIButton Background="DarkRed" Content="报警" IsUnique="True" Name="hMIButton2" TagWindowText="CoreTest.AlarmSet;" Height="36" FontWeight="Normal" FontSize="15" IsPulse="True" />
+                <my:HMIButton Background="#FFD8CDCD" Content="退出" Name="hMIButton7" Height="36" FontSize="15" Click="hMIButton7_Click" />
+            </ToolBar>
+        </ToolBarTray>
+        <Canvas Grid.Row="1" HorizontalAlignment="Stretch" Name="statusbar" VerticalAlignment="Stretch" Background="#FFB6B6B6" Panel.ZIndex="100">
+            <my:HMILable Canvas.Left="111" Canvas.Top="0" Height="40" Name="txtuser" Width="198" Text="" TextAlignment="Left" BorderStyle="FixedSingle" Foreground="#FF6C6C6C" FontSize="16" />
+            <my:HMILable BorderStyle="FixedSingle" Canvas.Left="1749" Canvas.Top="0" FontSize="16" Foreground="#FF6C6C6C" Height="40" Name="txttime" Text="控制模式：远程控制" TextAlignment="Left" Width="143" />
+            <Button Canvas.Left="0" Canvas.Top="0" Content="开始" Height="40" Name="btnStart" Width="97" FontSize="16" Click="btnStart_Click" IsEnabled="True" Foreground="#FF6C6C6C" FontWeight="Bold" FontStyle="Normal" />
+            <Border  Canvas.Left="334" Canvas.Top="0"  Height="40" BorderBrush="Silver" BorderThickness="0">
+                <Canvas ClipToBounds="True" Name="cvsAlarm" Width="1351">
+                    <TextBlock Canvas.Top="9" Canvas.Right="0" Name="txtAlarm" FontSize="16" Foreground="#FF6C6C6C"/>
+                </Canvas>
+            </Border>
+            <Ellipse Canvas.Left="1708" Canvas.Top="4" Height="33" Name="p1_lamp1" StrokeThickness="2" Width="33" />
+        </Canvas>
+    </Grid>
+</Window>
+

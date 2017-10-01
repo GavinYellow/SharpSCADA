@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPCLib", "OPCLib.csproj", "{0EC75DA7-20C7-4986-82E5-DB011C6E961B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

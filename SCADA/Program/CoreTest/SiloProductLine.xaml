@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="CoreTest.SiloProductLine"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:HMIControl;assembly=HMIControl" 
+             mc:Ignorable="d" Name="SiloProductLine1" d:DesignHeight="1072" d:DesignWidth="1912" Loaded="HMI_Loaded" Unloaded="HMI_Unloaded">
+    <Canvas x:Name="cvs1" Background="#FF2B5F5B">
+        <my:Silo Canvas.Left="1013" Canvas.Top="325" Height="330" Name="silo1" Width="198" TagReadText="低料位:Receiving1_T1SQL_Alarm\标题:C1\" />
+        <my:Silo Canvas.Left="1345" Canvas.Top="325" Height="330" Name="silo2" Width="202" TagReadText="低料位:Receiving1_T2SQL_Alarm\标题:C2\" />
+        <my:Elevator Canvas.Left="520" Canvas.Top="231" Height="710" Name="elevator1" Width="82" TagReadText="电流:Receiving2_Legmotor1Curr_Digi\设备名:Receiving2_Legmotor1\运行:Receiving2_LegMotor1_Running\OverCurrent:Receiving2_LegMotor1_Overload\速度:Receiving2_Legmotor1Speed_Speed\" />
+        <my:Elevator Canvas.Left="825" Canvas.Top="80" Height="710" Name="elevator2" Width="82" TagReadText="电流:Receiving2_Legmotor2Curr_Digi\设备名:Receiving2_Legmotor2\运行:Receiving2_LegMotor2_Running\OverCurrent:Receiving2_LegMotor2_Overload\速度:Receiving2_Legmotor2Speed_Speed\" />
+        <my:PreCleaner Canvas.Left="626" Canvas.Top="364" Height="128" Name="preCleaner1" Width="169" TagReadText="motor.设备名:Receiving2_Sifter1\motor.报警:Receiving2_Sifter1_Alarm\motor.运行:Receiving2_Sifter1_Running\" />
+        <my:Bucket Canvas.Left="223" Canvas.Top="745" Height="45" Name="bucket1" Width="148" />
+        <my:Truck Canvas.Left="45" Canvas.Top="625" Height="108" Name="truck1" Width="235" />
+        <my:ChainConveyor Canvas.Left="223" Canvas.Top="785" Height="Auto" Name="chainConveyor1" Width="292" TagReadText="设备名:Receiving2_Converyor1\运行:Receiving2_Converyor1_Running\报警:Receiving2_Converyor1_Alarm\"/>
+        <my:MagnetCleaner Canvas.Left="647" Canvas.Top="536" Height="105" Name="magnetCleaner1" Width="110" TagReadText="motor1.设备名:Receiving2_MagicRoll1\motor1.报警:Receiving2_MagicRoll1_Alarm\motor1.运行:Receiving2_MagicRoll1_Running\" />
+        <my:ChainConveyor Canvas.Left="1010" Canvas.Top="192" Height="Auto" Name="chainConveyor2" Width="286" TagReadText="设备名:Receiving2_Converyor2\运行:Receiving2_Converyor2_Running\报警:Receiving2_Converyor2_Alarm\" />
+        <my:ChainConveyor Canvas.Left="1252" Canvas.Top="758" Height="Auto" Name="chainConveyor3" Width="320" TagReadText="设备名:Receiving1_Conveyor1\运行:Receiving1_Conveyor1_Running\报警:Receiving1_Conveyor1_Alarm\" />
+        <my:ChainConveyor Canvas.Left="1550" Canvas.Top="865" Height="Auto" Name="chainConveyor4" Width="239" TagReadText="设备名:Receiving1_Conveyor2\运行:Receiving1_Conveyor2_Running\报警:Receiving1_Conveyor2_Alarm\"/>
+        <my:Cyclone Canvas.Left="185" Canvas.Top="112" Height="172" Name="cyclone1" Width="88" TagReadText="motor.设备名:Receiving2_Airport1\motor.报警:Receiving2_Airport1_Alarm\motor.运行:Receiving2_Airport1_Running\fan.可见性:False\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=preCleaner1}" Panel.ZIndex="15" TargetInfo="{Binding Path=TopPin, ElementName=magnetCleaner1}" TagReadText="运行:Receiving2_Sifter1_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor3}" Panel.ZIndex="18" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor4}" TagReadText="运行:Receiving1_Conveyor1_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=RightPin, ElementName=cyclone1}" Panel.ZIndex="19" TargetInfo="{Binding Path=TopPin, ElementName=bucket1}" TagReadText="运行:Receiving2_Airport1_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor2}" Panel.ZIndex="21" TargetInfo="{Binding Path=TopPin, ElementName=silo1}" TagReadText="运行:Receiving2_Gate1_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor2}" Panel.ZIndex="22" TargetInfo="{Binding Path=TopPin, ElementName=silo2}" TagReadText="运行:Receiving2_Gate2_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=silo1}" Panel.ZIndex="25" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor3}" TagReadText="运行:Receiving1_Gate1_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=silo2}" Panel.ZIndex="26" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor3}" TagReadText="运行:Receiving1_Gate2_Ols\" />
+        <TextBlock Canvas.Left="129" Canvas.Top="955" FontSize="24" FontStyle="Normal" FontWeight="Bold" Foreground="Black" Height="40" Name="productline" Text="筒仓工段" Width="144" />
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="1713" Canvas.Top="932" Caption="到 原料接收工段" Height="70" Name="fromTo12" Opacity="1" TagWindowText="CoreTest.MaterialRecivingLine;" Width="110" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor4}" Panel.ZIndex="46" TargetInfo="{Binding Path=TopPin, ElementName=fromTo12}" TagReadText="运行:Receiving1_Conveyor2_Running\" />
+        <my:SelectSwitch Canvas.Left="972" Canvas.Top="885" Caption="控制模式" Height="85" IsThreeState="False" LeftLable="电脑" Name="selectSwitch1" RightLable="触屏" ShowCaption="True" TagReadText="左:~Receiving2_LocalRemote\右:Receiving2_LocalRemote\" TagWriteText="Receiving2_LocalRemote:~Receiving2_LocalRemote\" Width="70" />
+        <my:SelectSwitch Canvas.Left="1080" Canvas.Top="885" Caption="清  警" Height="85" IsPulse="True" IsThreeState="False" LeftLable=" F" Name="selectSwitch3" RightLable="T " ShowCaption="True" TagReadText="左:Receiving2_AlmAck\右:~Receiving2_AlmAck\" TagWriteText="Receiving2_AlmAck:\Sys_Alarm:\"  Width="70" />
+        <my:FromTo Canvas.Left="515" Canvas.Top="892" Name="fromTo1" Height="22" Width="28" />
+        <my:FromTo Canvas.Left="816" Canvas.Top="742" Height="22" Name="fromTo2" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=TopPin, ElementName=fromTo2}" TargetInfo="{Binding Path=BottomPin, ElementName=magnetCleaner1}" TagReadText="运行:Receiving2_MagicRoll1_Running\" />
+        <my:FromTo Canvas.Left="890" Canvas.Top="112" Height="22" Name="fromTo3" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fromTo3}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor2}" TagReadText="运行:Receiving2_LegMotor2_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=TopPin, ElementName=fromTo1}" TargetInfo="{Binding Path=BottomPin, ElementName=chainConveyor1}" TagReadText="运行:Receiving2_Converyor1_Running\" />
+        <my:SlideGate Canvas.Left="1080" Canvas.Top="670" Height="18" Name="slideGate1" Width="78" TagReadText="设备名:Receiving1_Gate1\开:Receiving1_Gate1_Ols\关:Receiving1_Gate1_Cls\报警:Receiving1_Gate1_Alarm\" Panel.ZIndex="1200" />
+        <my:SlideGate Canvas.Left="1417" Canvas.Top="670" Height="18" Name="slideGate2" Width="78" TagReadText="设备名:Receiving1_Gate2\开:Receiving1_Gate2_Ols\关:Receiving1_Gate2_Cls\报警:Receiving1_Gate2_Alarm\"/>
+        <my:FromTo Canvas.Left="582" Canvas.Top="258" Height="22" Name="fromTo4" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fromTo4}" TargetInfo="{Binding Path=TopPin, ElementName=preCleaner1}" TagReadText="运行:Receiving2_LegMotor1_Running\" />
+        <my:FromTo Canvas.Left="697" Canvas.Top="383" Height="22" Name="fromTo5" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=TopPin, ElementName=fromTo5}" TargetInfo="{Binding Path=RightPin, ElementName=cyclone1}" TagReadText="运行:Receiving2_Airport1_Running\" />
+        <my:SlideGate Canvas.Left="1080" Canvas.Top="291" Height="18" Name="slideGate3" TagReadText="设备名:Receiving2_Gate1\开:Receiving2_Gate1_Ols\关:Receiving2_Gate1_Cls\报警:Receiving2_Gate1_Alarm\" Width="78" />
+        <my:Cyclone Canvas.Left="61" Canvas.Top="34" Height="172" Name="cyclone2" TagReadText="motor.设备名:Receiving2_Airport2\motor.报警:Receiving2_Airport2_Alarm\motor.运行:Receiving2_Airport2_Running\fan.设备名:Receiving2_Fan1\fan.报警:Receiving2_Fan1_Alarm\fan.运行:Receiving2_Fan1_Running\" Width="88" />
+        <my:LinkLine OriginInfo="{Binding Path=RightPin, ElementName=cyclone2}" TargetInfo="{Binding Path=TopPin, ElementName=fan}" />
+        <my:FromTo Canvas.Left="206" Canvas.Top="143" Height="13" Name="fromTo6" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=TopPin, ElementName=fromTo6}" TargetInfo="{Binding Path=RightPin, ElementName=cyclone2}" />
+    </Canvas>
+</UserControl>

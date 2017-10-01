@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F9F0BFA7-0C4A-4C8C-B81C-2A0477CBF637}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HMIControl</RootNamespace>
+    <AssemblyName>HMIControl</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Expression.Controls, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AirHammer.cs" />
+    <Compile Include="AlarmControl.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BeltConveyor.cs" />
+    <Compile Include="Bucket.cs" />
+    <Compile Include="Buffer.cs" />
+    <Compile Include="BufferBin.cs" />
+    <Compile Include="ChainConveyor.cs" />
+    <Compile Include="Commands.cs" />
+    <Compile Include="ControlValve.cs" />
+    <Compile Include="CutoffGate.cs" />
+    <Compile Include="Cyclone.cs" />
+    <Compile Include="Cylinder.cs" />
+    <Compile Include="CylinderStick.cs" />
+    <Compile Include="Deduster.cs" />
+    <Compile Include="DischargePot.cs" />
+    <Compile Include="Distributor.cs" />
+    <Compile Include="DistributorAver.cs" />
+    <Compile Include="DraughtFan.cs" />
+    <Compile Include="Dryer.cs" />
+    <Compile Include="DryerPart.cs" />
+    <Compile Include="Elevator.cs" />
+    <Compile Include="Fan.cs" />
+    <Compile Include="FeedBin.cs" />
+    <Compile Include="Flange.cs" />
+    <Compile Include="FromTo.cs" />
+    <Compile Include="GarbageBag.cs" />
+    <Compile Include="Gate.cs" />
+    <Compile Include="Grind.cs" />
+    <Compile Include="HMIBase\ButtonBase.cs" />
+    <Compile Include="HMIBase\HMIConvert.cs" />
+    <Compile Include="HMIEx\Frame.cs" />
+    <Compile Include="HMIEx\HMILable.cs" />
+    <Compile Include="HMIEx\ZoomBoxPanel.cs" />
+    <Compile Include="HMIEx\ZoomSlideControl.cs" />
+    <Compile Include="LiquidAdd.cs" />
+    <Compile Include="LiquidBuf1.cs" />
+    <Compile Include="LiquidBuf.cs" />
+    <Compile Include="MagnetCleaner.cs" />
+    <Compile Include="Magnetism.cs" />
+    <Compile Include="MagnetValve.cs" />
+    <Compile Include="ManualAddControl.cs" />
+    <Compile Include="PackingBench.cs" />
+    <Compile Include="PreCleaner.cs" />
+    <Compile Include="ProportionValve.cs" />
+    <Compile Include="PushButton.cs" />
+    <Compile Include="Scale.cs" />
+    <Compile Include="SelectSwitch.cs" />
+    <Compile Include="Sifter.cs" />
+    <Compile Include="Silo.cs" />
+    <Compile Include="SlideGate.cs" />
+    <Compile Include="HMIBase\ControlBase.cs" />
+    <Compile Include="SparyTube.cs" />
+    <Compile Include="Tacho\Dial.cs" />
+    <Compile Include="Tacho\DualRoundScale.cs" />
+    <Compile Include="Tacho\GuageBase.cs" />
+    <Compile Include="Tacho\HVDial.cs" />
+    <Compile Include="Tacho\HVIndicator.cs" />
+    <Compile Include="Tacho\HVLevelIndicator.cs" />
+    <Compile Include="Tacho\HVScale.cs" />
+    <Compile Include="Tacho\HVValueIndicator.cs" />
+    <Compile Include="Tacho\RoundDial.cs" />
+    <Compile Include="Tacho\RoundGuageBase.cs" />
+    <Compile Include="Tacho\RoundIndicator.cs" />
+    <Compile Include="Tacho\RoundIndicatorSlider.cs" />
+    <Compile Include="Tacho\RoundScale.cs" />
+    <Compile Include="Tacho\RoundSlider.cs" />
+    <Compile Include="Tacho\Tacho.cs" />
+    <Compile Include="Truck.cs" />
+    <Compile Include="TubeArc.cs" />
+    <Compile Include="TubeLine.cs" />
+    <Compile Include="TubeT.cs" />
+    <Compile Include="Divert.cs" />
+    <Compile Include="FourWays.cs" />
+    <Compile Include="Motor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HMIBase\BaseStruct.cs" />
+    <Compile Include="HMIBase\ControlAdorner.cs" />
+    <Compile Include="HMIBase\HMIHelper.cs" />
+    <Compile Include="HMIEx\FrameAdorner.cs" />
+    <Compile Include="HMIBase\HMIControlBase.cs" />
+    <Compile Include="HMIBase\LinkableControl.cs" />
+    <Compile Include="HMIBase\LinkLine.cs" />
+    <Compile Include="HMIBase\LinkPin.cs" />
+    <Compile Include="HMIBase\Pather.cs" />
+    <Compile Include="HMIBase\PinAdorner.cs" />
+    <Compile Include="HMIBase\StartableAttribute.cs" />
+    <Compile Include="HMIEx\HMIButton.cs" />
+    <Compile Include="HMIEx\TextAdorner.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

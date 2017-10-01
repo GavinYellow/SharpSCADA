@@ -1,0 +1,29 @@
+﻿<Window x:Class="CoreTest.RuntimeChart"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0"
+        xmlns:chart="clr-namespace:Microsoft.Research.DynamicDataDisplay.Charts;assembly=DynamicDataDisplay"
+        xmlns:wk="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended"
+        Title="实时曲线" Height="800" Width="600" FontFamily="SimSun"
+        TextOptions.TextFormattingMode="Display" RenderOptions.EdgeMode="Aliased" Loaded="Window_Loaded" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Background="Black">
+            <TextBlock Text=" 变量选择:  " Foreground="LightSteelBlue" VerticalAlignment="Center"/>
+            <ComboBox Name="comb1" Width="300" Background="Black" Foreground="DarkGoldenrod" FontSize="16" DisplayMemberPath="Value" SelectedValuePath="Key" SelectionChanged="comb1_SelectionChanged"/>
+            <TextBlock Text="  改变颜色:  " Foreground="LightSteelBlue" VerticalAlignment="Center"/>
+            <wk:ColorPicker Name="colorpicker" Margin="0,0,0,0" SelectedColorChanged="ColorPicker_SelectedColorChanged"/>
+        </StackPanel>
+        <d3:ChartPlotter Grid.Row="1" Name="chartPlotter1" Background="DarkSlateGray">
+            <d3:ChartPlotter.MainHorizontalAxis>
+                <d3:HorizontalDateTimeAxis Name="hTimeSpanAxis"/>
+            </d3:ChartPlotter.MainHorizontalAxis>
+            <d3:HorizontalLine Name="hilevel" Stroke="Red"/>
+            <d3:HorizontalLine Name="lolevel" Stroke="Blue"/>
+        </d3:ChartPlotter>
+    </Grid>
+</Window>
+

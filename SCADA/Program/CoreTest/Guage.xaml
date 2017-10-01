@@ -1,0 +1,19 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoreTest"
+        xmlns:my="clr-namespace:HMIControl;assembly=HMIControl" x:Class="CoreTest.Guage"
+        mc:Ignorable="d" Background="Silver"
+        Title="Guage"  Height="680" Width="620" >
+    <Canvas>
+        <my:HVScale Canvas.Left="66" Canvas.Top="62" Height="269" Name="hVScale1" Width="39"
+                    Orientation="Vertical" Minimum="0" Maximum="20" />
+        <my:HVValueIndicator Canvas.Left="110" Canvas.Top="172" Height="53" Name="hVValueIndicator1" Width="78" />
+        <my:Frame Canvas.Left="187" Canvas.Top="194" Height="400" x:Name="frame1" Width="400" BevelWidth="5" BevelColor="#FF407979" FrameColor="#FF6A75B1">
+            <my:Tacho Height="369" Width="424" Minimum="0" Maximum="10" Foreground="White" Caption="蒸汽压力表" FontSize="18" EndAngle="-45" NeedleDesign="Classic" StartAngle="225" MinTicksCount="5" TickFrequency="1" TagReadText="实际值:PRS\"/>
+        </my:Frame>
+
+    </Canvas>
+</Window>

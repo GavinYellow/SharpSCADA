@@ -1,0 +1,154 @@
+﻿<UserControl x:Class="CoreTest.MaterialRecivingLine"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:HMIControl;assembly=HMIControl" 
+             mc:Ignorable="d" Name="MaterialRecivingLine1" d:DesignHeight="1072" d:DesignWidth="1912" Loaded="HMI_Loaded" Unloaded="HMI_Unloaded">
+    <Canvas x:Name="cvs1" Background="#FF2B5F5B">
+
+        <TextBlock Canvas.Left="1084" Canvas.Top="971" FontSize="24" FontStyle="Normal" FontWeight="Bold" Foreground="Black" Height="40" Name="productline" Text="原料接收工段" Width="144" />
+        <my:ManualAddControl Canvas.Left="41" Canvas.Top="184" Height="122" Name="manualAddControl1" Width="112" TagReadText="fan.运行:Receiving1_Fan2_Running\fan.设备名:Receiving1_Fan2\fan.报警:Receiving1_Fan2_Alarm\" />
+        <my:ChainConveyor Canvas.Left="18" Canvas.Top="335" Height="Auto" Name="chainConveyor1" Width="Auto" TagReadText="运行:Receiving1_Conveyor6_Running\报警:Receiving1_Conveyor6_Alarm\设备名:Receiving1_Conveyor6\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=manualAddControl1}" Panel.ZIndex="5" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor1}" TagReadText="运行:Receiving1_Fan2_Running\" />
+        <my:ManualAddControl Canvas.Left="41" Canvas.Top="384" Height="122" Name="manualAddControl2" Width="112" TagReadText="fan.运行:Receiving1_Fan1_Running\fan.设备名:Receiving1_Fan1\fan.报警:Receiving1_Fan1_Alarm\" />
+        <my:ChainConveyor Canvas.Left="18" Canvas.Top="537" Height="Auto" Name="chainConveyor2" Width="Auto" TagReadText="运行:Receiving1_Conveyor5_Running\报警:Receiving1_Conveyor5_Alarm\设备名:Receiving1_Conveyor5\"/>
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=manualAddControl2}" Panel.ZIndex="8" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor2}" TagReadText="运行:Receiving1_Fan1_Running\" />
+        <my:Elevator Canvas.Left="217" Canvas.Top="6" Height="529" Name="elevator1" Width="56" TagReadText="电流:Receiving1_Legmotor3Curr_Digi\设备名:Receiving1_Legmotor3\运行:Receiving1_LegMotor3_Running\OverCurrent:Receiving1_LegMotor3_Overload\速度:Receiving1_Legmotor3Speed_Speed\LowSpeed:Receiving1_leg3alm\" />
+        <my:Elevator Canvas.Left="272" Canvas.Top="112" Height="529" Name="elevator2" Width="56" TagReadText="电流:Receiving2_LegCUR102_Digi\设备名:Receiving1_Legmotor2\运行:Receiving1_LegMotor2_Running\OverCurrent:Receiving1_LegMotor2_Overload\速度:Receiving1_Legmotor2Speed_Speed\LowSpeed:Receiving1_leg2alm\"/>
+        <my:Elevator Canvas.Left="886" Canvas.Top="247" Height="529" Name="elevator3" Width="56" TagReadText="电流:Receiving2_LegCUR106_Digi\设备名:Receiving1_Legmotor1\运行:Receiving1_LegMotor1_Running\OverCurrent:Receiving1_LegMotor1_Overload\速度:Receiving1_Legmotor1Speed_Speed\LowSpeed:Receiving1_leg1alm\" Panel.ZIndex="2000" />
+        <my:BufferBin Canvas.Left="1049" Canvas.Top="684" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin1" RawName="F01" TagReadText="设备名:Receiving1_F01\高料位:Receiving1_F01SQH_Alarm\" Width="70" />
+        <my:BufferBin Canvas.Left="1125" Canvas.Top="682" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin2" RawName="F02" TagReadText="设备名:Receiving1_F02\高料位:Receiving1_F02SQH_Alarm\" Width="70" />
+        <my:BufferBin Canvas.Left="1200" Canvas.Top="682" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin3" RawName="F03" TagReadText="设备名:Receiving1_F03\高料位:Receiving1_F03SQH_Alarm\" Width="70" />
+        <my:BufferBin Canvas.Left="1279" Canvas.Top="682" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin4" RawName="F04" TagReadText="设备名:Receiving1_F04\高料位:Receiving1_F04SQH_Alarm\" Width="70" />
+        <my:BufferBin Canvas.Left="1356" Canvas.Top="682" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin5" RawName="F05" TagReadText="设备名:Receiving1_F05\高料位:Receiving1_F05SQH_Alarm\" Width="70" />
+        <my:BufferBin Canvas.Left="1435" Canvas.Top="682" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin6" RawName="F06" TagReadText="设备名:Receiving1_F06\高料位:Receiving1_F06SQH_Alarm\" Width="70" />
+        <my:MagnetCleaner Canvas.Left="960" Canvas.Top="384" Height="80" Name="magnetCleaner1" Width="85" TagReadText="motor1.运行:Receiving1_MagicRoll1_Running\motor1.设备名:Receiving1_MagicRoll1\motor1.报警:Receiving1_MagicRoll1_Alarm\" />
+        <my:MagnetCleaner Canvas.Left="1378" Canvas.Top="384" Height="80" Name="magnetCleaner2" Width="85" TagReadText="motor1.运行:Receiving1_MagicRoll2_Running\motor1.设备名:Receiving1_MagicRoll2\motor1.报警:Receiving1_MagicRoll2_Alarm\"/>
+        <my:MagnetCleaner Canvas.Left="1585" Canvas.Top="384" Height="80" Name="magnetCleaner3" Width="85" TagReadText="motor1.运行:Receiving1_MagicRoll3_Running\motor1.设备名:Receiving1_MagicRoll3\motor1.报警:Receiving1_MagicRoll3_Alarm\"/>
+        <my:PreCleaner Canvas.Left="1363" Canvas.Top="225" Height="100" Name="preCleaner1" Width="130" TagReadText="motor.报警:Receiving1_Sifter1_Alarm\motor.设备名:Receiving1_Sifter1\motor.运行:Receiving1_Sifter1_Running\" />
+        <my:PreCleaner Canvas.Left="1572" Canvas.Top="152" Height="100" Name="preCleaner2" Width="130"  TagReadText="motor.报警:Receiving1_Sifter2_Alarm\motor.设备名:Receiving1_Sifter2\motor.运行:Receiving1_Sifter2_Running\"/>
+        <my:ChainConveyor Canvas.Left="946" Canvas.Top="539" Height="Auto" Name="chainConveyor3" Width="Auto"  TagReadText="运行:Receiving1_Conveyor3_Running\报警:Receiving1_Conveyor3_Alarm\设备名:Receiving1_Conveyor3\"/>
+        <my:Divert Canvas.Left="1175" Canvas.Top="513" Height="55" Name="divert1" Width="60" TagReadText="设备名:Receiving1_ThreeWays2\左:Receiving1_ThreeWays2_Left\右:Receiving1_ThreeWays2_Right\报警:Receiving1_ThreeWays2_Alarm\" />
+        <my:FourWays Canvas.Left="1349" Canvas.Top="513" Height="57" Name="fourWays1" Width="82" TagReadText="设备名:Receiving1_FourWays\左:Receiving1_FourWays_MID\右:Receiving1_FourWays_Right\中:Receiving1_FourWays_Left\" />
+        <my:ChainConveyor Canvas.Left="1570" Canvas.Top="539" Height="Auto" Name="chainConveyor4" Width="Auto"  TagReadText="运行:Receiving1_Conveyor7_Running\报警:Receiving1_Conveyor7_Alarm\设备名:Receiving1_Conveyor7\"/>
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="906" Canvas.Top="827" Caption="从 筒仓工段" Height="71" Name="fromTo1" Opacity="1" TagWindowText="CoreTest.SiloProductLine;" Width="78" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=magnetCleaner1}" Panel.ZIndex="34" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor3}" TagReadText="运行:Receiving1_MagicRoll1_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor3}" Panel.ZIndex="35" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin1}" TagReadText="运行:Receiving1_Conveyor3_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor3}" Panel.ZIndex="36" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin3}" TagReadText="运行:Receiving1_Gate3_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=LeftPin, ElementName=fourWays1}" Panel.ZIndex="38" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin4}" TagReadText="运行:Receiving1_FourWays_MID\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fourWays1}" Panel.ZIndex="39" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin5}" TagReadText="运行:Receiving1_FourWays_Left\" />
+        <my:LinkLine OriginInfo="{Binding Path=RightPin, ElementName=fourWays1}" Panel.ZIndex="40" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin6}" TagReadText="运行:Receiving1_FourWays_Right\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=preCleaner1}" Panel.ZIndex="41" TargetInfo="{Binding Path=TopPin, ElementName=magnetCleaner2}" TagReadText="运行:Receiving1_Sifter1_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=magnetCleaner2}" Panel.ZIndex="42" TargetInfo="{Binding Path=TopPin, ElementName=fourWays1}" TagReadText="运行:Receiving1_MagicRoll2_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor3}" Panel.ZIndex="43" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin5}" TagReadText="运行:Receiving1_Gate4_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=preCleaner2}" Panel.ZIndex="45" TargetInfo="{Binding Path=TopPin, ElementName=magnetCleaner3}" TagReadText="运行:Receiving1_Sifter2_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=magnetCleaner3}" Panel.ZIndex="46" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor4}" TagReadText="运行:Receiving1_MagicRoll3_Running\" />
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="1517" Canvas.Top="684" Caption="P5" Height="70" Name="fromTo2" Opacity="1" TagWindowText="PelletLine.BatchLine;" Width="70" />
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="1595" Canvas.Top="684" Caption="P6" Height="70" Name="fromTo3" Opacity="1" TagWindowText="PelletLine.BatchLine;" Width="70" />
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="1672" Canvas.Top="684" Caption="P7" Height="70" Name="fromTo4" Opacity="1" TagWindowText="PelletLine.BatchLine;" Width="70" />
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="1750" Canvas.Top="684" Caption="P8" Height="70" Name="fromTo5" Opacity="1" TagWindowText="PelletLine.BatchLine;" Width="70" />
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="1827" Canvas.Top="684" Caption="P9" Height="70" Name="fromTo6" Opacity="1" TagWindowText="PelletLine.BatchLine;" Width="70" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor4}" Panel.ZIndex="51" TargetInfo="{Binding Path=TopPin, ElementName=fromTo6}" TagReadText="运行:Receiving1_Gate11_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor4}" Panel.ZIndex="52" TargetInfo="{Binding Path=TopPin, ElementName=fromTo5}" TagReadText="运行:Receiving1_Gate12_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor4}" Panel.ZIndex="53" TargetInfo="{Binding Path=TopPin, ElementName=fromTo4}" TagReadText="运行:Receiving1_Gate13_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor4}" Panel.ZIndex="54" TargetInfo="{Binding Path=TopPin, ElementName=fromTo3}" TagReadText="运行:Receiving1_Gate14_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor4}" Panel.ZIndex="55" TargetInfo="{Binding Path=TopPin, ElementName=fromTo2}" TagReadText="运行:Receiving1_Gate15_Ols\" />
+        <my:FromTo Background="DarkGoldenrod" Canvas.Left="1165" Canvas.Top="399" Caption="M" Height="52" Name="fromTo7" Opacity="1" TagWindowText="CoreTest.BulkProductLine;" Width="80" />
+        <my:LinkLine OriginInfo="{Binding Path=LeftPin, ElementName=divert1}" Panel.ZIndex="57" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin2}" TagReadText="运行:Receiving1_ThreeWays2_Left\" />
+        <my:LinkLine OriginInfo="{Binding Path=RightPin, ElementName=divert1}" Panel.ZIndex="58" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin3}" TagReadText="运行:Receiving1_ThreeWays2_Right\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fromTo7}" Panel.ZIndex="59" TargetInfo="{Binding Path=TopPin, ElementName=divert1}" TagReadText="运行:Receiving1_Gate16_Ols\" />
+        <my:SelectSwitch Canvas.Left="1626" Canvas.Top="895" Caption="控制模式" Height="85" IsThreeState="False" LeftLable="电脑" Name="selectSwitch1" RightLable="触屏" ShowCaption="True" TagReadText="左:~Receiving1_LocalRemote\右:Receiving1_LocalRemote\" TagWriteText="Receiving1_LocalRemote:~Receiving1_LocalRemote\" Width="70" />
+        <my:SelectSwitch Canvas.Left="1734" Canvas.Top="895" Caption="清  警" Height="85" IsPulse="True" IsThreeState="False" LeftLable=" F" Name="selectSwitch3" RightLable="T " ShowCaption="True" TagReadText="左:Receiving1_AlmAck\右:~Receiving1_AlmAck\" TagWriteText="Receiving1_AlmAck:\Sys_Alarm:\"  Width="70" />
+        <my:FromTo Canvas.Left="254" Canvas.Top="25" Height="22" Name="fromTo8" Width="28" />
+        <my:FromTo Canvas.Left="924" Canvas.Top="264" Height="22" Name="fromTo9" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fromTo9}" TargetInfo="{Binding Path=TopPin, ElementName=magnetCleaner1}" TagReadText="运行:Receiving1_LegMotor1_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fromTo8}" TargetInfo="{Binding Path=TopPin, ElementName=preCleaner2}" TagReadText="运行:Receiving1_LegMotor3_Running\" />
+        <my:FromTo Canvas.Left="310" Canvas.Top="131" Height="22" Name="fromTo10" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fromTo10}" TargetInfo="{Binding Path=TopPin, ElementName=preCleaner1}" TagReadText="运行:Receiving1_LegMotor2_Running\" />
+        <my:FromTo Canvas.Left="208" Canvas.Top="500" Height="22" Name="fromTo11" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=TopPin, ElementName=fromTo11}" TargetInfo="{Binding Path=BottomPin, ElementName=chainConveyor1}" TagReadText="运行:Receiving1_Conveyor6_Running\" />
+        <my:FromTo Canvas.Left="889" Canvas.Top="735" Height="19" Name="fromTo13" Width="24" />
+        <my:SlideGate Canvas.Left="1200" Canvas.Top="649" Height="12" Name="slideGate6" Width="62" TagReadText="设备名:Receiving1_Gate3\开:Receiving1_Gate3_Ols\关:Receiving1_Gate3_Cls\报警:Receiving1_Gate3_Alarm\"/>
+        <my:SlideGate Canvas.Left="1356" Canvas.Top="649" Height="12" Name="slideGate1" Width="62" TagReadText="设备名:Receiving1_Gate4\开:Receiving1_Gate4_Ols\关:Receiving1_Gate4_Cls\报警:Receiving1_Gate4_Alarm\" />
+        <my:SlideGate Canvas.Left="1525" Canvas.Top="649" Height="12" Name="slideGate2" Width="62" TagReadText="设备名:Receiving1_Gate15\开:Receiving1_Gate15_Ols\关:Receiving1_Gate15_Cls\报警:Receiving1_Gate15_Alarm\"/>
+        <my:SlideGate Canvas.Left="1603" Canvas.Top="649" Height="12" Name="slideGate3" Width="62" TagReadText="设备名:Receiving1_Gate14\开:Receiving1_Gate14_Ols\关:Receiving1_Gate14_Cls\报警:Receiving1_Gate14_Alarm\"/>
+        <my:SlideGate Canvas.Left="1835" Canvas.Top="649" Height="12" Name="slideGate4" Width="62" TagReadText="设备名:Receiving1_Gate11\开:Receiving1_Gate11_Ols\关:Receiving1_Gate11_Cls\报警:Receiving1_Gate11_Alarm\"/>
+        <my:SlideGate Canvas.Left="1758" Canvas.Top="649" Height="12" Name="slideGate5" Width="62" TagReadText="设备名:Receiving1_Gate12\开:Receiving1_Gate12_Ols\关:Receiving1_Gate12_Cls\报警:Receiving1_Gate12_Alarm\"/>
+        <my:SlideGate Canvas.Left="1680" Canvas.Top="649" Height="12" Name="slideGate7" Width="62" TagReadText="设备名:Receiving1_Gate13\开:Receiving1_Gate13_Ols\关:Receiving1_Gate13_Cls\报警:Receiving1_Gate13_Alarm\"/>
+        <my:FromTo Canvas.Left="265" Canvas.Top="606" Height="22" Name="fromTo12" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=TopPin, ElementName=fromTo12}" TargetInfo="{Binding Path=BottomPin, ElementName=chainConveyor2}" TagReadText="运行:Receiving1_Conveyor5_Running\" />
+        <my:BufferBin Canvas.Left="398" Canvas.Top="686" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin7" RawName="DF01" TagReadText="设备名:Receiving1_DF01\高料位:Receiving1_DF01SQH_Alarm\低料位:Receiving1_DF01SQL_Alarm\storegate.设备名:Receiving1_Gate5\storegate.报警:Receiving1_Gate5_Alarm\storegate.开:Receiving1_Gate5_Ols\storegate.关:Receiving1_Gate5_Cls\" Width="70" />
+        <my:BufferBin Canvas.Left="475" Canvas.Top="684" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin8" RawName="DF02" TagReadText="设备名:Receiving1_DF02\高料位:Receiving1_DF02SQH_Alarm\低料位:Receiving1_DF02SQL_Alarm\storegate.设备名:Receiving1_Gate6\storegate.报警:Receiving1_Gate6_Alarm\storegate.开:Receiving1_Gate6_Ols\storegate.关:Receiving1_Gate6_Cls\" Width="70" />
+        <my:BufferBin Canvas.Left="550" Canvas.Top="684" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin9" RawName="DF03" TagReadText="设备名:Receiving1_DF03\高料位:Receiving1_DF03SQH_Alarm\低料位:Receiving1_DF03SQL_Alarm\storegate.设备名:Receiving1_Gate7\storegate.报警:Receiving1_Gate7_Alarm\storegate.开:Receiving1_Gate7_Ols\storegate.关:Receiving1_Gate7_Cls\" Width="70" />
+        <my:BufferBin Canvas.Left="628" Canvas.Top="684" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin10" RawName="DF04" TagReadText="设备名:Receiving1_DF04\高料位:Receiving1_DF04SQH_Alarm\低料位:Receiving1_DF04SQL_Alarm\storegate.设备名:Receiving1_Gate8\storegate.报警:Receiving1_Gate8_Alarm\storegate.开:Receiving1_Gate8_Ols\storegate.关:Receiving1_Gate8_Cls\" Width="70" />
+        <my:BufferBin Canvas.Left="705" Canvas.Top="684" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin11" RawName="DF05" TagReadText="设备名:Receiving1_DF05\高料位:Receiving1_DF05SQH_Alarm\低料位:Receiving1_DF05SQL_Alarm\storegate.设备名:Receiving1_Gate9\storegate.报警:Receiving1_Gate9_Alarm\storegate.开:Receiving1_Gate9_Ols\storegate.关:Receiving1_Gate9_Cls\" Width="70" />
+        <my:BufferBin Canvas.Left="785" Canvas.Top="684" Caption="" Height="256" HighLevel="False" LowLevel="False" Name="bufferBin12" RawName="DF06" TagReadText="设备名:Receiving1_DF06\高料位:Receiving1_DF06SQH_Alarm\低料位:Receiving1_DF06SQL_Alarm\storegate.设备名:Receiving1_Gate10\storegate.报警:Receiving1_Gate10_Alarm\storegate.开:Receiving1_Gate10_Ols\storegate.关:Receiving1_Gate10_Cls\" Width="70" />
+        <my:Elevator Canvas.Left="334" Canvas.Top="219" Height="529" Name="elevator4" Width="56" TagReadText="电流:Receiving1_Legmotor4Curr_Digi\设备名:Receiving1_Legmotor4\运行:Receiving1_LegMotor4_Running\OverCurrent:Receiving1_LegMotor4_Overload\速度:Receiving1_Legmotor4Speed_Speed\LowSpeed:Receiving1_leg4alm\"/>
+        <my:ManualAddControl Canvas.Left="41" Canvas.Top="590" Height="122" Name="manualAddControl3" TagReadText="fan.运行:Receiving1_Fan3_Running\fan.设备名:Receiving1_Fan3\fan.报警:Receiving1_Fan3_Alarm\" Width="112" />
+        <my:ChainConveyor Canvas.Left="18" Canvas.Top="742" Height="Auto" Name="chainConveyor5" TagReadText="运行:Receiving1_Conveyor8_Running\报警:Receiving1_Conveyor8_Alarm\设备名:Receiving1_Conveyor8\" Width="Auto" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=manualAddControl3}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor5}" TagReadText="运行:Receiving1_Fan3_Running\" />
+        <my:FromTo Canvas.Left="328" Canvas.Top="712" Height="22" Name="fromTo14" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=TopPin, ElementName=fromTo14}" TargetInfo="{Binding Path=BottomPin, ElementName=chainConveyor5}" TagReadText="运行:Receiving1_Conveyor8_Running\" />
+        <my:Divert Canvas.Left="421" Canvas.Top="280" Height="55" Name="divert2" TagReadText="设备名:Receiving1_ThreeWays1\左:Receiving1_ThreeWays1_Left\右:Receiving1_ThreeWays1_Right\报警:Receiving1_ThreeWays1_Alarm\" Width="60" />
+        <my:PreCleaner Canvas.Left="529" Canvas.Top="228" Height="100" Name="preCleaner3" TagReadText="motor.报警:Receiving1_Sifter3_Alarm\motor.设备名:Receiving1_Sifter3\motor.运行:Receiving1_Sifter3_Running\" Width="130" />
+        <my:MagnetCleaner Canvas.Left="545" Canvas.Top="384" Height="80" Name="magnetCleaner4" TagReadText="motor1.运行:Receiving1_MagicRoll4_Running\motor1.设备名:Receiving1_MagicRoll4\motor1.报警:Receiving1_MagicRoll4_Alarm\" Width="85" />
+        <my:ChainConveyor Canvas.Left="531" Canvas.Top="539" Height="Auto" Name="chainConveyor6" TagReadText="运行:Receiving1_Conveyor9_Running\报警:Receiving1_Conveyor9_Alarm\设备名:Receiving1_Conveyor9\" Width="Auto" />
+        <my:LinkLine OriginInfo="{Binding Path=LeftPin, ElementName=divert2}" TargetInfo="{Binding Path=TopPin, ElementName=fromTo7}" TagReadText="运行:Receiving1_ThreeWays1_Left\" />
+        <my:FromTo Canvas.Left="372" Canvas.Top="228" Height="22" Name="fromTo15" Width="28" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=fromTo15}" TargetInfo="{Binding Path=TopPin, ElementName=divert2}" TagReadText="运行:Receiving1_LegMotor4_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=RightPin, ElementName=divert2}" TargetInfo="{Binding Path=TopPin, ElementName=preCleaner3}" TagReadText="运行:Receiving1_ThreeWays1_Right\" />
+        <my:SlideGate Canvas.Left="406" Canvas.Top="649" Height="12" Name="slideGate9" TagReadText="设备名:Receiving1_Gate16\开:Receiving1_Gate16_Ols\关:Receiving1_Gate16_Cls\报警:Receiving1_Gate16_Alarm\" Width="62" Panel.ZIndex="2000" />
+        <my:SlideGate Canvas.Left="483" Canvas.Top="649" Height="12" Name="slideGate10" TagReadText="设备名:Receiving1_Gate17\开:Receiving1_Gate17_Ols\关:Receiving1_Gate17_Cls\报警:Receiving1_Gate17_Alarm\" Width="62" Panel.ZIndex="2000" />
+        <my:SlideGate Canvas.Left="558" Canvas.Top="649" Height="12" Name="slideGate11" TagReadText="设备名:Receiving1_Gate18\开:Receiving1_Gate18_Ols\关:Receiving1_Gate18_Cls\报警:Receiving1_Gate18_Alarm\" Width="62" Panel.ZIndex="2000" />
+        <my:SlideGate Canvas.Left="636" Canvas.Top="649" Height="12" Name="slideGate12" TagReadText="设备名:Receiving1_Gate19\开:Receiving1_Gate19_Ols\关:Receiving1_Gate19_Cls\报警:Receiving1_Gate19_Alarm\" Width="62" Panel.ZIndex="2000" />
+        <my:SlideGate Canvas.Left="713" Canvas.Top="649" Height="12" Name="slideGate13" TagReadText="设备名:Receiving1_Gate20\开:Receiving1_Gate20_Ols\关:Receiving1_Gate20_Cls\报警:Receiving1_Gate20_Alarm\" Width="62" Panel.ZIndex="2000" />
+        <my:SlideGate Canvas.Left="793" Canvas.Top="649" Height="12" Name="slideGate14" TagReadText="设备名:Receiving1_Gate21\开:Receiving1_Gate21_Ols\关:Receiving1_Gate21_Cls\报警:Receiving1_Gate21_Alarm\" Width="62" Panel.ZIndex="2000" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=preCleaner3}" TargetInfo="{Binding Path=TopPin, ElementName=magnetCleaner4}" TagReadText="运行:Receiving1_Sifter3_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=magnetCleaner4}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor6}" TagReadText="运行:Receiving1_MagicRoll4_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor6}" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin7}" TagReadText="运行:Receiving1_Gate16_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor6}" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin8}" TagReadText="运行:Receiving1_Gate17_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor6}" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin9}" TagReadText="运行:Receiving1_Gate18_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor6}" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin10}" TagReadText="运行:Receiving1_Gate19_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor6}" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin11}" TagReadText="运行:Receiving1_Gate20_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=chainConveyor6}" TargetInfo="{Binding Path=TopPin, ElementName=bufferBin12}" TagReadText="运行:Receiving1_Gate21_Ols\" />
+        <my:ChainConveyor Canvas.Left="531" Canvas.Top="971" Height="Auto" Name="chainConveyor7" TagReadText="运行:Receiving1_Conveyor4_Running\报警:Receiving1_Conveyor4_Alarm\设备名:Receiving1_Conveyor4\" Width="Auto" />
+        <my:LinkLine OriginInfo="{Binding Path=LeftPin, ElementName=fromTo12}" TargetInfo="{Binding Path=BottomPin, ElementName=chainConveyor7}" TagReadText="运行:Receiving1_Conveyor4_Running\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=bufferBin7}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor7}" TagReadText="运行:Receiving1_Gate5_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=bufferBin8}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor7}" TagReadText="运行:Receiving1_Gate6_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=bufferBin9}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor7}" TagReadText="运行:Receiving1_Gate7_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=bufferBin10}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor7}" TagReadText="运行:Receiving1_Gate8_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=bufferBin11}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor7}" TagReadText="运行:Receiving1_Gate9_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=BottomPin, ElementName=bufferBin12}" TargetInfo="{Binding Path=TopPin, ElementName=chainConveyor7}" TagReadText="运行:Receiving1_Gate10_Ols\" />
+        <my:LinkLine OriginInfo="{Binding Path=LeftPin, ElementName=fromTo13}" TargetInfo="{Binding Path=TopPin, ElementName=fromTo1}" />
+        <TextBlock Canvas.Left="105" Canvas.Top="156" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock2" Text="111A" Width="48" />
+        <TextBlock Canvas.Left="149" Canvas.Top="312" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock1" Text="111" Width="48" />
+        <TextBlock Canvas.Left="188" Canvas.Top="20" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock3" Text="112" Width="48" />
+        <TextBlock Canvas.Left="334" Canvas.Top="126" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock4" Text="102" Width="48" />
+        <TextBlock Canvas.Left="65" Canvas.Top="384" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock5" Text="101A" Width="48" />
+        <TextBlock Canvas.Left="149" Canvas.Top="500" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock6" Text="101" Width="48" />
+        <TextBlock Canvas.Left="1499" Canvas.Top="276" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock7" Text="103" Width="48" />
+        <TextBlock Canvas.Left="1469" Canvas.Top="412" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock8" Text="104" Width="48" />
+        <TextBlock Canvas.Left="1426" Canvas.Top="513" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock9" Text="105" Width="48" />
+        <TextBlock Canvas.Left="1230" Canvas.Top="513" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock10" Text="S03B" Width="48" />
+        <TextBlock Canvas.Left="398" Canvas.Top="280" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock11" Text="S03A" Width="48" />
+        <TextBlock Canvas.Left="149" Canvas.Top="601" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock12" Text="S01A" Width="48" />
+        <TextBlock Canvas.Left="1694" Canvas.Top="513" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock13" Text="115" Width="48" />
+        <TextBlock Canvas.Left="1680" Canvas.Top="412" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock14" Text="114" Width="48" />
+        <TextBlock Canvas.Left="1708" Canvas.Top="202" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock15" Text="113" Width="48" />
+        <TextBlock Canvas.Left="149" Canvas.Top="721" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock16" Text="S01" Width="48" />
+        <TextBlock Canvas.Left="352" Canvas.Top="202" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock17" Text="S02" Width="48" />
+        <TextBlock Canvas.Left="665" Canvas.Top="279" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock18" Text="S04" Width="48" />
+        <TextBlock Canvas.Left="628" Canvas.Top="521" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock20" Text="S06" Width="48" />
+        <TextBlock Canvas.Left="628" Canvas.Top="412" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock21" Text="S05" Width="48" />
+        <TextBlock Canvas.Left="750" Canvas.Top="601" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock22" Text="S07.1---S07.6" Width="105" />
+        <TextBlock Canvas.Left="763" Canvas.Top="963" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock23" Text="S09.1---S09.6" Width="104" />
+        <TextBlock Canvas.Left="1550" Canvas.Top="601" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock24" Text="116-1---116-5" Width="107" />
+        <TextBlock Canvas.Left="1049" Canvas.Top="521" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock25" Text="109" Width="48" />
+        <TextBlock Canvas.Left="498" Canvas.Top="978" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock26" Text="S10" Width="48" />
+        <TextBlock Canvas.Left="1049" Canvas.Top="412" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock27" Text="108" Width="48" />
+        <TextBlock Canvas.Left="904" Canvas.Top="224" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock28" Text="106" Width="48" />
+        <TextBlock Canvas.Left="1320" Canvas.Top="649" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock29" Text="110A" Width="48" />
+        <TextBlock Canvas.Left="1165" Canvas.Top="649" FontSize="15" FontStyle="Normal" FontWeight="Normal" Foreground="#FF271C1C" Height="27" Name="textBlock30" Text="110B" Width="48" />
+    </Canvas>
+</UserControl>

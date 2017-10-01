@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Server MaxLogSize="1024">
+  <Data TestCycle="60000" SendTimeout="60000"/>
+  <Hda MaxHdaCap="10000" HdaLen="1048576" WriteCycle="600000" Delay="3600000" Interval="200"/>
+  <Alarm AlarmLimit="1000" Delay="3600000"/>
+</Server>

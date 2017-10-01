@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31CE7714-DDF1-4FB2-A479-9818B1B8D9B2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CoreTest</RootNamespace>
+    <AssemblyName>CoreTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Volume.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DynamicDataDisplay">
+      <HintPath>..\..\dll\DynamicDataDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Controls, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.Expression.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.Expression.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>..\..\dll\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AlarmSet.xaml.cs">
+      <DependentUpon>AlarmSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClientService.cs" />
+    <Compile Include="ConfigCache.cs" />
+    <Compile Include="Guage.xaml.cs">
+      <DependentUpon>Guage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MaterialRecivingLine.xaml.cs">
+      <DependentUpon>MaterialRecivingLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MemberPrincipal.cs" />
+    <Compile Include="MyCollection.cs" />
+    <Compile Include="MyCommand.cs" />
+    <Compile Include="MyConvert.cs" />
+    <Compile Include="RuntimeChart.xaml.cs">
+      <DependentUpon>RuntimeChart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SiloProductLine.xaml.cs">
+      <DependentUpon>SiloProductLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StartDevice.xaml.cs">
+      <DependentUpon>StartDevice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SystemLog.cs" />
+    <Compile Include="TagMonitor.xaml.cs">
+      <DependentUpon>TagMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Trend.xaml.cs">
+      <DependentUpon>Trend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowHelper.cs" />
+    <Page Include="AlarmSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Guage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MaterialRecivingLine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RuntimeChart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SiloProductLine.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="StartDevice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TagMonitor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Trend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\DataSources\ReporterScale.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClientDriver\ClientDriver.csproj">
+      <Project>{6DF53968-152D-4CA9-B62F-FF1C27069C4D}</Project>
+      <Name>ClientDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataHelper\DataHelper.csproj">
+      <Project>{755c5459-bca4-4729-a93c-0c73a41bdf3c}</Project>
+      <Name>DataHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService\DataService.csproj">
+      <Project>{8965e389-6466-4b30-bd43-83c909044637}</Project>
+      <Name>DataService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HMIControl\HMIControl.csproj">
+      <Project>{F9F0BFA7-0C4A-4C8C-B81C-2A0477CBF637}</Project>
+      <Name>HMIControl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\3.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\19.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\275.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\281.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\555.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\6523.ICO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Copy.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Cross.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Cut.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Database-Add.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Design.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Help.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Key.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Login1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-Eject.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-Fast Forward.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-First.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-Last.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-Pause.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-Play.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-Rewind.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mm-Stop.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Permission.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Plus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Redo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Save.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Script.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Search.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Select All.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Tools.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Tree View.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Unlock.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Volume.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

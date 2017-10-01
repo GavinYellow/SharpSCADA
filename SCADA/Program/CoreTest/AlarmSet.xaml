@@ -1,0 +1,99 @@
+﻿<Window x:Class="CoreTest.AlarmSet"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:wk="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended"
+    xmlns:local="clr-namespace:CoreTest" Title="报警记录"
+    TextOptions.TextFormattingMode="Display" FontFamily="SimSun" Loaded="Window_Loaded" Closed="Window_Closed">
+    <Window.Resources>
+        <local:AlarmConverter x:Key="AlarmConverter"/>
+        <ContextMenu x:Key="sampleContextMenu" >
+            <MenuItem Header="删除" Command="{x:Static local:MyCommands.Delete}"/>
+            <MenuItem Header="处理" >
+                <MenuItem Header="应答" Command="{x:Static local:MyCommands.Commit}" CommandParameter="0"/>
+                <MenuItem Header="全部应答" Command="{x:Static local:MyCommands.Commit}" CommandParameter="1"/>
+                <MenuItem Header="忽略" Command="{x:Static local:MyCommands.Commit}" CommandParameter="2"/>
+                <MenuItem Header="全部忽略" Command="{x:Static local:MyCommands.Commit}" CommandParameter="3"/>
+            </MenuItem>
+            <Separator />
+        </ContextMenu>
+    </Window.Resources>
+    <TabControl Name="tab1"  Width="Auto">
+        <TabItem Header="激活的报警">
+            <DataGrid Name="list0" IsReadOnly="True"  AutoGenerateColumns="False" ContextMenu="{StaticResource sampleContextMenu}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="{Binding Path=Severity,Converter={StaticResource AlarmConverter}}" />
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="100" Header="日期" Binding="{Binding Path=LastActive, StringFormat='d'}"/>
+                    <DataGridTextColumn Width="100" Header="时间" Binding="{Binding Path=LastActive, StringFormat='t'}"/>
+                    <DataGridTextColumn Width="150" Header="描述" Binding="{Binding Path=Comment}"/>
+                    <DataGridTextColumn Width="250" Header="消息" Binding="{Binding Path=Message}"/>
+                    <DataGridTextColumn Width="80" Header="当前值" Binding="{Binding Path=Value}"/>
+                    <DataGridTextColumn Width="100" Header="级别" Binding="{Binding Path=Severity}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </TabItem>
+        <TabItem Header="报警日志">
+            <ListView Name="list2" FontSize="12">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true">
+                        <GridViewColumn  Width="160" Header="时间" DisplayMemberBinding="{Binding StartTime}"/>
+                        <GridViewColumn  Width="300" Header="消息" DisplayMemberBinding="{Binding AlarmText}" />
+                        <GridViewColumn  Width="60" Header="报警值" DisplayMemberBinding="{Binding AlarmValue}" />
+                        <GridViewColumn  Width="60" Header="类型" DisplayMemberBinding="{Binding SubAlarmType}" />
+                        <GridViewColumn  Width="100" Header="级别" DisplayMemberBinding="{Binding Severity}"/>
+                        <GridViewColumn  Width="100" Header="持续" DisplayMemberBinding="{Binding Duration}"/>
+                        <GridViewColumn  Width="100" Header="来源" DisplayMemberBinding="{Binding Source}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </TabItem>
+        <TabItem Header="报警记录查询">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="32"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ToolBar  Name="toolBar1" ItemsSource="{Binding}" ItemTemplate="{StaticResource DeleteButton}">
+                    <Button ContentTemplate="{StaticResource ResetButton}" ToolTip="清空报警日志" Style="{StaticResource ButtonGeneric}" Command="{x:Static local:MyCommands.Clear}"/>
+                    <Button ContentTemplate="{StaticResource EditButton}" ToolTip="保存并清空" Style="{StaticResource ButtonGeneric}" Command="{x:Static local:MyCommands.Edit}"/>
+                    <Separator/>
+                    <TextBlock Text=" 开始日期：" Margin="6"/>
+                    <wk:DateTimePicker Name="dtstart" />
+                    <TextBlock Text=" 结束日期：" Margin="6"/>
+                    <wk:DateTimePicker Name="dtend" />
+                    <Button Margin="10,0,0,0"  ContentTemplate="{StaticResource SearchButton}" ToolTip="查询报警历史记录" Style="{StaticResource ButtonGeneric}" Command="{x:Static local:MyCommands.Query}"/>
+                    <Separator/>
+                    <wk:ColorPicker Name="colorpicker" Margin="10,0,0,0" Width="100"  SelectedColorChanged="ColorPicker_SelectedColorChanged"/>
+                </ToolBar>
+                <ListView Name="list1" FontSize="12" Grid.Row="1">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="true">
+                            <GridViewColumn  Width="160" Header="时间" DisplayMemberBinding="{Binding StartTime}"/>
+                            <GridViewColumn  Width="300" Header="消息" DisplayMemberBinding="{Binding AlarmText}" />
+                            <GridViewColumn  Width="60" Header="报警值" DisplayMemberBinding="{Binding AlarmValue}" />
+                            <GridViewColumn  Width="60" Header="类型" DisplayMemberBinding="{Binding SubAlarmType}" />
+                            <GridViewColumn  Width="100" Header="级别" DisplayMemberBinding="{Binding Severity}"/>
+                            <GridViewColumn  Width="100" Header="持续" DisplayMemberBinding="{Binding Duration}"/>
+                            <GridViewColumn  Width="100" Header="来源" DisplayMemberBinding="{Binding Source}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="后台事件">
+            <ListBox Name="list3" Background="Azure" FontSize="13" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
+            </ListBox>
+        </TabItem>
+    </TabControl>
+</Window>
+        
