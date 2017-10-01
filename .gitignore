@@ -6,3 +6,4 @@ ehthumbs.db
 Desktop.ini
 !*.exe
 !*.dll
+!*.bak
