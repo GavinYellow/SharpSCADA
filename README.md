@@ -129,10 +129,9 @@ Wang Xiaomin （绘图）
 Cheng Chao   （测试）
 Yu Ximei     （测试）
 
-联系作者
+个人主页
 -------------
-邮箱：hijkl1999@yeah.net
-知乎ID:老坏猫
+http://www.cnblogs.com/evilcat/
 
 License
 -------------
