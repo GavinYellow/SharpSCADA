@@ -122,13 +122,13 @@ Showcase
 ![](https://github.com/GavinYellow/SharpSCADA/raw/master/Showcase/Receiving1.png)
 ![](https://github.com/GavinYellow/SharpSCADA/raw/master/Showcase/scada1.png)
 
-联系方式
--------------
-hijkl1999@yeah.net
-
 个人主页
 -------------
 http://www.cnblogs.com/evilcat/
+
+联系方式
+-------------
+hijkl1999@yeah.net
 
 License
 -------------
