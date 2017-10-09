@@ -122,12 +122,9 @@ Showcase
 ![](https://github.com/GavinYellow/SharpSCADA/raw/master/Showcase/Receiving1.png)
 ![](https://github.com/GavinYellow/SharpSCADA/raw/master/Showcase/scada1.png)
 
-特别感谢
+联系方式
 -------------
-Zhou Chunjing（改进）
-Wang Xiaomin （绘图）
-Cheng Chao   （测试）
-Yu Ximei     （测试）
+hijkl1999@yeah.net
 
 个人主页
 -------------
