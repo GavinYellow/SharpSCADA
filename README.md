@@ -65,12 +65,12 @@ Visual Studio/Blend：做为组态设计器，推荐VS2010，VS2015版本。
 内存数据库
 Modbus TCP/RTU
 OPC DA
+Siemens S300/200/1200/1500
 
 * 后续发布：
 DDE
 AB EtherNetIP
 Mitsubishi 
-Siemens S300/200/1200/1500
 
 文件目录
 -------------
@@ -89,6 +89,7 @@ server.xml为网关服务配置文件。
 如OPCDriver即为OPC 通讯组件。
 Dynamicdatadisplay：开源归档数据显示组件，http://dynamicdatadisplay.codeplex.com/
 WPFToolkit：WPF开源扩展工具包，http://wpftoolkit.codeplex.com
+libnodave：西门子驱动开源库(https://github.com/netdata/libnodave)
 
 * TagConfig目录[存放配置工具]：
 可方便配置驱动、组、变量、报警、量程等信息。支持导入导出。
