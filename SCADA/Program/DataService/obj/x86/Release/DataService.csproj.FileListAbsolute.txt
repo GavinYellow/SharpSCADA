@@ -90,3 +90,7 @@ E:\SCADA\Program\DataService\bin\Release\DataService.dll
 E:\SCADA\Program\DataService\bin\Release\DataService.pdb
 E:\SCADA\Program\DataService\obj\x86\Release\DataService.dll
 E:\SCADA\Program\DataService\obj\x86\Release\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Release\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Release\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\x86\Release\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\x86\Release\DataService.pdb

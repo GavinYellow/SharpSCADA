@@ -182,3 +182,14 @@ E:\新建文件夹\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.
 E:\新建文件夹\SCADA\Program\LinkableControlDesignTime\obj\Debug\LinkableControlDesign.csproj.GenerateResource.Cache
 E:\新建文件夹\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.dll
 E:\新建文件夹\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.VisualStudio.Design.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.VisualStudio.Design.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\LinkableControlDesign.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.Properties.Resources.resources
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagComplexEditor.resources
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagList.resources
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagWindowEditor.resources
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagWriteEditor.resources
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\LinkableControlDesign.csproj.GenerateResource.Cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.pdb

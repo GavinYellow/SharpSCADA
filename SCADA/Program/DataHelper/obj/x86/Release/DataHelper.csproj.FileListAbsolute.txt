@@ -35,3 +35,10 @@ E:\SCADA\Program\DataHelper\bin\x86\Release\DataService.pdb
 E:\SCADA\Program\DataHelper\obj\x86\Release\DataHelper.csprojResolveAssemblyReference.cache
 E:\SCADA\Program\DataHelper\obj\x86\Release\DataHelper.dll
 E:\SCADA\Program\DataHelper\obj\x86\Release\DataHelper.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Release\DataHelper.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Release\DataHelper.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Release\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Release\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Release\DataHelper.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Release\DataHelper.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Release\DataHelper.pdb

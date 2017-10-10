@@ -68,3 +68,10 @@ E:\新建文件夹\SCADA\Program\FileDriver\bin\Debug\DataService.pdb
 E:\新建文件夹\SCADA\Program\FileDriver\obj\Debug\FileDriver.csprojResolveAssemblyReference.cache
 E:\新建文件夹\SCADA\Program\FileDriver\obj\Debug\FileDriver.dll
 E:\新建文件夹\SCADA\Program\FileDriver\obj\Debug\FileDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\FileDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\FileDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.pdb

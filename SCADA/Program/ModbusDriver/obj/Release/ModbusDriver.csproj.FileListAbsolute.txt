@@ -99,3 +99,10 @@ E:\SCADA\Program\ModbusDriver\bin\Release\DataService.pdb
 E:\SCADA\Program\ModbusDriver\obj\Release\ModbusDriver.csprojResolveAssemblyReference.cache
 E:\SCADA\Program\ModbusDriver\obj\Release\ModbusDriver.dll
 E:\SCADA\Program\ModbusDriver\obj\Release\ModbusDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Release\ModbusDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Release\ModbusDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Release\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Release\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\obj\Release\ModbusDriver.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\obj\Release\ModbusDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\obj\Release\ModbusDriver.pdb

@@ -148,3 +148,6 @@ E:\SCADA\Program\BatchCoreTest\bin\Release\DataService.pdb
 E:\SCADA\Program\BatchCoreTest\obj\x86\Release\BatchCoreTest.csprojResolveAssemblyReference.cache
 E:\SCADA\Program\BatchCoreTest\obj\x86\Release\BatchCoreService.Properties.Resources.resources
 E:\SCADA\Program\BatchCoreTest\obj\x86\Release\BatchCoreTest.csproj.GenerateResource.Cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Release\BatchCoreTest.exe.config
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Release\BatchCoreTest.exe
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Release\BatchCoreTest.pdb

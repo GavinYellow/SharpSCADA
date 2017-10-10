@@ -39,3 +39,9 @@ E:\新建文件夹\SCADA\Program\OPCLib\bin\x86\Debug\OPCLib.tlb
 E:\新建文件夹\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.csprojResolveAssemblyReference.cache
 E:\新建文件夹\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.dll
 E:\新建文件夹\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\bin\x86\Debug\OPCLib.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\bin\x86\Debug\OPCLib.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\bin\x86\Debug\OPCLib.tlb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.pdb

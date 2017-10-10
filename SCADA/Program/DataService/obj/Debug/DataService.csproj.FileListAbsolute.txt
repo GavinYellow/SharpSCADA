@@ -18,3 +18,8 @@ E:\Project\牧羊上位机\WpfApplication1\bin\Debug\DataService.dll
 E:\Project\牧羊上位机\WpfApplication1\bin\Debug\DataService.pdb
 E:\Project\牧羊上位机\WpfApplication1\obj\Debug\DataService.dll
 E:\Project\牧羊上位机\WpfApplication1\obj\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.pdb

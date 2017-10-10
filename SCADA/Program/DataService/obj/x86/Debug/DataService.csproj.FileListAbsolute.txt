@@ -127,3 +127,8 @@ E:\新建文件夹\SCADA\Program\DataService\bin\Debug\DataService.pdb
 E:\新建文件夹\SCADA\Program\DataService\obj\x86\Debug\DataService.csprojResolveAssemblyReference.cache
 E:\新建文件夹\SCADA\Program\DataService\obj\x86\Debug\DataService.dll
 E:\新建文件夹\SCADA\Program\DataService\obj\x86\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\x86\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\x86\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\x86\Debug\DataService.csprojResolveAssemblyReference.cache

@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:my="clr-namespace:HMIControl;assembly=HMIControl" 
-             mc:Ignorable="d" Name="MaterialRecivingLine1" d:DesignHeight="1072" d:DesignWidth="1912" Loaded="HMI_Loaded" Unloaded="HMI_Unloaded">
-    <Canvas x:Name="cvs1" Background="#FF2B5F5B">
-
+             mc:Ignorable="d" Name="MaterialRecivingLine1" Width="1920" Height="1080" d:DesignHeight="1072" d:DesignWidth="1912" Background="#FF2B5F5B" 
+             Loaded="HMI_Loaded" Unloaded="HMI_Unloaded">
+    <Canvas x:Name="cvs1">
         <TextBlock Canvas.Left="1084" Canvas.Top="971" FontSize="24" FontStyle="Normal" FontWeight="Bold" Foreground="Black" Height="40" Name="productline" Text="原料接收工段" Width="144" />
         <my:ManualAddControl Canvas.Left="41" Canvas.Top="184" Height="122" Name="manualAddControl1" Width="112" TagReadText="fan.运行:Receiving1_Fan2_Running\fan.设备名:Receiving1_Fan2\fan.报警:Receiving1_Fan2_Alarm\" />
         <my:ChainConveyor Canvas.Left="18" Canvas.Top="335" Height="Auto" Name="chainConveyor1" Width="Auto" TagReadText="运行:Receiving1_Conveyor6_Running\报警:Receiving1_Conveyor6_Alarm\设备名:Receiving1_Conveyor6\" />

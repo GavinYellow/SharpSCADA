@@ -136,3 +136,12 @@ E:\SCADA\Program\OPCDriver\bin\Release\OPCLib.pdb
 E:\SCADA\Program\OPCDriver\obj\Release\OPCDriver.csprojResolveAssemblyReference.cache
 E:\SCADA\Program\OPCDriver\obj\Release\OPCDriver.dll
 E:\SCADA\Program\OPCDriver\obj\Release\OPCDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\bin\Release\OPCDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\bin\Release\OPCDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\bin\Release\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\bin\Release\OPCLib.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\bin\Release\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\bin\Release\OPCLib.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\obj\Release\OPCDriver.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\obj\Release\OPCDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCDriver\obj\Release\OPCDriver.pdb

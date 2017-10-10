@@ -134,3 +134,10 @@ E:\SCADA\Program\FileDriver\bin\Release\DataService.pdb
 E:\SCADA\Program\FileDriver\obj\Release\FileDriver.csprojResolveAssemblyReference.cache
 E:\SCADA\Program\FileDriver\obj\Release\FileDriver.dll
 E:\SCADA\Program\FileDriver\obj\Release\FileDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Release\FileDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Release\FileDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Release\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\bin\Release\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\obj\Release\FileDriver.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\obj\Release\FileDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\FileDriver\obj\Release\FileDriver.pdb

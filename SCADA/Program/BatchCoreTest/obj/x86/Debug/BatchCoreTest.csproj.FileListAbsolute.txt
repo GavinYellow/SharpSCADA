@@ -121,3 +121,17 @@ E:\新建文件夹\SCADA\Program\BatchCoreTest\bin\Debug\DataService.pdb
 E:\新建文件夹\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csprojResolveAssemblyReference.cache
 E:\新建文件夹\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreService.Properties.Resources.resources
 E:\新建文件夹\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csproj.GenerateResource.Cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.exe.config
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.exe
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.exe
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\ClientDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\ClientDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreService.Properties.Resources.resources
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csproj.GenerateResource.Cache

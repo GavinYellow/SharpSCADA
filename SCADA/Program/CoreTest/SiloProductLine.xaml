@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:my="clr-namespace:HMIControl;assembly=HMIControl" 
-             mc:Ignorable="d" Name="SiloProductLine1" d:DesignHeight="1072" d:DesignWidth="1912" Loaded="HMI_Loaded" Unloaded="HMI_Unloaded">
-    <Canvas x:Name="cvs1" Background="#FF2B5F5B">
+             mc:Ignorable="d" Name="SiloProductLine1" Width="1920" Height="1080" d:DesignHeight="1072" d:DesignWidth="1912" Background="#FF2B5F5B"
+             Loaded="HMI_Loaded" Unloaded="HMI_Unloaded">
+    <Canvas x:Name="cvs1" >
         <my:Silo Canvas.Left="1013" Canvas.Top="325" Height="330" Name="silo1" Width="198" TagReadText="低料位:Receiving1_T1SQL_Alarm\标题:C1\" />
         <my:Silo Canvas.Left="1345" Canvas.Top="325" Height="330" Name="silo2" Width="202" TagReadText="低料位:Receiving1_T2SQL_Alarm\标题:C2\" />
         <my:Elevator Canvas.Left="520" Canvas.Top="231" Height="710" Name="elevator1" Width="82" TagReadText="电流:Receiving2_Legmotor1Curr_Digi\设备名:Receiving2_Legmotor1\运行:Receiving2_LegMotor1_Running\OverCurrent:Receiving2_LegMotor1_Overload\速度:Receiving2_Legmotor1Speed_Speed\" />

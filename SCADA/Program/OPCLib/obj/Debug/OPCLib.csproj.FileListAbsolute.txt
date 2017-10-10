@@ -37,3 +37,8 @@ D:\Muyang\武汉伊利\SkewButtonLibrary\OPCLib\bin\Debug\OPCLib.dll
 D:\Muyang\武汉伊利\SkewButtonLibrary\OPCLib\bin\Debug\OPCLib.pdb
 D:\Muyang\武汉伊利\SkewButtonLibrary\OPCLib\obj\Debug\OPCLib.dll
 D:\Muyang\武汉伊利\SkewButtonLibrary\OPCLib\obj\Debug\OPCLib.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\bin\Debug\OPCLib.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\bin\Debug\OPCLib.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.pdb

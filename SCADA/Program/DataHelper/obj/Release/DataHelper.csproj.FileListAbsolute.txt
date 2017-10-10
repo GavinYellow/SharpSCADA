@@ -43,3 +43,10 @@ E:\双胞胎项目\sbt\Service - Copy (2)\SkewButtonLibrary\DataHelper\bin\Relea
 E:\双胞胎项目\sbt\Service - Copy (2)\SkewButtonLibrary\DataHelper\obj\Release\DataHelper.csprojResolveAssemblyReference.cache
 E:\双胞胎项目\sbt\Service - Copy (2)\SkewButtonLibrary\DataHelper\obj\Release\DataHelper.dll
 E:\双胞胎项目\sbt\Service - Copy (2)\SkewButtonLibrary\DataHelper\obj\Release\DataHelper.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\Release\DataHelper.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\Release\DataHelper.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\Release\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\Release\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\Release\DataHelper.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\Release\DataHelper.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\Release\DataHelper.pdb

@@ -74,3 +74,10 @@ E:\新建文件夹\SCADA\Program\ModbusDriver\bin\Debug\DataService.pdb
 E:\新建文件夹\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.csprojResolveAssemblyReference.cache
 E:\新建文件夹\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.dll
 E:\新建文件夹\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.pdb

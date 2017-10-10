@@ -19,9 +19,14 @@ namespace CoreTest
     /// </summary>
     public partial class MainWindow : Window
     {
+        double x1 = SystemParameters.PrimaryScreenWidth;//得到屏幕整体宽度
+        double y1 = SystemParameters.PrimaryScreenHeight;//得到屏幕整体高度
+
         public MainWindow()
         {
             InitializeComponent();
+            this.Width = x1;//设置窗体宽度
+            this.Height = y1;//设置窗体高度
         }
 
         List<TagNodeHandle> _valueChangedList;
@@ -41,13 +46,14 @@ namespace CoreTest
             if (Tag != null && !string.IsNullOrEmpty(Tag.ToString()))
             {
                 var Wintypes = Tag.ToString().TrimEnd(';');
-                ContentControl Ctrl = Activator.CreateInstance(Type.GetType(Wintypes)) as ContentControl;
-                if (Ctrl != null)
+                ContentControl ctrl = Activator.CreateInstance(Type.GetType(Wintypes)) as ContentControl;
+                if (ctrl != null)
                 {
-                    Ctrl.Loaded += new RoutedEventHandler(ctrl_Loaded);
-                    Ctrl.Unloaded += new RoutedEventHandler(ctrl_Unloaded);
-                    dict[Wintypes] = Ctrl;
-                    cvs1.Child = Ctrl;
+                    ScaleControl(ctrl);
+                    ctrl.Loaded += new RoutedEventHandler(ctrl_Loaded);
+                    ctrl.Unloaded += new RoutedEventHandler(ctrl_Unloaded);
+                    dict[Wintypes] = ctrl;
+                    cvs1.Child = ctrl;
                     this.Title = Wintypes;
                 }
             }
@@ -157,6 +163,7 @@ namespace CoreTest
                     ContentControl ctrl = Activator.CreateInstance(Type.GetType(txt)) as ContentControl;
                     if (ctrl != null)
                     {
+                        ScaleControl(ctrl);
                         ctrl.Loaded += new RoutedEventHandler(ctrl_Loaded);
                         ctrl.Unloaded += new RoutedEventHandler(ctrl_Unloaded);
                         var win = ctrl as Window;
@@ -181,8 +188,22 @@ namespace CoreTest
                 {
                     App.AddErrorLog(e);
                 }
-            lab1:
+                lab1:
                 continue;
+            }
+        }
+
+        void ScaleControl(ContentControl ctrl)
+        {
+            var transform = ctrl.RenderTransform as MatrixTransform;
+            if (transform != null && !double.IsNaN(ctrl.Width) && !double.IsNaN(ctrl.Height))
+            {
+                var matrix = transform.Matrix;
+                matrix.Scale(x1 / ctrl.Width, y1 / ctrl.Height);
+                ctrl.RenderTransform = new MatrixTransform(matrix);
+                ctrl.Width = x1;
+                ctrl.Height = y1;
+                this.Background = ctrl.Background;
             }
         }
 

@@ -820,7 +820,9 @@ namespace OPCDriver
         {
             if (_opcServerObj != null)
                 Dispose();
-            Type svrComponenttype = Type.GetTypeFromCLSID(new Guid(_clsidOPCserver), _serverIP, false);
+            Guid cid;
+            Type svrComponenttype = Guid.TryParse(_clsidOPCserver, out cid) ? Type.GetTypeFromCLSID(cid, _serverIP, false)
+                : Type.GetTypeFromProgID(_clsidOPCserver, _serverIP, false);
             if (svrComponenttype == null)
                 return false;
             try

@@ -49,3 +49,10 @@ E:\新建文件夹\SCADA\Program\DataHelper\bin\x86\Debug\DataService.pdb
 E:\新建文件夹\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.csprojResolveAssemblyReference.cache
 E:\新建文件夹\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.dll
 E:\新建文件夹\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataService.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataService.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.csprojResolveAssemblyReference.cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.dll
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.pdb
