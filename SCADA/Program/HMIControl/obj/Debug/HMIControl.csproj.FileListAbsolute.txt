@@ -331,7 +331,6 @@ C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\Mi
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\Microsoft.Expression.Drawing.dll
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\Microsoft.Expression.Controls.xml
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\Microsoft.Expression.Drawing.xml
-C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csprojResolveAssemblyReference.cache
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl_MarkupCompile.cache
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl_MarkupCompile.lref
@@ -341,3 +340,4 @@ C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HM
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.GenerateResource.Cache
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.dll
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csprojResolveAssemblyReference.cache

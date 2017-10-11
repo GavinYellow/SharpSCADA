@@ -98,6 +98,5 @@ F:\牧羊上位机\WpfApplication1\obj\Release\DataService.dll
 F:\牧羊上位机\WpfApplication1\obj\Release\DataService.pdb
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Release\DataService.dll
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Release\DataService.pdb
-C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Release\DataService.csprojResolveAssemblyReference.cache
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Release\DataService.dll
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Release\DataService.pdb

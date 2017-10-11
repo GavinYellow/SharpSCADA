@@ -1485,7 +1485,9 @@ namespace BatchCoreService
                 byte[] dt = BitConverter.GetBytes(id);
                 sendBuffer[j++] = dt[0];
                 sendBuffer[j++] = dt[1];
-                switch (_list[GetItemProperties(id)].DataType)
+                var index = GetItemProperties(id);
+                if (index < 0 || index >= _list.Count) continue;
+                switch (_list[index].DataType)
                 {
                     case DataType.BOOL:
                         sendBuffer[j++] = 1;

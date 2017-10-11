@@ -163,10 +163,11 @@ namespace CoreTest
                     ContentControl ctrl = Activator.CreateInstance(Type.GetType(txt)) as ContentControl;
                     if (ctrl != null)
                     {
-                        ScaleControl(ctrl);
+                        var win = ctrl as Window;
+                        if (win == null)
+                            ScaleControl(ctrl);
                         ctrl.Loaded += new RoutedEventHandler(ctrl_Loaded);
                         ctrl.Unloaded += new RoutedEventHandler(ctrl_Unloaded);
-                        var win = ctrl as Window;
                         if (win != null)
                         {
                             win.Owner = this;
