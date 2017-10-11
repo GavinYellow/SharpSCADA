@@ -1295,7 +1295,7 @@ namespace TagConfig
         public DataTable GetSchemaTable()
         {
             DataTable table = new DataTable("Meta_SubCondition");
-            table.Columns.Add("ID", typeof(int));
+            //table.Columns.Add("ID", typeof(int));
             table.Columns.Add("ConditionID", typeof(int));
             table.Columns.Add("SubAlarmType", typeof(int));
             table.Columns.Add("Threshold", typeof(float));
@@ -1338,7 +1338,7 @@ namespace TagConfig
 
         public int FieldCount
         {
-            get { return 7; }
+            get { return 6; }
         }
 
         public bool GetBoolean(int i)
@@ -1400,14 +1400,12 @@ namespace TagConfig
                 case 1:
                     return typeof(int);
                 case 2:
-                    return typeof(int);
-                case 3:
                     return typeof(float);
-                case 4:
+                case 3:
                     return typeof(byte);
-                case 5:
+                case 4:
                     return typeof(string);
-                case 6:
+                case 5:
                     return typeof(bool);
                 default:
                     return typeof(int);
@@ -1443,18 +1441,16 @@ namespace TagConfig
             switch (i)
             {
                 case 0:
-                    return "ID";
-                case 1:
                     return "ConditionID";
-                case 2:
+                case 1:
                     return "SubAlarmType";
-                case 3:
+                case 2:
                     return "Threshold";
-                case 4:
+                case 3:
                     return "Severity";
-                case 5:
+                case 4:
                     return "Message";
-                case 6:
+                case 5:
                     return "IsEnable";
                 default:
                     return string.Empty;
@@ -1465,20 +1461,18 @@ namespace TagConfig
         {
             switch (name)
             {
-                case "ID":
-                    return 0;
                 case "ConditionID":
-                    return 1;
+                    return 0;
                 case "SubAlarmType":
-                    return 2;
+                    return 1;
                 case "Threshold":
-                    return 3;
+                    return 2;
                 case "Severity":
-                    return 4;
+                    return 3;
                 case "Message":
-                    return 5;
+                    return 4;
                 case "IsEnable":
-                    return 6;
+                    return 5;
                 default:
                     return -1;
             }
@@ -1494,18 +1488,16 @@ namespace TagConfig
             switch (i)
             {
                 case 0:
-                    return _enumer.Current.ID;
-                case 1:
                     return _enumer.Current.ConditionId;
-                case 2:
+                case 1:
                     return _enumer.Current.SubAlarmType;
-                case 3:
+                case 2:
                     return _enumer.Current.Threshold;
-                case 4:
+                case 3:
                     return _enumer.Current.Severity;
-                case 5:
+                case 4:
                     return _enumer.Current.Message;
-                case 6:
+                case 5:
                     return _enumer.Current.IsEnabled;
                 default:
                     return null;

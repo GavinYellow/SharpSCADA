@@ -265,7 +265,7 @@ namespace TagConfig
     public class SubCondition : IComparable<SubCondition>
     {
         bool _enabled;
-        int _id,_severity, _condId, _subType;
+        int _severity, _condId, _subType;
         float _threshold;
         string _message;
 
@@ -282,18 +282,6 @@ namespace TagConfig
         public SubCondition(int condId)
         {
             _condId = condId;
-        }
-
-        public int ID
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value;
-            }
         }
 
         public int ConditionId
