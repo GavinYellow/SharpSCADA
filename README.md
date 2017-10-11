@@ -43,7 +43,7 @@ SQLServer Express 2014/2008
 * 2.可运行可执行文件测试：
 Server端测试：在目录 ..\SCADA\Program\BatchCoreTest\bin\Debug下运行BatchCoreTest.exe
 Client端测试：在目录 ..\SCADA\Program\CoreTest\bin\Debug下运行CoreTest.exe
-请参考Document文件夹中的教程：《部署流程》和《设计流程》。
+请参考Document文件夹中的教程：《部署流程》和《设计流程》，如有问题可参考《FAQ》文档。
 
 Quick Start
 -------------
@@ -51,7 +51,7 @@ Quick Start
 * 2.修改配置文件并复制到C盘根目录下
 * 3.修改数据库内驱动程序的路径
 * 4.运行DEMO
-具体流程可参看Wiki。
+具体流程可参看《部署流程》。
 
 开发工具推荐
 -------------
