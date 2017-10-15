@@ -22,4 +22,3 @@ C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Debug\D
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\bin\Debug\DataService.pdb
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.dll
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.pdb
-C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.csprojResolveAssemblyReference.cache

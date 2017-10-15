@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace DatabaseLib
 {
@@ -29,8 +31,12 @@ namespace DatabaseLib
             get { return m_Path; }
         }
 
+        const string CFGPATH = @"C:\DataConfig\host.cfg";
+        const string INIPATH = @"C:\DataConfig\host.ini";
         const string DATALOGSOURCE = "Data Operations";
         const string DATALOGNAME = "Data Log";
+        const int STRINGMAX = 255;
+
         static EventLog Log;
 
         static DataHelper()
@@ -40,16 +46,29 @@ namespace DatabaseLib
             Log = new EventLog(DATALOGNAME);
             try
             {
-                using (StreamReader objReader = new StreamReader(@"C:\DataConfig\host.cfg"))
+                if (File.Exists(CFGPATH))
                 {
-                    m_host = objReader.ReadLine();
-                    m_ConnStr = objReader.ReadLine();
-                    m_Path = objReader.ReadLine();
-                    IPAddress addr;
-                    if (string.IsNullOrEmpty(m_host) || !IPAddress.TryParse(m_host, out addr))
+                    using (StreamReader objReader = new StreamReader(CFGPATH))
                     {
-                        m_host = Environment.MachineName;
+                        m_host = objReader.ReadLine();
+                        m_ConnStr = objReader.ReadLine();
+                        m_Path = objReader.ReadLine();
                     }
+                }
+                else if (File.Exists(INIPATH))
+                {
+                    StringBuilder sb = new StringBuilder(STRINGMAX);
+                    WinAPI.GetPrivateProfileString("HOST", "SERVER", m_host, sb, STRINGMAX, INIPATH);
+                    m_host = sb.ToString();
+                    WinAPI.GetPrivateProfileString("DATABASE", "CONNSTRING", m_ConnStr, sb, STRINGMAX, INIPATH);
+                    m_ConnStr = sb.ToString();
+                    WinAPI.GetPrivateProfileString("DATABASE", "ARCHIVE", m_Path, sb, STRINGMAX, INIPATH);
+                    m_Path = sb.ToString();
+                }
+                IPAddress addr;
+                if (string.IsNullOrEmpty(m_host) || !IPAddress.TryParse(m_host, out addr))
+                {
+                    m_host = Environment.MachineName;
                 }
             }
             catch (Exception e)
@@ -728,5 +747,17 @@ namespace DatabaseLib
         }
 
         #endregion ExecuteStoredProcedure
+    }
+
+    public static class WinAPI
+    {
+
+        //参数说明：section：INI文件中的段落；key：INI文件中的关键字；val：INI文件中关键字的数值；filePath：INI文件的完整的路径和名称。
+        [DllImport("kernel32")]
+        public static extern long WritePrivateProfileString(string section, string key, string val, string filepath);
+
+        //参数说明：section：INI文件中的段落名称；key：INI文件中的关键字；def：无法读取时候时候的缺省数值；retVal：读取数值；size：数值的大小；filePath：INI文件的完整路径和名称。
+        [DllImport("kernel32")]
+        public static extern int GetPrivateProfileString(string section, string key, string def, StringBuilder retval, int size, string filePath);
     }
 }
