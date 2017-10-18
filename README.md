@@ -130,6 +130,7 @@ http://www.cnblogs.com/evilcat/
 联系方式
 -------------
 hijkl1999@yeah.net
+QQ群：102486275
 
 License
 -------------
