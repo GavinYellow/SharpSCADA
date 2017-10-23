@@ -340,3 +340,4 @@ C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HM
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.GenerateResource.Cache
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.dll
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.pdb
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csprojResolveAssemblyReference.cache
