@@ -199,3 +199,4 @@ C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\TagConfig\TagConfig\obj\x86\Rel
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\TagConfig\TagConfig\obj\x86\Release\TagConfig.GroupParam.resources
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\TagConfig\TagConfig\obj\x86\Release\TagConfig.Properties.Resources.resources
 C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\TagConfig\TagConfig\obj\x86\Release\TagConfig.csproj.GenerateResource.Cache
+C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\TagConfig\TagConfig\obj\x86\Release\TagConfig.csprojResolveAssemblyReference.cache
