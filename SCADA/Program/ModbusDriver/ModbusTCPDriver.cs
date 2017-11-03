@@ -382,13 +382,13 @@ namespace ModbusDriver
         public byte[] ReadBytes(DeviceAddress address, ushort size)
         {
             int area = address.Area;
-            return area < 2 ? WriteSyncData(CreateReadHeader(area, address.Start * 16, (ushort)(16 * size), (byte)area))
+            return area < 2 ? WriteSyncData(CreateReadHeader(_id, address.Start * 16, (ushort)(16 * size), (byte)area))
                 : WriteSyncData(CreateReadHeader(area, address.Start, size, (byte)area));
         }
 
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 2, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(_id, address.Start, 2, (byte)address.Area));
             if (data == null)
                 return new ItemData<int>(0, 0, QUALITIES.QUALITY_BAD);
             else
@@ -397,7 +397,7 @@ namespace ModbusDriver
 
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(_id, address.Start, 1, (byte)address.Area));
             if (data == null)
                 return new ItemData<short>(0, 0, QUALITIES.QUALITY_BAD);
             else
@@ -406,7 +406,7 @@ namespace ModbusDriver
 
         public ItemData<byte> ReadByte(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(_id, address.Start, 1, (byte)address.Area));
             if (data == null)
                 return new ItemData<byte>(0, 0, QUALITIES.QUALITY_BAD);
             else
@@ -415,7 +415,7 @@ namespace ModbusDriver
 
         public ItemData<string> ReadString(DeviceAddress address, ushort size)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, size, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(_id, address.Start, size, (byte)address.Area));
             if (data == null)
                 return new ItemData<string>(string.Empty, 0, QUALITIES.QUALITY_BAD);
             else
@@ -424,7 +424,7 @@ namespace ModbusDriver
 
         public unsafe ItemData<float> ReadFloat(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 2, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(_id, address.Start, 2, (byte)address.Area));
             if (data == null)
                 return new ItemData<float>(0.0f, 0, QUALITIES.QUALITY_BAD);
             else
@@ -436,7 +436,7 @@ namespace ModbusDriver
 
         public ItemData<bool> ReadBit(DeviceAddress address)
         {
-            byte[] data = address.Area > 2 ? WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.Area)) :
+            byte[] data = address.Area > 2 ? WriteSyncData(CreateReadHeader(_id, address.Start, 1, (byte)address.Area)) :
                    WriteSyncData(CreateReadHeader(address.Area, address.Start + address.Bit, 1, (byte)address.Area));
             if (data == null)
                 return new ItemData<bool>(false, 0, QUALITIES.QUALITY_BAD);
