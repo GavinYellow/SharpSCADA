@@ -104,6 +104,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataHelper\DataHelper.csproj">
+      <Project>{755c5459-bca4-4729-a93c-0c73a41bdf3c}</Project>
+      <Name>DataHelper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HMIControl\HMIControl.csproj">
       <Project>{F9F0BFA7-0C4A-4C8C-B81C-2A0477CBF637}</Project>
       <Name>HMIControl</Name>

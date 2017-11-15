@@ -1,1 +1,0 @@
-C:\Users\Yinan\Documents\Github\SharpSCADA\SCADA\TagConfig\TagConfig\bin\Debug\TagConfig.exe.config

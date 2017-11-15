@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DatabaseLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -13,9 +13,6 @@ namespace HMIControl.VisualStudio.Design
     {
         static List<string> list;
         static List<TagMetaData> metaList;
-        const string PATH = @"C:\DataConfig\";
-        const string CONFIGFILE = "host.cfg";
-        static string CONN = @"Data Source=.\SQLEXPRESS;Initial Catalog=MYCOS_DATA;Integrated Security=True";
 
         public static readonly List<DataTypeSource> DataDict = new List<DataTypeSource>
         {
@@ -50,39 +47,16 @@ namespace HMIControl.VisualStudio.Design
             {
                 list = new List<string> { "@Time", "@Date", "@DateTime", "@User", "@AppName", "@LocName", "@Region", "@Path" };
                 metaList = new List<TagMetaData>();
-                try
+                using (var reader = DataHelper.Instance.ExecuteReader("SELECT ISNULL(TagName,''),ISNULL(ADDRESS,''),ISNULL(DESCRIPTION,''),DATATYPE,DATASIZE,TAGID,GROUPID,ISACTIVE,ARCHIVE,DEFAULTVALUE FROM Meta_Tag"))
                 {
-                    using (StreamReader objReader = new StreamReader(PATH + CONFIGFILE))
+                    if (reader == null) return list;
+                    while (reader.Read())
                     {
-                        objReader.ReadLine();
-                        CONN = objReader.ReadLine();
+                        string name = reader.GetString(0);
+                        list.Add(name);
+                        metaList.Add(new TagMetaData(name.ToUpper(), reader.GetString(1), reader.GetString(2), (DataType)reader.GetByte(3), (ushort)reader.GetInt16(4),
+                            reader.GetInt16(5), reader.GetInt16(6), reader.GetBoolean(7), reader.GetBoolean(8), reader.GetSqlValue(9)));
                     }
-                }
-                catch (Exception e)
-                {
-                    return list;
-                }
-                SqlConnection connection = new SqlConnection(CONN);
-                SqlCommand command = new SqlCommand(
-                    "SELECT ISNULL(TagName,''),ISNULL(ADDRESS,''),ISNULL(DESCRIPTION,''),DATATYPE,DATASIZE,TAGID,GROUPID,ISACTIVE,ARCHIVE,DEFAULTVALUE FROM Meta_Tag", connection);
-                try
-                {
-                    if (connection.State == ConnectionState.Closed)
-                        connection.Open();
-                    using (var reader = command.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        while (reader.Read())
-                        {
-                            string name = reader.GetString(0);
-                            list.Add(name);
-                            metaList.Add(new TagMetaData(name.ToUpper(), reader.GetString(1), reader.GetString(2), (DataType)reader.GetByte(3), (ushort)reader.GetInt16(4),
-                                reader.GetInt16(5), reader.GetInt16(6), reader.GetBoolean(7), reader.GetBoolean(8), reader.GetSqlValue(9)));
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-
                 }
                 list.Sort();
             }
@@ -110,30 +84,7 @@ namespace HMIControl.VisualStudio.Design
         {
             dataGridView1.CurrentCell = null;
             bindingSource1.EndEdit();
-            TagDataReader reader = new TagDataReader(metaList);
-            SqlConnection m_Conn = new SqlConnection(CONN);
-            SqlTransaction sqlT = null;
-            try
-            {
-                if (m_Conn.State == ConnectionState.Closed)
-                    m_Conn.Open();
-                sqlT = m_Conn.BeginTransaction();
-                string sql = "DELETE FROM Meta_Tag;";
-                SqlCommand cmd = new SqlCommand(sql, m_Conn);
-                cmd.Transaction = sqlT;
-                cmd.ExecuteNonQuery();
-                SqlBulkCopy bulk = new SqlBulkCopy(m_Conn, SqlBulkCopyOptions.KeepIdentity, sqlT);
-                bulk.DestinationTableName = "Meta_Tag";
-                bulk.WriteToServer(reader);
-                sqlT.Commit();
-                m_Conn.Close();
-            }
-            catch (Exception ex)
-            {
-                if (sqlT != null)
-                    sqlT.Rollback();
-                m_Conn.Close();
-            }
+            DataHelper.Instance.BulkCopy(new TagDataReader(metaList), "Meta_Tag", "DELETE FROM Meta_Tag;", SqlBulkCopyOptions.KeepIdentity);
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)

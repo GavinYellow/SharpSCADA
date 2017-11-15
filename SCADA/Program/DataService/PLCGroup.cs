@@ -20,8 +20,7 @@ namespace DataService
                 _isActive = value;
                 if (value)
                 {
-                    //_timer.Start((uint)_updateRate, true);
-                    //_timer.Timer += new EventHandler(timer_Timer);
+                    if (_updateRate <= 0) _updateRate = 100;
                     _timer.Interval = _updateRate;
                     _timer.Elapsed += new ElapsedEventHandler(timer_Timer);
                     _timer.Start();

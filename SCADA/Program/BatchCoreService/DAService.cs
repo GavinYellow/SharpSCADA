@@ -186,7 +186,7 @@ namespace BatchCoreService
                         if (list != null && list.Count() > 0)
                         {
                             string sql = "SELECT TAGID,DESCRIPTION FROM META_TAG WHERE TAGID IN(" + string.Join(",", list) + ");";
-                            using (var reader = DataHelper.ExecuteReader(sql))
+                            using (var reader = DataHelper.Instance.ExecuteReader(sql))
                             {
                                 if (reader != null)
                                 {
@@ -415,7 +415,7 @@ namespace BatchCoreService
 
         void InitServerByDatabase()
         {
-            using (var dataReader = DataHelper.ExecuteProcedureReader("InitServer", new SqlParameter("@TYPE", SqlDbType.Int) { Value = 0 }))
+            using (var dataReader = DataHelper.Instance.ExecuteProcedureReader("InitServer", new SqlParameter("@TYPE", SqlDbType.Int) { Value = 0 }))
             {
                 if (dataReader == null) return;// Stopwatch sw = Stopwatch.StartNew();
                 while (dataReader.Read())
@@ -1178,36 +1178,11 @@ namespace BatchCoreService
             lock (_hdaRoot)
             {
                 if (_hda.Count == 0) return;
-                //_array.CopyTo(data, 0);
-                SqlConnection m_Conn = new SqlConnection(DataHelper.ConnectString);
-                SqlTransaction sqlT = null;
-                try
+                if (DataHelper.Instance.BulkCopy(new HDASqlReader(_hda, this), "Log_HData",
+                      string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'", _hda[0].TimeStamp.ToString())))
                 {
-                    if (m_Conn.State == ConnectionState.Closed)
-                        m_Conn.Open();
-                    sqlT = m_Conn.BeginTransaction();
-                    SqlCommand cmd = new SqlCommand(string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'",
-                       _hda[0].TimeStamp.ToString()), m_Conn);
-                    cmd.Transaction = sqlT;
-                    cmd.ExecuteNonQuery();
-                    HDASqlReader reader = new HDASqlReader(_hda, this);
-                    SqlBulkCopy copy = new SqlBulkCopy(m_Conn, SqlBulkCopyOptions.Default, sqlT);
-                    copy.DestinationTableName = "Log_HData";
-                    copy.BulkCopyTimeout = 100000;
-                    //copy.BatchSize = _capacity;
-                    copy.WriteToServer(reader);
-                    //Clear();
-                    sqlT.Commit();
-                    m_Conn.Close();
                     _hda.Clear();
                     _hdastart = DateTime.Now;
-                }
-                catch (Exception e)
-                {
-                    if (sqlT != null)
-                        sqlT.Rollback();
-                    m_Conn.Close();
-                    DataHelper.AddErrorLog(e);
                 }
             }
         }
@@ -1216,35 +1191,8 @@ namespace BatchCoreService
         {
             var tempdata = _hda.ToArray();
             if (tempdata.Length == 0) return true;
-            SqlConnection m_Conn = new SqlConnection(DataHelper.ConnectString);
-            SqlTransaction sqlT = null;
-            try
-            {
-                if (m_Conn.State == ConnectionState.Closed)
-                    m_Conn.Open();
-                sqlT = m_Conn.BeginTransaction();
-                SqlCommand cmd = new SqlCommand(string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP] BETWEEN '{0}' AND '{1}'",
-                   startTime, endTime), m_Conn);
-                cmd.Transaction = sqlT;
-                cmd.ExecuteNonQuery();
-                SqlBulkCopy copy = new SqlBulkCopy(m_Conn, SqlBulkCopyOptions.Default, sqlT);
-                copy.DestinationTableName = "Log_HData";
-                copy.BulkCopyTimeout = 100000;
-                //copy.BatchSize = _capacity;
-                copy.WriteToServer(new HDASqlReader(GetData(tempdata, startTime, endTime), this));
-                //Clear();
-                sqlT.Commit();
-                m_Conn.Close();
-                return true;
-            }
-            catch (Exception e)
-            {
-                if (sqlT != null)
-                    sqlT.Rollback();
-                m_Conn.Close();
-                DataHelper.AddErrorLog(e);
-                return false;
-            }
+            return DataHelper.Instance.BulkCopy(new HDASqlReader(GetData(tempdata, startTime, endTime), this), "Log_HData",
+                     string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP] BETWEEN '{0}' AND '{1}'", startTime, endTime));
         }
 
         public void OnUpdate(object stateInfo)
@@ -1258,40 +1206,11 @@ namespace BatchCoreService
                     //Reverse(data);
                     DateTime start = _hda[0].TimeStamp;
                     //_array.CopyTo(data, 0);
-                    SqlConnection m_Conn = new SqlConnection(DataHelper.ConnectString);
-                    SqlTransaction sqlT = null;
-                    try
-                    {
-                        if (m_Conn.State == ConnectionState.Closed)
-                            m_Conn.Open();
-                        sqlT = m_Conn.BeginTransaction();
-                        SqlCommand cmd = new SqlCommand(string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'",
-                           start.ToString()), m_Conn);
-                        cmd.Transaction = sqlT;
-                        cmd.ExecuteNonQuery();
-                        HDASqlReader reader = new HDASqlReader(_hda, this);
-                        SqlBulkCopy copy = new SqlBulkCopy(m_Conn, SqlBulkCopyOptions.Default, sqlT);
-                        copy.DestinationTableName = "Log_HData";
-                        copy.BulkCopyTimeout = 100000;
-                        //copy.BatchSize = _capacity;
-                        copy.WriteToServer(reader);//如果写入失败，考虑不能无限增加线程数
-                        //Clear();
-                        sqlT.Commit();
-                        m_Conn.Close();
+                    if (DataHelper.Instance.BulkCopy(new HDASqlReader(_hda, this), "Log_HData",
+                    string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'", start.ToString())))
                         _hdastart = DateTime.Now;
-                    }
-                    catch (Exception e)
-                    {
-                        if (sqlT != null)
-                            sqlT.Rollback();
-                        m_Conn.Close();
-                        ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(this.SaveCachedData), _hda.ToArray());
-                        DataHelper.AddErrorLog(e);
-                    }
-                    finally
-                    {
-                        _hda.Clear();
-                    }
+                    else ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(this.SaveCachedData), _hda.ToArray());
+                    _hda.Clear();
                 }
             }
         }
@@ -1307,35 +1226,12 @@ namespace BatchCoreService
             while (true)
             {
                 if (count >= 5) return;
-                SqlConnection m_Conn = new SqlConnection(DataHelper.ConnectString);
-                SqlTransaction sqlT = null;
-                try
+                if (DataHelper.Instance.BulkCopy(new HDASqlReader(tempData, this), "Log_HData",
+                   string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP] BETWEEN '{0}' AND '{1}'",
+                    startTime, endTime)))
                 {
-                    if (m_Conn.State == ConnectionState.Closed)
-                        m_Conn.Open();
-                    sqlT = m_Conn.BeginTransaction();
-                    SqlCommand cmd = new SqlCommand(string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP] BETWEEN '{0}' AND '{1}'",
-                    startTime, endTime), m_Conn);
-                    cmd.Transaction = sqlT;
-                    cmd.ExecuteNonQuery();
-                    SqlBulkCopy copy = new SqlBulkCopy(m_Conn, SqlBulkCopyOptions.Default, sqlT);
-                    copy.DestinationTableName = "Log_HData";
-                    copy.BulkCopyTimeout = 100000;
-                    //copy.BatchSize = _capacity;
-                    copy.WriteToServer(new HDASqlReader(tempData, this));
-                    //Clear();
-                    sqlT.Commit();
-                    m_Conn.Close();
                     stateInfo = null;
                     _hdastart = DateTime.Now;
-                    return;
-                }
-                catch (Exception e)
-                {
-                    if (sqlT != null)
-                        sqlT.Rollback();
-                    m_Conn.Close();
-                    DataHelper.AddErrorLog(e);
                 }
                 count++;
                 Thread.Sleep(CYCLE2);
@@ -1361,10 +1257,10 @@ namespace BatchCoreService
         void OnValueChanged(object sender, ValueChangedEventArgs e)
         {
             var tag = sender as ITag;
-            DataHelper.ExecuteStoredProcedure("AddEventLog",
-                new SqlParameter("@StartTime", SqlDbType.DateTime) { SqlValue = tag.TimeStamp },
-                new SqlParameter("@Source", SqlDbType.NVarChar, 50) { SqlValue = tag.ID.ToString() },
-                new SqlParameter("@Comment", SqlDbType.NVarChar, 50) { SqlValue = tag.ToString() });
+            DataHelper.Instance.ExecuteStoredProcedure("AddEventLog",
+                DataHelper.CreateParam("@StartTime", SqlDbType.DateTime, tag.TimeStamp),
+                DataHelper.CreateParam("@Source", SqlDbType.NVarChar, tag.ID.ToString(), 50),
+                DataHelper.CreateParam("@StartTime", SqlDbType.NVarChar, tag.ToString(), 50));
         }
 
         public HistoryData[] BatchRead(DataSource source, bool sync, params ITag[] itemArray)
@@ -1485,9 +1381,7 @@ namespace BatchCoreService
                 byte[] dt = BitConverter.GetBytes(id);
                 sendBuffer[j++] = dt[0];
                 sendBuffer[j++] = dt[1];
-                var index = GetItemProperties(id);
-                if (index < 0 || index >= _list.Count) continue;
-                switch (_list[index].DataType)
+                switch (_list[GetItemProperties(id)].DataType)
                 {
                     case DataType.BOOL:
                         sendBuffer[j++] = 1;
@@ -1805,23 +1699,13 @@ namespace BatchCoreService
         private bool SaveAlarm()
         {
             if (_alarmList.Count == 0) return true;
-            try
+            if (DataHelper.Instance.BulkCopy(new AlarmDataReader(_alarmList), "Log_Alarm", null, SqlBulkCopyOptions.KeepIdentity))
             {
-                AlarmDataReader reader = new AlarmDataReader(_alarmList);
-                using (SqlBulkCopy bulk = new SqlBulkCopy(DataHelper.ConnectString, SqlBulkCopyOptions.KeepIdentity))
-                {
-                    bulk.DestinationTableName = "Log_Alarm";
-                    bulk.WriteToServer(reader);
-                }
                 _alarmList.Clear();
                 _alarmstart = DateTime.Now;
                 return true;
             }
-            catch (Exception e)
-            {
-                AddErrorLog(e);
-                return false;
-            }
+            return false;
         }
 
         public ICondition GetCondition(string tagName, AlarmType type)
@@ -2005,7 +1889,7 @@ namespace BatchCoreService
         public bool ReadExpression(string expression)
         {
             Func<bool> func;
-            if (_exprdict.TryGetValue(expression, out  func))
+            if (_exprdict.TryGetValue(expression, out func))
             {
                 return func();
             }

@@ -35,7 +35,7 @@ namespace CoreTest
         public MemberPrincipal(MemberIdentity identity)
         {
             _identity = identity;
-            using (var reader = DataHelper.ExecuteReader("SELECT ROLE FROM Membership WHERE UserName='" +
+            using (var reader = DataHelper.Instance.ExecuteReader("SELECT ROLE FROM Membership WHERE UserName='" +
                 _identity.Name + "'"))
             {
                 if (reader != null)
@@ -92,7 +92,7 @@ namespace CoreTest
                 return -1;
             if (IsExceeded) return -4;
             string sql = "SELECT Password FROM dbo.Membership WHERE Username='" + _name + "'";
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 if (reader != null)
                 {
@@ -143,7 +143,7 @@ namespace CoreTest
             string sql = string.Format("DELETE FROM dbo.Membership WHERE UserName='{0}';"
                + "INSERT INTO dbo.Membership(UserName,Password,ROLE) VALUES('{0}','{1}',{2})",
                name, EncodePassword(password), (int)role);
-            return DataHelper.ExecuteNonQuery(sql);
+            return DataHelper.Instance.ExecuteNonQuery(sql);
         }
 
         public void ChangeUser(string newName)
@@ -163,7 +163,7 @@ namespace CoreTest
             if (newPassword.Length > 10) return -7;
             int result = 0;
             string sql = "SELECT Password FROM dbo.Membership WHERE Username='" + _name + "'";
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 if (reader != null)
                 {
@@ -176,7 +176,7 @@ namespace CoreTest
                             {
                                 sql = "UPDATE dbo.Membership SET Password='" + EncodePassword(newPassword) +
                                     "' WHERE Username='" + _name + "'";
-                                result = DataHelper.ExecuteNonQuery(sql);
+                                result = DataHelper.Instance.ExecuteNonQuery(sql);
                                 if (result >= 0) result = 0;
                             }
                             else
