@@ -313,6 +313,18 @@ namespace DataService
         {
             if (_plcReader.IsClosed) return -1;
             byte[] cache = (byte[])_cacheReader.Cache;
+            if (_items.Count == 1)
+            {
+                byte[] rcvBytes = _plcReader.ReadBytes(_items[0].Address, (ushort)cache.Length);
+                if (rcvBytes == null) return -1;
+                for (int j = 0; j < rcvBytes.Length; j++)
+                {
+                    if (cache[j] != rcvBytes[j])
+                        _changedList.Add(0);
+                    cache[j] = rcvBytes[j];
+                }
+                return 1;
+            }
             int offset = 0;
             foreach (PDUArea area in _rangeList)
             {
