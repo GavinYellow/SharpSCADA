@@ -1,15 +1,13 @@
-﻿using System;
+﻿using DatabaseLib;
+using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
-using Microsoft.Office.Interop.Excel;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Text;
 
 namespace TagConfig
 {
@@ -17,7 +15,6 @@ namespace TagConfig
     public partial class Form1 : Form
     {
         const string FILENAME = "meta.xml";
-        const string CONFIGFILE = @"C:\DataConfig\host.cfg";
 
         bool start = false;
         string file = null;
@@ -70,113 +67,8 @@ namespace TagConfig
         private void Form1_Load(object sender, EventArgs e)
         {
             majorTop = treeView1.Nodes.Add("", "服务器", 0, 0);
-            LoadConfig();
             LoadFromDatabase();
             treeView1.ExpandAll();
-        }
-
-        private void LoadConfig()
-        {
-            try
-            {
-                using (StreamReader objReader = new StreamReader(CONFIGFILE))
-                {
-                    objReader.ReadLine();
-                    string sLine = objReader.ReadLine();
-                    if (!string.IsNullOrEmpty(sLine))
-                    {
-                        DataHelper.m_ConnStr = sLine;
-                        return;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Program.AddErrorLog(e);
-            }
-            using (XmlReader reader = XmlTextReader.Create(FILENAME))
-            {
-                while (reader.Read())
-                {
-                    switch (reader.NodeType)
-                    {
-                        case XmlNodeType.Attribute:
-                            break;
-                        case XmlNodeType.Element:
-                            //if (reader.IsEmptyElement) continue;
-                            switch (reader.Name)
-                            {
-                                case "ConnectionString":
-                                    string server = null;
-                                    string ins = null;
-                                    if (reader.MoveToAttribute("server"))
-                                    {
-                                        server = reader.Value;
-                                    }
-                                    if (reader.MoveToAttribute("ins"))
-                                    {
-                                        ins = reader.Value;
-                                    }
-                                    if (reader.MoveToAttribute("database"))
-                                    {
-                                        builder.InitialCatalog = reader.Value;
-                                    }
-                                    if (reader.MoveToAttribute("user"))
-                                    {
-                                        builder.UserID = reader.Value;
-                                    }
-                                    if (reader.MoveToAttribute("password"))
-                                    {
-                                        builder.Password = reader.Value;
-                                    }
-                                    builder.DataSource = ins == null ? server : string.Format(@"{0}\{1}", server, ins);
-                                    break;
-                                case "Script":
-                                    if (reader.MoveToAttribute("file"))
-                                    {
-                                        file = reader.Value;
-                                    }
-                                    break;
-                            }
-                            break;
-                    }
-                }
-            }
-            //builder.InitialCatalog = "MYCOS";
-            DataHelper.m_ConnStr = builder.ConnectionString;
-        }
-
-        public void ExecuteScript()//应支持从Server类导出到XML;
-        //应支持从TreeView控件导出到XML；应支持直接从XML文件生成Server;支持从XML生成TreeView；从配置文件读入用户名和密码
-        {
-            string[] args = new string[5];
-            args[0] = "-U " + builder.UserID; //用户名
-            args[1] = "-P " + builder.Password; //用户密码
-            args[2] = "-S " + builder.DataSource; //服务器
-            args[3] = "-d " + "master"; //数据库
-            args[4] = "-i " + AppDomain.CurrentDomain.BaseDirectory + file; //sql脚本路径
-            try
-            {
-                Process pr = new Process();
-                pr.StartInfo.FileName = "osql.exe ";
-                //pr.StartInfo.Arguments = "-U sa -P sa -d master -s 127.0.0.1 -i " + file;
-                pr.StartInfo.Arguments = string.Join("", args);
-                pr.StartInfo.UseShellExecute = false;
-                pr.StartInfo.RedirectStandardOutput = true;  //重定向输出
-
-                pr.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;//隐藏输出窗口
-                pr.Start();
-
-                var sr = pr.StandardOutput;
-                Console.WriteLine(sr.ReadToEnd());
-
-                pr.WaitForExit();
-                pr.Close();
-            }
-            catch (Exception err)
-            {
-                Program.AddErrorLog(err);
-            }
         }
 
         private void LoadFromDatabase()
@@ -185,7 +77,7 @@ namespace TagConfig
             //subConds.Clear();
             majorTop.Nodes.Clear();
             string sql = "SELECT DriverID,DriverType,DriverName,Server,TimeOut,Spare1,Spare2 FROM META_DRIVER;";
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -198,7 +90,7 @@ namespace TagConfig
             foreach (TreeNode node in majorTop.Nodes)
             {
                 sql = string.Format("SELECT GroupID,DriverID,GroupName,UpdateRate,DeadBand,IsActive FROM META_GROUP WHERE DriverID={0};", node.Name);
-                using (var reader = DataHelper.ExecuteReader(sql))
+                using (var reader = DataHelper.Instance.ExecuteReader(sql))
                 {
                     while (reader.Read())
                     {
@@ -212,7 +104,7 @@ namespace TagConfig
                 + "(SELECT COUNT(1) FROM Meta_Condition WHERE Source=t.TagName) HasAlarm," +
                 "(SELECT COUNT(1) FROM Meta_Scale WHERE ScaleID=t.TagID) HasScale,"
                 + "Archive,DefaultValue,Description,Maximum,Minimum,Cycle FROM Meta_Tag t WHERE DataType<12";
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -223,7 +115,7 @@ namespace TagConfig
                 }
             }
             sql = "SELECT TypeID,Source,AlarmType,EventType,ConditionType,Para,IsEnabled,Deadband,Delay,Comment FROM Meta_Condition";
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -233,7 +125,7 @@ namespace TagConfig
                 }
             }
             sql = "SELECT IsEnable,Severity,ConditionID,SubAlarmType,Threshold,Message FROM Meta_SubCondition";
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -243,7 +135,7 @@ namespace TagConfig
                 }
             }
             sql = "SELECT ScaleID,ScaleType,EUHI,EULO,RAWHI,RAWLO FROM Meta_Scale";
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -281,7 +173,7 @@ namespace TagConfig
                         condition.SubConditions.Add(sub);
                 }
             }
-            var obj = DataHelper.ExecuteScalar("SELECT MAX(TypeID) FROM Meta_Condition");
+            var obj = DataHelper.Instance.ExecuteScalar("SELECT MAX(TypeID) FROM Meta_Condition");
             if (obj != DBNull.Value) Program.MAXCONDITIONID = (int)obj;
             start = true;
         }
@@ -290,63 +182,28 @@ namespace TagConfig
         {
             dataGridView1.CurrentCell = null;
             bindingSource1.EndEdit();
-            //subConds.Clear();
-            //foreach (var cond in conditions)
-            //{
-            //    foreach (var sub in cond.SubConditions)
-            //    {
-            //        //sub.ConditionId = cond.TypeId;
-            //        subConds.Add(sub);
-            //    }
-            //}
+
             TagDataReader reader = new TagDataReader(list);
             ConditionReader condReader = new ConditionReader(conditions);
             SubConditionReader subReader = new SubConditionReader(subConds);
             ScaleReader scalereader = new ScaleReader(scaleList);
-            SqlConnection m_Conn = new SqlConnection(DataHelper.m_ConnStr);
-            SqlTransaction sqlT = null;
-            try
+            string sql = "DELETE FROM Meta_Driver;DELETE FROM Meta_Group;";
+            foreach (Driver device in devices)
             {
-                if (m_Conn.State == ConnectionState.Closed)
-                    m_Conn.Open();
-                sqlT = m_Conn.BeginTransaction();
-                string sql = "DELETE FROM Meta_Tag;DELETE FROM Meta_Driver;DELETE FROM Meta_Group;DELETE FROM Meta_Condition;DELETE FROM Meta_SubCondition;DELETE FROM Meta_Scale;";
-                foreach (Driver device in devices)
-                {
-                    sql = string.Concat(sql, string.Format("INSERT INTO Meta_Driver(DriverID,DriverName,DriverType,Server,TimeOut,Spare1,Spare2)"
-                    + " VALUES({0},'{1}',{2},'{3}',{4},'{5}','{6}');",
-                        device.ID, device.Name, device.DeviceDriver, device.ServerName, device.TimeOut, device.Spare1, device.Spare2));
-                }
-                foreach (Group grp in groups)
-                {
-                    sql = string.Concat(sql, string.Format("INSERT INTO Meta_Group(GroupID,GroupName,DriverID,UpdateRate,DeadBand,IsActive) VALUES({0},'{1}',{2},{3},{4},'{5}');",
-                        grp.ID, grp.Name, grp.DriverID, grp.UpdateRate, grp.DeadBand, grp.Active));
-                }
-                SqlCommand cmd = new SqlCommand(sql, m_Conn);
-                cmd.Transaction = sqlT;
-                cmd.ExecuteNonQuery();
-                SqlBulkCopy bulk = new SqlBulkCopy(m_Conn, SqlBulkCopyOptions.KeepIdentity, sqlT);
-                bulk.DestinationTableName = "Meta_Tag";
-                bulk.WriteToServer(reader);
-                bulk.DestinationTableName = "Meta_Condition";
-                bulk.WriteToServer(condReader);
-                bulk.DestinationTableName = "Meta_SubCondition";
-                bulk.WriteToServer(subReader);
-                bulk.DestinationTableName = "Meta_Scale";
-                bulk.WriteToServer(scalereader);
-                //cmd.CommandText = "";
-                sqlT.Commit();
-                m_Conn.Close();
-                //var obj = DataHelper.ExecuteScalar("SELECT MAX(TypeID) FROM Meta_Condition");
-                //if (obj != DBNull.Value) Program.MAXCONDITIONID = (int)obj;
+                sql = string.Concat(sql, string.Format("INSERT INTO Meta_Driver(DriverID,DriverName,DriverType,Server,TimeOut,Spare1,Spare2)"
+                + " VALUES({0},'{1}',{2},'{3}',{4},'{5}','{6}');",
+                    device.ID, device.Name, device.DeviceDriver, device.ServerName, device.TimeOut, device.Spare1, device.Spare2));
             }
-            catch (Exception e)
+            foreach (Group grp in groups)
             {
-                if (sqlT != null)
-                    sqlT.Rollback();
-                m_Conn.Close();
-                Program.AddErrorLog(e);
+                sql = string.Concat(sql, string.Format("INSERT INTO Meta_Group(GroupID,GroupName,DriverID,UpdateRate,DeadBand,IsActive) VALUES({0},'{1}',{2},{3},{4},'{5}');",
+                    grp.ID, grp.Name, grp.DriverID, grp.UpdateRate, grp.DeadBand, grp.Active));
             }
+            DataHelper.Instance.ExecuteNonQuery(sql);
+            DataHelper.Instance.BulkCopy(reader, "Meta_Tag", "DELETE FROM Meta_Tag", SqlBulkCopyOptions.KeepIdentity);
+            DataHelper.Instance.BulkCopy(condReader, "Meta_Condition", "DELETE FROM Meta_Condition", SqlBulkCopyOptions.KeepIdentity);
+            DataHelper.Instance.BulkCopy(subReader, "Meta_SubCondition", "DELETE FROM Meta_SubCondition", SqlBulkCopyOptions.KeepIdentity);
+            DataHelper.Instance.BulkCopy(scalereader, "Meta_Scale", "DELETE FROM Meta_Scale", SqlBulkCopyOptions.KeepIdentity);
         }
 
         private void LoadFromXml(string file)
@@ -1396,7 +1253,7 @@ namespace TagConfig
                 if (autolist == null)
                 {
                     var templist = new List<string> { "@Time", "@Date", "@DateTime", "@User", "@AppName", "@LocName", "@Region", "@Path" };
-                    using (var reader = DataHelper.ExecuteReader("SELECT ISNULL(TagName,'') FROM Meta_Tag ORDER BY TagName"))
+                    using (var reader = DataHelper.Instance.ExecuteReader("SELECT ISNULL(TagName,'') FROM Meta_Tag ORDER BY TagName"))
                     {
                         while (reader.Read())
                         {

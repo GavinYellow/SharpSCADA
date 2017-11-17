@@ -278,7 +278,11 @@ namespace DataService
                     _cacheReader.Size = cacheLength;
                 }
                 else
-                    _cacheReader.Size = _start.DataSize <= bitCount ? 1 : _start.DataSize / bitCount;//改变Cache的Size属性值将创建Cache的内存区域
+                {
+                    var size= _start.DataSize <= bitCount ? 1 : _start.DataSize / bitCount;
+                    _rangeList.Add(new PDUArea(_start, size, 0, 1));
+                    _cacheReader.Size = size;//改变Cache的Size属性值将创建Cache的内存区域
+                }
             }
         }
 
@@ -313,18 +317,6 @@ namespace DataService
         {
             if (_plcReader.IsClosed) return -1;
             byte[] cache = (byte[])_cacheReader.Cache;
-            if (_items.Count == 1)
-            {
-                byte[] rcvBytes = _plcReader.ReadBytes(_items[0].Address, (ushort)cache.Length);
-                if (rcvBytes == null) return -1;
-                for (int j = 0; j < rcvBytes.Length; j++)
-                {
-                    if (cache[j] != rcvBytes[j])
-                        _changedList.Add(0);
-                    cache[j] = rcvBytes[j];
-                }
-                return 1;
-            }
             int offset = 0;
             foreach (PDUArea area in _rangeList)
             {

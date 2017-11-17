@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DatabaseLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
@@ -98,7 +99,7 @@ namespace TagConfig
                          .Append("','").Append(reg.Description).Append("');");
                   }
               }
-              if (DataHelper.ExecuteNonQuery(sb.ToString()) >= 0)
+              if (DataHelper.Instance.ExecuteNonQuery(sb.ToString()) >= 0)
                   MessageBox.Show("注册成功！");
           }
         }

@@ -200,6 +200,12 @@
     <None Include="Resources\Page-Setup1.ico" />
     <Content Include="Wizard.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataHelper\DataHelper.csproj">
+      <Project>{755c5459-bca4-4729-a93c-0c73a41bdf3c}</Project>
+      <Name>DataHelper</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

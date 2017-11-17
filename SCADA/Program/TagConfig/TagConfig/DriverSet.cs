@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using DatabaseLib;
 
 namespace TagConfig
 {
@@ -13,7 +14,7 @@ namespace TagConfig
             _device = device;
             InitializeComponent();
             List<DataTypeSource1> typeList = new List<DataTypeSource1>();
-            using (var reader = DataHelper.ExecuteReader("SELECT DRIVERID,ISNULL(Description,CLASSNAME) FROM RegisterModule"))
+            using (var reader = DataHelper.Instance.ExecuteReader("SELECT DRIVERID,ISNULL(Description,CLASSNAME) FROM RegisterModule"))
             {
                 while (reader.Read())
                 {
