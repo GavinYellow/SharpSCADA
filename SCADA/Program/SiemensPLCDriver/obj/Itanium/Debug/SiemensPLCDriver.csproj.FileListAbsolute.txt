@@ -1,8 +1,0 @@
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\bin\Itanium\Debug\SiemensPLCDriver.dll
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\bin\Itanium\Debug\SiemensPLCDriver.pdb
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\bin\Itanium\Debug\DataService.dll
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\bin\Itanium\Debug\libnodave.net.dll
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\bin\Itanium\Debug\DataService.pdb
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\obj\Itanium\Debug\SiemensPLCDriver.csprojResolveAssemblyReference.cache
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\obj\Itanium\Debug\SiemensPLCDriver.dll
-D:\大成\大成0211new_20140302\大成0211\SiemensPLCDriver\obj\Itanium\Debug\SiemensPLCDriver.pdb

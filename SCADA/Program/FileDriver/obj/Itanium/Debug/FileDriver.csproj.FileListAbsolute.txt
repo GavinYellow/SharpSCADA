@@ -1,7 +1,0 @@
-D:\大成\大成0211new_20140302\大成0211\FileDriver\bin\Itanium\Debug\FileDriver.dll
-D:\大成\大成0211new_20140302\大成0211\FileDriver\bin\Itanium\Debug\FileDriver.pdb
-D:\大成\大成0211new_20140302\大成0211\FileDriver\bin\Itanium\Debug\DataService.dll
-D:\大成\大成0211new_20140302\大成0211\FileDriver\bin\Itanium\Debug\DataService.pdb
-D:\大成\大成0211new_20140302\大成0211\FileDriver\obj\Itanium\Debug\FileDriver.csprojResolveAssemblyReference.cache
-D:\大成\大成0211new_20140302\大成0211\FileDriver\obj\Itanium\Debug\FileDriver.dll
-D:\大成\大成0211new_20140302\大成0211\FileDriver\obj\Itanium\Debug\FileDriver.pdb

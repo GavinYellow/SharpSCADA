@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Config>
-  <ConnectionString server="." ins="wemengine" database="MuyangSQL1" user="sa" password="sa"/>
-  <Script file="script.sql"/>
-</Config>

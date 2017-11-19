@@ -1,5 +1,0 @@
-F:\新建文件夹\OPCLib\OPCDA\bin\Release\OPCDA.dll
-F:\新建文件夹\OPCLib\OPCDA\bin\Release\OPCDA.pdb
-F:\新建文件夹\OPCLib\OPCDA\obj\Release\ResolveAssemblyReference.cache
-F:\新建文件夹\OPCLib\OPCDA\obj\Release\OPCDA.dll
-F:\新建文件夹\OPCLib\OPCDA\obj\Release\OPCDA.pdb

@@ -76,7 +76,7 @@ namespace CoreTest
         {
             string sql = string.Format("INSERT INTO dbo.LOG_EVENT(EVENTTYPE,SEVERITY,ACTIVETIME,SOURCE,COMMENT) VALUES({0},{1},'{2}','{3}','{4}');",
                (int)log._eventtype, (int)log._severity, log._time, log._source, log._comment);
-            return DataHelper.ExecuteNonQuery(sql);
+            return DataHelper.Instance.ExecuteNonQuery(sql);
         }
 
         public static SystemLog FindFirstEvent(EventType eventtype, DateTime? firsttime = null, string source = null)
@@ -85,7 +85,7 @@ namespace CoreTest
             string cond2 = string.IsNullOrEmpty(source) ? "" : " AND SOURCE='" + source + "'";
             string sql = string.Format("SELECT TOP 1 SEVERITY,ACTIVETIME,COMMENT FROM dbo.LOG_EVENT WHERE EVENTTYPE={0} {1} {2} ORDER BY ACTIVETIME",
                (int)eventtype, cond1, cond2);
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -101,7 +101,7 @@ namespace CoreTest
             string cond2 = string.IsNullOrEmpty(source) ? "" : " AND SOURCE='" + source + "'";
             string sql = string.Format("SELECT TOP 1 SEVERITY,ACTIVETIME,COMMENT FROM dbo.LOG_EVENT WHERE EVENTTYPE={0} {1} {2} ORDER BY ACTIVETIME DESC",
                (int)eventtype, cond1, cond2);
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -119,7 +119,7 @@ namespace CoreTest
             string cond3 = endtime == null ? "" : " AND ACTIVETIME<='" + endtime + "'";
             string sql = string.Format("SELECT SEVERITY,ACTIVETIME,COMMENT FROM dbo.LOG_EVENT WHERE EVENTTYPE={0} {1} {2} {3} ORDER BY ACTIVETIME",
                (int)eventtype, cond1, cond2, cond3);
-            using (var reader = DataHelper.ExecuteReader(sql))
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
@@ -131,12 +131,12 @@ namespace CoreTest
 
         public static void GetEventTime(EventType eventtype, string source, string comment, out DateTime? startime, out DateTime? endtime)
         {
-            var parm1 = new SqlParameter("@STARTTIME", SqlDbType.DateTime) { Direction = ParameterDirection.Output };
-            var parm2 = new SqlParameter("@ENDTIME", SqlDbType.DateTime) { Direction = ParameterDirection.Output };
-            if (DataHelper.ExecuteStoredProcedure("GetEventTime",
-                 new SqlParameter("@EVENTTYPE", SqlDbType.Int) { SqlValue = (int)eventtype },
-                 new SqlParameter("@SOURCE", SqlDbType.NVarChar, 50) { SqlValue = source },
-                 new SqlParameter("@COMMENT", SqlDbType.NVarChar, 50) { SqlValue = comment },
+            var parm1 = DataHelper.CreateParam("@STARTTIME", SqlDbType.DateTime, null, 0, ParameterDirection.Output);
+            var parm2 = DataHelper.CreateParam("@ENDTIME", SqlDbType.DateTime, null, 0, ParameterDirection.Output);
+            if (DataHelper.Instance.ExecuteStoredProcedure("GetEventTime",
+                 DataHelper.CreateParam("@EVENTTYPE", SqlDbType.Int, (int)eventtype),
+                 DataHelper.CreateParam("@SOURCE", SqlDbType.NVarChar, source, 50),
+                 DataHelper.CreateParam("@COMMENT", SqlDbType.NVarChar, comment, 50),
                parm1, parm2) >= 0)
             {
                 if (parm1.Value == DBNull.Value)
