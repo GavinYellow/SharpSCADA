@@ -186,6 +186,7 @@ namespace DatabaseLib
         public static DateTime? GetNullableTime(this DbDataReader reader, int index)
         {
             SqlDataReader dataReader = reader as SqlDataReader;
+            if (dataReader == null) return reader.GetDateTime(index);
             var svr = dataReader.GetSqlDateTime(index);
             return svr.IsNull ? default(Nullable<DateTime>) : svr.Value;
         }
