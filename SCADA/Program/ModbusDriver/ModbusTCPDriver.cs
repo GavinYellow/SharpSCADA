@@ -56,6 +56,16 @@ namespace ModbusDriver
             set { _timeout = value; }
         }
 
+        byte _slaveId;//设备ID 单元号  字节号
+        /// <summary>
+        /// 设备ID 单元号  字节号
+        /// </summary>
+        public byte SlaveId
+        {
+            get { return _slaveId; }
+            set { _slaveId = value; }
+        }
+
         List<IGroup> _grps = new List<IGroup>(20);
         public IEnumerable<IGroup> Groups
         {
@@ -75,6 +85,7 @@ namespace ModbusDriver
             _server = server;
             _ip = ip;
             _timeout = timeOut;
+            byte.TryParse(spare1, out _slaveId);
         }
 
         public bool Connect()
@@ -105,12 +116,10 @@ namespace ModbusDriver
         private byte[] CreateReadHeader(int id, int startAddress, ushort length, byte function)
         {
             byte[] data = new byte[12];
-
-            byte[] _id = BitConverter.GetBytes((short)id);
-            data[0] = _id[0];				// Slave id high byte
-            data[1] = _id[1];				// Slave id low byte
+            data[0] = 0;				// Slave id high byte
+            data[1] = 0;				// Slave id low byte
             data[5] = 6;					// Message size
-            data[6] = 0;					// Slave address
+            data[6] = (byte)id;					// Slave address
             data[7] = function;				// Function code
             byte[] _adr = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)startAddress));
             data[8] = _adr[0];				// Start address
@@ -124,14 +133,12 @@ namespace ModbusDriver
         private byte[] CreateWriteHeader(int id, int startAddress, ushort numData, ushort numBytes, byte function)
         {
             byte[] data = new byte[numBytes + 11];
-
-            byte[] _id = BitConverter.GetBytes(id);
-            data[0] = _id[0];				// Slave id high byte
-            data[1] = _id[1];				// Slave id low byte+
+            data[0] = 0;				// Slave id high byte
+            data[1] = 0;				// Slave id low byte+
             byte[] _size = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)(5 + numBytes)));
             data[4] = _size[0];				// Complete message size in bytes
             data[5] = _size[1];				// Complete message size in bytes
-            data[6] = 0;					// Slave address
+            data[6] = (byte)id;					// Slave address
             data[7] = function;				// Function code
             byte[] _adr = BitConverter.GetBytes(IPAddress.HostToNetworkOrder((short)startAddress));
             data[8] = _adr[0];				// Start address
@@ -243,11 +250,12 @@ namespace ModbusDriver
             DeviceAddress dv = DeviceAddress.Empty;
             if (string.IsNullOrEmpty(address))
                 return dv;
+            dv.Area = _slaveId;
             switch (address[0])
             {
                 case '0':
                     {
-                        dv.Area = Modbus.fctReadCoil;
+                        dv.DBNumber = Modbus.fctReadCoil;
                         int st;
                         int.TryParse(address, out st);
                         //dv.Start = (st / 16) * 16;//???????????????????
@@ -258,7 +266,7 @@ namespace ModbusDriver
                     break;
                 case '1':
                     {
-                        dv.Area = Modbus.fctReadDiscreteInputs;
+                        dv.DBNumber = Modbus.fctReadDiscreteInputs;
                         int st;
                         int.TryParse(address.Substring(1), out st);
                         //dv.Start = (st / 16) * 16;//???????????????????
@@ -270,7 +278,7 @@ namespace ModbusDriver
                 case '4':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadHoldingRegister;
+                        dv.DBNumber = Modbus.fctReadHoldingRegister;
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
@@ -284,7 +292,7 @@ namespace ModbusDriver
                 case '3':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadInputRegister;
+                        dv.DBNumber = Modbus.fctReadInputRegister;
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
@@ -381,14 +389,14 @@ namespace ModbusDriver
 
         public byte[] ReadBytes(DeviceAddress address, ushort size)
         {
-            int area = address.Area;
-            return area < 2 ? WriteSyncData(CreateReadHeader(area, address.Start * 16, (ushort)(16 * size), (byte)area))
-                : WriteSyncData(CreateReadHeader(area, address.Start, size, (byte)area));
+            int area = address.DBNumber;
+            return area < 2 ? WriteSyncData(CreateReadHeader(address.Area, address.Start * 16, (ushort)(16 * size), (byte)area))
+                : WriteSyncData(CreateReadHeader(address.Area, address.Start, size, (byte)area));
         }
 
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 2, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 2, (byte)address.DBNumber));
             if (data == null)
                 return new ItemData<int>(0, 0, QUALITIES.QUALITY_BAD);
             else
@@ -397,7 +405,7 @@ namespace ModbusDriver
 
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.DBNumber));
             if (data == null)
                 return new ItemData<short>(0, 0, QUALITIES.QUALITY_BAD);
             else
@@ -406,7 +414,7 @@ namespace ModbusDriver
 
         public ItemData<byte> ReadByte(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.DBNumber));
             if (data == null)
                 return new ItemData<byte>(0, 0, QUALITIES.QUALITY_BAD);
             else
@@ -415,7 +423,7 @@ namespace ModbusDriver
 
         public ItemData<string> ReadString(DeviceAddress address, ushort size)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, size, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, size, (byte)address.DBNumber));
             if (data == null)
                 return new ItemData<string>(string.Empty, 0, QUALITIES.QUALITY_BAD);
             else
@@ -424,7 +432,7 @@ namespace ModbusDriver
 
         public unsafe ItemData<float> ReadFloat(DeviceAddress address)
         {
-            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 2, (byte)address.Area));
+            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 2, (byte)address.DBNumber));
             if (data == null)
                 return new ItemData<float>(0.0f, 0, QUALITIES.QUALITY_BAD);
             else
@@ -436,10 +444,11 @@ namespace ModbusDriver
 
         public ItemData<bool> ReadBit(DeviceAddress address)
         {
-            byte[] data = address.Area > 2 ? WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.Area)) :
-                   WriteSyncData(CreateReadHeader(address.Area, address.Start + address.Bit, 1, (byte)address.Area));
+            byte[] data = address.DBNumber > 2 ? WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.DBNumber)) :
+                   WriteSyncData(CreateReadHeader(address.Area, address.Start * 16 + address.Bit, 1, (byte)address.DBNumber));
             if (data == null)
                 return new ItemData<bool>(false, 0, QUALITIES.QUALITY_BAD);
+            if (data.Length == 1) return new ItemData<bool>(data[0] > 0, 0, QUALITIES.QUALITY_GOOD);
             unsafe
             {
                 fixed (byte* p = data)
@@ -458,14 +467,14 @@ namespace ModbusDriver
 
         public int WriteBytes(DeviceAddress address, byte[] bit)
         {
-            var data = address.Area > 2 ? WriteMultipleRegister(address.Area, address.Start, bit)
+            var data = address.DBNumber > 2 ? WriteMultipleRegister(address.Area, address.Start, bit)
                 : WriteMultipleCoils(address.Area, address.Start, (ushort)(8 * bit.Length), bit);//应考虑到
             return data == null ? -1 : 0;
         }
 
         public int WriteBit(DeviceAddress address, bool bit)
         {
-            if (address.Area < 3)
+            if (address.DBNumber < 3)
             {
                 var data = WriteSingleCoils(address.Area, address.Start + address.Bit, bit);
                 return data == null ? -1 : 0;
@@ -574,7 +583,7 @@ namespace ModbusDriver
                                 {
                                     while (addr.Start == next.Start)
                                     {
-                                        if ((tmp & (1 << next.Bit.BitSwap())) > 0) _changedList.Add(index);
+                                        if ((tmp & (1 << next.Bit)) > 0) _changedList.Add(index);
                                         if (++index < count)
                                             next = _items[index].Address;
                                         else

@@ -20,8 +20,7 @@ namespace DataService
                 _isActive = value;
                 if (value)
                 {
-                    //_timer.Start((uint)_updateRate, true);
-                    //_timer.Timer += new EventHandler(timer_Timer);
+                    if (_updateRate <= 0) _updateRate = 100;
                     _timer.Interval = _updateRate;
                     _timer.Elapsed += new ElapsedEventHandler(timer_Timer);
                     _timer.Start();
@@ -279,7 +278,11 @@ namespace DataService
                     _cacheReader.Size = cacheLength;
                 }
                 else
-                    _cacheReader.Size = _start.DataSize <= bitCount ? 1 : _start.DataSize / bitCount;//改变Cache的Size属性值将创建Cache的内存区域
+                {
+                    var size= _start.DataSize <= bitCount ? 1 : _start.DataSize / bitCount;
+                    _rangeList.Add(new PDUArea(_start, size, 0, 1));
+                    _cacheReader.Size = size;//改变Cache的Size属性值将创建Cache的内存区域
+                }
             }
         }
 

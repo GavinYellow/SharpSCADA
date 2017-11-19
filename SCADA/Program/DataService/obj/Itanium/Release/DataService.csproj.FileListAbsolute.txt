@@ -1,4 +1,0 @@
-D:\大成\大成0211new_20140302\大成0211\WpfApplication1\bin\Itanium\Release\DataService.dll
-D:\大成\大成0211new_20140302\大成0211\WpfApplication1\bin\Itanium\Release\DataService.pdb
-D:\大成\大成0211new_20140302\大成0211\WpfApplication1\obj\Itanium\Release\DataService.dll
-D:\大成\大成0211new_20140302\大成0211\WpfApplication1\obj\Itanium\Release\DataService.pdb

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using DatabaseLib;
+using DataService;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Data.SqlClient;
+using System.Data;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using DatabaseLib;
-using DataService;
 
 namespace CoreTest
 {
@@ -66,7 +66,9 @@ namespace CoreTest
             this.CommandBindings.Add(new CommandBinding(MyCommands.Query, (sender, e) =>
             {
                 List<AlarmItem> alist = new List<AlarmItem>();
-                using (var reader = DataHelper.ExecuteProcedureReader("GetAlarm", new SqlParameter("@StartTime", dtstart.Value.Value), new SqlParameter("@EndTime", dtend.Value.Value)))
+                using (var reader = DataHelper.Instance.ExecuteProcedureReader("GetAlarm",
+                    DataHelper.CreateParam("@StartTime", SqlDbType.DateTime, dtstart.Value.Value),
+                    DataHelper.CreateParam("@EndTime", SqlDbType.DateTime, dtend.Value.Value)))
                 {
                     if (reader != null)
                     {

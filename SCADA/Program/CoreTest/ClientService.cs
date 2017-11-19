@@ -155,7 +155,7 @@ namespace CoreTest
         {
             try
             {
-                using (var dataReader = DataHelper.ExecuteProcedureReader("InitServer", new SqlParameter("@TYPE", 1)))
+                using (var dataReader = DataHelper.Instance.ExecuteProcedureReader("InitServer", DataHelper.CreateParam("@TYPE", System.Data.SqlDbType.Int, 1)))
                 {
                     if (dataReader == null) Environment.Exit(0);
                     //dataReader.Read();
@@ -784,7 +784,7 @@ namespace CoreTest
                     if (list != null && list.Count() > 0)
                     {
                         string sql = "SELECT TAGID,DESCRIPTION FROM META_TAG WHERE TAGID IN(" + string.Join(",", list) + ");";
-                        using (var reader = DataHelper.ExecuteReader(sql))
+                        using (var reader = DataHelper.Instance.ExecuteReader(sql))
                         {
                             if (reader != null)
                             {
