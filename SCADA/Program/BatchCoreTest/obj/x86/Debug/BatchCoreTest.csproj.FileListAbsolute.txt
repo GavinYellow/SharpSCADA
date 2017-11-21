@@ -1,0 +1,16 @@
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.exe.config
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.exe
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.pdb
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\ClientDriver.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataService.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\MySql.Data.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\ClientDriver.pdb
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.pdb
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.dll.config
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataService.pdb
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreService.Properties.Resources.resources
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csproj.GenerateResource.Cache
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csproj.CoreCompileInputs.cache
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.exe
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.pdb

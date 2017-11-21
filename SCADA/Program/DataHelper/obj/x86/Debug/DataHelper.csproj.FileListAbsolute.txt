@@ -1,0 +1,10 @@
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.dll.config
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.pdb
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataService.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\MySql.Data.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataService.pdb
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.csprojResolveAssemblyReference.cache
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.csproj.CoreCompileInputs.cache
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.dll
+C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.pdb
