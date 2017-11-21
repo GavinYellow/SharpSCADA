@@ -415,7 +415,7 @@ namespace BatchCoreService
 
         void InitServerByDatabase()
         {
-            using (var dataReader = DataHelper.Instance.ExecuteProcedureReader("InitServer", new SqlParameter("@TYPE", SqlDbType.Int) { Value = 0 }))
+            using (var dataReader = DataHelper.Instance.ExecuteProcedureReader("InitServer", DataHelper.CreateParam("@TYPE", SqlDbType.Int, 0)))
             {
                 if (dataReader == null) return;// Stopwatch sw = Stopwatch.StartNew();
                 while (dataReader.Read())
@@ -1526,7 +1526,6 @@ namespace BatchCoreService
         {
             return _mapping.Remove(key.ToUpper());
         }
-
 
         object _alarmsync = new object();
 
