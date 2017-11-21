@@ -10,3 +10,4 @@ C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIC
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.CoreCompileInputs.cache
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.dll
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csprojResolveAssemblyReference.cache

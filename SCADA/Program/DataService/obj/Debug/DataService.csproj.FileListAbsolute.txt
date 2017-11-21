@@ -3,3 +3,4 @@ C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataService\bin\Debug\Dat
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.csproj.CoreCompileInputs.cache
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.dll
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\DataService\obj\Debug\DataService.csprojResolveAssemblyReference.cache

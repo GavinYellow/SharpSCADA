@@ -1,4 +1,3 @@
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\CoreTest\bin\Debug\CoreTest.exe.config
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\CoreTest\bin\Debug\CoreTest.exe
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\CoreTest\bin\Debug\CoreTest.pdb
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\CoreTest\bin\Debug\ClientDriver.dll
