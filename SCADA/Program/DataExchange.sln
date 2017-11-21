@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPCDriver", "OPCDriver\OPCDriver.csproj", "{054DB7AC-EB2C-439F-80D4-63E823B279C8}"
 EndProject
@@ -63,8 +63,8 @@ Global
 		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Itanium.ActiveCfg = Debug|Itanium
 		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Itanium.Build.0 = Debug|Itanium
-		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|x64.ActiveCfg = Debug|x64
 		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|x64.Build.0 = Debug|x64
 		{0EC75DA7-20C7-4986-82E5-DB011C6E961B}.Debug|x86.ActiveCfg = Debug|x86
@@ -167,8 +167,8 @@ Global
 		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|Itanium.ActiveCfg = Debug|Itanium
 		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|Itanium.Build.0 = Debug|Itanium
-		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|x64.ActiveCfg = Debug|x64
 		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|x64.Build.0 = Debug|x64
 		{755C5459-BCA4-4729-A93C-0C73A41BDF3C}.Debug|x86.ActiveCfg = Debug|x86
@@ -187,8 +187,8 @@ Global
 		{8965E389-6466-4B30-BD43-83C909044637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8965E389-6466-4B30-BD43-83C909044637}.Debug|Itanium.ActiveCfg = Debug|Itanium
 		{8965E389-6466-4B30-BD43-83C909044637}.Debug|Itanium.Build.0 = Debug|Itanium
-		{8965E389-6466-4B30-BD43-83C909044637}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{8965E389-6466-4B30-BD43-83C909044637}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{8965E389-6466-4B30-BD43-83C909044637}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8965E389-6466-4B30-BD43-83C909044637}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{8965E389-6466-4B30-BD43-83C909044637}.Debug|x64.ActiveCfg = Debug|x64
 		{8965E389-6466-4B30-BD43-83C909044637}.Debug|x64.Build.0 = Debug|x64
 		{8965E389-6466-4B30-BD43-83C909044637}.Debug|x86.ActiveCfg = Debug|x86
@@ -280,5 +280,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69C0B91D-AF9B-4DE7-A458-8ACC936D4BE2}
 	EndGlobalSection
 EndGlobal

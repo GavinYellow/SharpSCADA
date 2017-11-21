@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\CoreTest\obj\x86\Debug\
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\CoreTest\obj\x86\Debug\
 CoreTest
 none
 false
 DEBUG;TRACE
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\CoreTest\App.xaml
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\CoreTest\App.xaml
 101478603885
 
 23468961942
-18-1296519801
+18-432263835
 AlarmSet.xaml;Guage.xaml;Login.xaml;MainWindow.xaml;MaterialRecivingLine.xaml;RuntimeChart.xaml;SiloProductLine.xaml;StartDevice.xaml;TagMonitor.xaml;Trend.xaml;
 
-True
+False
 

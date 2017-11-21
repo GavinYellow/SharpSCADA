@@ -5,3 +5,4 @@ C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\Data
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.csproj.CoreCompileInputs.cache
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.dll
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.csprojResolveAssemblyReference.cache

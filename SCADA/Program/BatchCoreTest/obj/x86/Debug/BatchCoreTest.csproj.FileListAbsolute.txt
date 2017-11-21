@@ -14,3 +14,4 @@ C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Deb
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csproj.CoreCompileInputs.cache
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.exe
 C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csprojResolveAssemblyReference.cache
