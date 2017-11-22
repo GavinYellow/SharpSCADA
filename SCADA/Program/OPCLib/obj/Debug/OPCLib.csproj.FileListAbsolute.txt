@@ -1,6 +1,6 @@
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\OPCLib\bin\Debug\OPCLib.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\OPCLib\bin\Debug\OPCLib.pdb
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.csproj.CoreCompileInputs.cache
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\OPCLib\bin\Debug\OPCLib.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\OPCLib\bin\Debug\OPCLib.pdb
 C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.csprojResolveAssemblyReference.cache
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.csproj.CoreCompileInputs.cache
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\OPCLib\obj\Debug\OPCLib.pdb

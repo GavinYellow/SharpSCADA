@@ -174,14 +174,14 @@ namespace TagConfig
                 }
             }
             var obj = DataHelper.Instance.ExecuteScalar("SELECT MAX(TypeID) FROM Meta_Condition");
-            if (obj != DBNull.Value) Program.MAXCONDITIONID = (int)obj;
+            if (obj != DBNull.Value) Program.MAXCONDITIONID = Convert.ToInt32(obj);
             start = true;
         }
 
         private void Save()
         {
-            dataGridView1.CurrentCell = null;
-            bindingSource1.EndEdit();
+            //dataGridView1.CurrentCell = null;
+            //bindingSource1.EndEdit();
 
             TagDataReader reader = new TagDataReader(list);
             ConditionReader condReader = new ConditionReader(conditions);

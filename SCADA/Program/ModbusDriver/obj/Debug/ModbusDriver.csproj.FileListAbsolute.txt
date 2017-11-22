@@ -1,7 +1,7 @@
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.pdb
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.pdb
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.csproj.CoreCompileInputs.cache
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.csproj.CoreCompileInputs.cache
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.pdb

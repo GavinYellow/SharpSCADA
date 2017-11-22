@@ -1,8 +1,8 @@
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\ClientDriver.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\ClientDriver.pdb
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\DataService.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\DataService.pdb
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.csprojResolveAssemblyReference.cache
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.csproj.CoreCompileInputs.cache
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.dll
-C:\Users\topmail\source\repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\ClientDriver.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\ClientDriver.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\DataService.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\DataService.pdb
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.csprojResolveAssemblyReference.cache
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.csproj.CoreCompileInputs.cache
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.dll
+C:\Users\topmail\Source\Repos\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.pdb
