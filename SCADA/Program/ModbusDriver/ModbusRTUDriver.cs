@@ -166,7 +166,7 @@ namespace ModbusDriver
             {
                 case '0':
                     {
-                        dv.Area = Modbus.fctReadCoil;
+                        dv.Area = Modbus.fctReadCoil;//读线圈或离散量输出状态    00001 - 09999：数字量输出（ 线圈）
                         int st;
                         int.TryParse(address, out st);
                         dv.Bit = (byte)(st % 16);
@@ -176,7 +176,7 @@ namespace ModbusDriver
                     break;
                 case '1':
                     {
-                        dv.Area = Modbus.fctReadDiscreteInputs;
+                        dv.Area = Modbus.fctReadDiscreteInputs;//读离散量输入   10001 - 19999：数字量输入（触点） 
                         int st;
                         int.TryParse(address.Substring(1), out st);
                         dv.Bit = (byte)(st % 16);
@@ -184,10 +184,11 @@ namespace ModbusDriver
                         dv.Start = st;
                     }
                     break;
+               
                 case '4':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadHoldingRegister;
+                        dv.Area = Modbus.fctReadHoldingRegister;//读取保持寄存器   40001 - 49999：数据保持寄存器
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
@@ -201,7 +202,7 @@ namespace ModbusDriver
                 case '3':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadInputRegister;
+                        dv.Area = Modbus.fctReadInputRegister;//读输入寄存器   30001 - 39999：输入数据寄存器（通常为模拟量输入）
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
