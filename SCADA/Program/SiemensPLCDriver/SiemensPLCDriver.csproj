@@ -98,7 +98,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="libnodave.net">
-      <HintPath>.\libnodave.net.dll</HintPath>
+      <HintPath>..\..\dll\libnodave.net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
