@@ -13,7 +13,7 @@ namespace ModbusDriver
     //ModbusRTUReader : IPLCDriver         IPLCDriver : IDriver, IReaderWriter              IDriver : IDisposable
     public sealed class ModbusRTUReader : IPLCDriver
     {
-        //自定义构造函数
+        //自定义构造函数3
         public ModbusRTUReader(IDataServer server, short id, string name, string remote = null, int timeOut = 10000, string port = "COM1", string baudRate = "9600")
         {
             _id = id;
