@@ -157,7 +157,7 @@ namespace ModbusDriver
             get { return 0x100; }
         }
 
-        public DeviceAddress GetDeviceAddress(string address)
+        public DeviceAddress GetDeviceAddress(string address)//PLC地址一般为5位 如40001，也有可能为40001.1      首位代表地址类型
         {
             DeviceAddress dv = DeviceAddress.Empty;
             if (string.IsNullOrEmpty(address))
@@ -166,7 +166,7 @@ namespace ModbusDriver
             {
                 case '0':
                     {
-                        dv.Area = Modbus.fctReadCoil;//读线圈或离散量输出状态    00001 - 09999：数字量输出（ 线圈）
+                        dv.Area = Modbus.fctReadCoil;//功能码：01 读线圈或离散量输出状态    00001 - 09999：数字量输出（ 线圈）
                         int st;
                         int.TryParse(address, out st);
                         dv.Bit = (byte)(st % 16);
@@ -176,7 +176,7 @@ namespace ModbusDriver
                     break;
                 case '1':
                     {
-                        dv.Area = Modbus.fctReadDiscreteInputs;//读离散量输入   10001 - 19999：数字量输入（触点） 
+                        dv.Area = Modbus.fctReadDiscreteInputs;//功能码：02 读离散量输入   10001 - 19999：数字量输入（触点） 
                         int st;
                         int.TryParse(address.Substring(1), out st);
                         dv.Bit = (byte)(st % 16);
@@ -188,7 +188,7 @@ namespace ModbusDriver
                 case '4':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadHoldingRegister;//读取保持寄存器   40001 - 49999：数据保持寄存器
+                        dv.Area = Modbus.fctReadHoldingRegister;//功能码：03 读取保持寄存器   40001 - 49999：数据保持寄存器
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
@@ -196,13 +196,13 @@ namespace ModbusDriver
                         }
                         else
                             dv.Start = int.Parse(address.Substring(1));
-                        dv.Start--;
+                        dv.Start--;                //PLC的寄存器地址比modbus协议的通讯地址大1   如：40002 对应寻 址地址 0x0001
                     }
                     break;
                 case '3':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadInputRegister;//读输入寄存器   30001 - 39999：输入数据寄存器（通常为模拟量输入）
+                        dv.Area = Modbus.fctReadInputRegister;//功能码：04读输入寄存器   30001 - 39999：输入数据寄存器（通常为模拟量输入）
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
@@ -210,7 +210,7 @@ namespace ModbusDriver
                         }
                         else
                             dv.Start = int.Parse(address.Substring(1));
-                        dv.Start--;
+                        dv.Start--;            //PLC的寄存器地址比modbus协议的通讯地址大1   如：40002 对应寻 址地址 0x0001
                     }
                     break;
             }
