@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Text;
-using System.Net;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Data.SqlClient;
+using System.Net;
+using System.Text;
 
 namespace DataService
 {
@@ -771,10 +769,12 @@ namespace DataService
 
         public static unsafe short NetToInt16(byte[] value, int startIndex)
         {
-            if (value == null || startIndex > value.Length - 2)
+            if (value == null || startIndex > value.Length)
             {
                 throw new NotImplementedException();
             }
+            if (startIndex > value.Length - 2)
+                return value[value.Length - startIndex];
             fixed (byte* numRef = &(value[startIndex]))
             {
                 return (short)((numRef[0] << 8) | numRef[1]);
@@ -783,10 +783,12 @@ namespace DataService
 
         public static unsafe int NetToInt32(byte[] value, int startIndex)
         {
-            if (value == null || startIndex > value.Length - 4)
+            if (value == null || startIndex > value.Length)
             {
                 throw new NotImplementedException();
             }
+            if (startIndex > value.Length - 4)
+                return value[value.Length - startIndex];
             fixed (byte* numRef = &(value[startIndex]))
             {
                 return (int)((numRef[0] << 24) | (numRef[1] << 16) | (numRef[2] << 8) | numRef[3]);
