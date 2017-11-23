@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -398,34 +399,44 @@ namespace TagConfig
             }
         }
 
-        private void LoadFromCsv(string file)
+        private void LoadFromCsv()
         {
-            Excel.Application app = new Excel.Application();
-            Workbook book = app.Workbooks.Open(file);
-            Worksheet sheet = (Worksheet)book.Sheets[1];
-            list.Clear();
-            for (int i = 2; i < sheet.Rows.Count; i++)
+            if (Clipboard.ContainsText(TextDataFormat.Text))
             {
-                if (((Range)sheet.Cells[i, 1]).Value2 == null)
-                    break;
-                try
+                string data = Clipboard.GetText(TextDataFormat.Text);
+                if (string.IsNullOrEmpty(data)) return;
+                list.Clear();
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
                 {
-                    short id = Convert.ToInt16(((Range)sheet.Cells[i, 1]).Value2);
-                    TagData tag = new TagData(id, Convert.ToInt16(((Range)sheet.Cells[i, 2]).Value2), ((Range)sheet.Cells[i, 3]).Value2.ToString(),
-                         ((Range)sheet.Cells[i, 4]).Value2.ToString(), Convert.ToByte(((Range)sheet.Cells[i, 5]).Value2), Convert.ToUInt16(((Range)sheet.Cells[i, 6]).Value2),
-                        Convert.ToBoolean(((Range)sheet.Cells[i, 7]).Value2), Convert.ToBoolean(((Range)sheet.Cells[i, 8]).Value2), Convert.ToBoolean(((Range)sheet.Cells[i, 9]).Value2),
-                        Convert.ToBoolean(((Range)sheet.Cells[i, 10]).Value2), ((Range)sheet.Cells[i, 11]).Value2, ((Range)sheet.Cells[i, 12]).Value2 as string,
-                        Convert.ToSingle(((Range)sheet.Cells[i, 13]).Value2), Convert.ToSingle(((Range)sheet.Cells[i, 14]).Value2), Convert.ToInt32(((Range)sheet.Cells[i, 15]).Value2));
-                    list.Add(tag);
+                    using (var mysr = new StreamReader(stream))
+                    {
+                        string strline = mysr.ReadLine();
+                        while ((strline = mysr.ReadLine()) != null)
+                        {
+                            string[] aryline = strline.Split('\t');
+                            try
+                            {
+                                var id = Convert.ToInt16(aryline[0]);
+                                var groupid = Convert.ToInt16(aryline[1]);
+                                var name = aryline[2];
+                                var address = aryline[3];
+                                var type = Convert.ToByte(aryline[4]);
+                                var size = Convert.ToUInt16(aryline[5]);
+                                var active = Convert.ToBoolean(aryline[6]);
+                                var desp = aryline[7];
+                                TagData tag = new TagData(id, groupid, name, address, type, size, active, false, false, false, null, desp, 0, 0, 0);
+                                list.Add(tag);
+                            }
+                            catch (Exception err)
+                            {
+                                continue;
+                            }
+                        }
+                    }
                 }
-                catch (Exception e)
-                {
-                    continue;
-                    //Program.AddErrorLog(e);
-                }
+                list.Sort();
+                start = true;
             }
-            list.Sort();
-            start = true;
         }
 
         private void LoadFromExcel(string file)
@@ -914,7 +925,7 @@ namespace TagConfig
                     }
                     break;
                 case "导入变量":
-                    openFileDialog1.Filter = "xml文件 (*.xml)|*.xml|csv文件 (*.csv)|*.csv|excel文件 (*.xlsx)|*.xlsx|kepserver文件 (*.csv)|*.csv|All files (*.*)|*.*";
+                    openFileDialog1.Filter = "xml文件 (*.xml)|*.xml|excel文件 (*.xlsx)|*.xlsx|kepserver文件 (*.csv)|*.csv|All files (*.*)|*.*";
                     openFileDialog1.DefaultExt = "xml";
                     if (openFileDialog1.ShowDialog() == DialogResult.OK)
                     {
@@ -925,12 +936,9 @@ namespace TagConfig
                                 LoadFromXml(file);
                                 break;
                             case 2:
-                                LoadFromCsv(file);
-                                break;
-                            case 3:
                                 LoadFromExcel(file);
                                 break;
-                            case 4:
+                            case 3:
                                 LoadFromKepserverCSV(file);
                                 break;
                         }
@@ -1169,6 +1177,9 @@ namespace TagConfig
                         }
                         isCut = true;
                     }
+                    break;
+                case "粘贴CSV":
+                    LoadFromCsv();
                     break;
                 case "粘帖":
                     {
