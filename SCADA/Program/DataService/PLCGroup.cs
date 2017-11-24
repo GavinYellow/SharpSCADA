@@ -304,6 +304,7 @@ namespace DataService
             {
                 lock (sync)
                 {
+                    _changedList.Clear();
                     Poll();
                     if (_changedList.Count > 0)
                         Update();
@@ -417,7 +418,6 @@ namespace DataService
                         item.Update(item.Read(), dt, QUALITIES.QUALITY_GOOD);
                 }
             }
-            _changedList.Clear();
         }
 
         public void Dispose()
