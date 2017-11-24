@@ -179,10 +179,11 @@ namespace TagConfig
             start = true;
         }
 
-        private void Save()
+        private bool Save()
         {
             //dataGridView1.CurrentCell = null;
             //bindingSource1.EndEdit();
+            bool result = true;
             TagDataReader reader = new TagDataReader(list);
             ConditionReader condReader = new ConditionReader(conditions);
             SubConditionReader subReader = new SubConditionReader(subConds);
@@ -199,11 +200,12 @@ namespace TagConfig
                 sql = string.Concat(sql, string.Format("INSERT INTO Meta_Group(GroupID,GroupName,DriverID,UpdateRate,DeadBand,IsActive) VALUES({0},'{1}',{2},{3},{4},'{5}');",
                     grp.ID, grp.Name, grp.DriverID, grp.UpdateRate, grp.DeadBand, grp.Active));
             }
-            DataHelper.Instance.ExecuteNonQuery(sql);
-            DataHelper.Instance.BulkCopy(reader, "Meta_Tag", "DELETE FROM Meta_Tag", SqlBulkCopyOptions.KeepIdentity);
-            DataHelper.Instance.BulkCopy(condReader, "Meta_Condition", "DELETE FROM Meta_Condition", SqlBulkCopyOptions.KeepIdentity);
-            DataHelper.Instance.BulkCopy(subReader, "Meta_SubCondition", "DELETE FROM Meta_SubCondition", SqlBulkCopyOptions.KeepIdentity);
-            DataHelper.Instance.BulkCopy(scalereader, "Meta_Scale", "DELETE FROM Meta_Scale", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.ExecuteNonQuery(sql) >= 0;
+            result &= DataHelper.Instance.BulkCopy(reader, "Meta_Tag", "DELETE FROM Meta_Tag", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.BulkCopy(condReader, "Meta_Condition", "DELETE FROM Meta_Condition", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.BulkCopy(subReader, "Meta_SubCondition", "DELETE FROM Meta_SubCondition", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.BulkCopy(scalereader, "Meta_Scale", "DELETE FROM Meta_Scale", SqlBulkCopyOptions.KeepIdentity);
+            return result;
         }
 
         private void LoadFromXml(string file)
@@ -655,7 +657,7 @@ namespace TagConfig
         public void AddNode()
         {
             TreeNode node = treeView1.SelectedNode;
-            if (node != null && node.Level != 2)
+            if (node != null)
             {
                 short did = 0;// short.MinValue;
                 if (node.Level == 0)
@@ -669,7 +671,7 @@ namespace TagConfig
                     did++;
                     devices.Add(new Driver { ID = did });
                 }
-                else
+                else if (node.Level == 1)
                 {
                     for (int i = 0; i < groups.Count; i++)
                     {
@@ -679,7 +681,12 @@ namespace TagConfig
                     }
                     did++;
                     groups.Add(new Group { ID = did, DriverID = short.Parse(node.Name) });
-                };
+                }
+                else if (node.Level == 2)
+                {
+                    AddTag();
+                    return;
+                }
                 TreeNode nwNode = node.Nodes.Add(did.ToString(), "", node.Level + 1, node.Level + 1);
                 treeView1.SelectedNode = nwNode;
                 treeView1.LabelEdit = true;
@@ -813,6 +820,16 @@ namespace TagConfig
             }
         }
 
+        private void AddTag()
+        {
+            TagData tag = new TagData((short)(list.Count == 0 ? 1 : list.Max(x => x.ID) + 1), short.Parse(treeView1.SelectedNode.Name), "", "", 1, 1, true, false, false, false, null, "", 0, 0, 0);
+            bindingSource1.Add(tag);
+            int index = list.BinarySearch(tag);
+            if (index < 0) index = ~index;
+            list.Insert(index, tag);
+            dataGridView1.FirstDisplayedScrollingRowIndex = bindingSource1.Count - 1;
+        }
+
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             switch (e.ClickedItem.Text)
@@ -820,12 +837,7 @@ namespace TagConfig
                 case "增加":
                     if (treeView1.SelectedNode != null && treeView1.SelectedNode.Level == 2)
                     {
-                        TagData tag = new TagData((short)(list.Count == 0 ? 1 : list.Max(x => x.ID) + 1), short.Parse(treeView1.SelectedNode.Name), "", "", 1, 1, true, false, false, false, null, "", 0, 0, 0);
-                        bindingSource1.Add(tag);
-                        int index = list.BinarySearch(tag);
-                        if (index < 0) index = ~index;
-                        list.Insert(index, tag);
-                        dataGridView1.FirstDisplayedScrollingRowIndex = bindingSource1.Count - 1;
+                        AddTag();
                     }
                     break;
                 case "删除":
@@ -836,11 +848,15 @@ namespace TagConfig
                     }
                     break;
                 case "清除":
-                    bindingSource1.Clear();
-                    list.Clear();
+                    if (MessageBox.Show("将清除所有的标签，是否确定？", "警告", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        bindingSource1.Clear();
+                        list.Clear();
+                    }
                     break;
                 case "保存":
-                    Save();
+                    if(Save())
+                        MessageBox.Show("保存成功!");
                     break;
                
                 case "注册":
