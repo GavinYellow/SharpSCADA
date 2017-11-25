@@ -113,6 +113,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.粘贴CSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -394,9 +395,10 @@
             this.tspcut,
             this.tsppaste,
             this.批量删除ToolStripMenuItem,
-            this.事件归档ToolStripMenuItem});
+            this.事件归档ToolStripMenuItem,
+            this.粘贴CSVToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(195, 202);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(195, 224);
             this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
             this.contextMenuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip2_ItemClicked);
             // 
@@ -773,6 +775,13 @@
             this.tspCount.Name = "tspCount";
             this.tspCount.Size = new System.Drawing.Size(0, 17);
             // 
+            // 粘贴CSVToolStripMenuItem
+            // 
+            this.粘贴CSVToolStripMenuItem.Name = "粘贴CSVToolStripMenuItem";
+            this.粘贴CSVToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.粘贴CSVToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.粘贴CSVToolStripMenuItem.Text = "粘贴CSV";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -888,6 +897,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripButton toolStripButton5;
         private System.Windows.Forms.ToolStripTextBox tspOffset;
+        private System.Windows.Forms.ToolStripMenuItem 粘贴CSVToolStripMenuItem;
     }
 }
 

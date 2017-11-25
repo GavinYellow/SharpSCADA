@@ -304,6 +304,7 @@ namespace DataService
             {
                 lock (sync)
                 {
+                    _changedList.Clear();
                     Poll();
                     if (_changedList.Count > 0)
                         Update();
@@ -363,7 +364,7 @@ namespace DataService
                             ushort size = addr.DataSize;
                             for (int i = 0; i < size; i++)
                             {
-                                if (rcvBytes[iByte1 + i] != cache[iByte + i])
+                                if (iByte1 + i < rcvBytes.Length && rcvBytes[iByte1 + i] != cache[iByte + i])
                                 {
                                     _changedList.Add(index);
                                     break;
@@ -417,7 +418,6 @@ namespace DataService
                         item.Update(item.Read(), dt, QUALITIES.QUALITY_GOOD);
                 }
             }
-            _changedList.Clear();
         }
 
         public void Dispose()
