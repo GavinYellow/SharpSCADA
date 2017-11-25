@@ -154,7 +154,19 @@ namespace ModbusDriver
         #region  :IPLCDriver
         public int PDU
         {
-            get { return 0x100; }
+            // get { return 0x100; } //0x100十进制值为256
+
+
+            /* 更新人：yjz
+               更新日期：20171125
+               更新原因： 在串行通信中RS232 / RS485  modbus协议规定如下：
+                        ADU=地址域+功能码+数据+差错校验   其中 ADU 256字节，地址域1字节，功能码1字节，数据为252字节 ，    差错检验2字节，
+                        PDU=功能码+数据        
+                        所以PDU应为： 253字节
+                                  */
+            get { return 0xFD; } //0xFD 十进制为253
+
+
         }
 
         public DeviceAddress GetDeviceAddress(string address)//PLC地址一般为5位 如40001，也有可能为40001.1      首位代表地址类型

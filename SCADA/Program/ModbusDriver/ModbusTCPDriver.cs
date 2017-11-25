@@ -10,8 +10,94 @@ using DataService;
 namespace ModbusDriver
 {
     [Description("Modbus TCP协议")]
-    public sealed class ModbusTCPReader : IPLCDriver, IMultiReadWrite
+    public sealed class ModbusTCPReader : IPLCDriver, IMultiReadWrite                    //IPLCDriver : IDriver, IReaderWriter       IDriver : IDisposable
     {
+
+
+        #region
+        public int PDU
+        {
+            // get { return 252; }
+            //get { return 256; }
+            /* 更新人：yjz
+              更新日期：20171125
+              更新原因： 在 modbus——TCP中协议规定如下：
+                       ADU=MBAP+功能码+数据    其中 ADU 256字节，MBAP 7字节，功能码1字节，数据为248字节 
+                       PDU=功能码+数据        
+                       所以PDU应为： 249字节
+             */
+            get { return 249; } //0xF9 十进制为249
+
+        }
+
+        public DeviceAddress GetDeviceAddress(string address)
+        {
+            DeviceAddress dv = DeviceAddress.Empty;
+            if (string.IsNullOrEmpty(address))
+                return dv;
+            dv.Area = _slaveId;
+            switch (address[0])
+            {
+                case '0':
+                    {
+                        dv.DBNumber = Modbus.fctReadCoil;
+                        int st;
+                        int.TryParse(address, out st);
+                        //dv.Start = (st / 16) * 16;//???????????????????
+                        dv.Bit = (byte)(st % 16);
+                        st /= 16;
+                        dv.Start = st;
+                    }
+                    break;
+                case '1':
+                    {
+                        dv.DBNumber = Modbus.fctReadDiscreteInputs;
+                        int st;
+                        int.TryParse(address.Substring(1), out st);
+                        //dv.Start = (st / 16) * 16;//???????????????????
+                        dv.Bit = (byte)(st % 16);
+                        st /= 16;
+                        dv.Start = st;
+                    }
+                    break;
+                case '4':
+                    {
+                        int index = address.IndexOf('.');
+                        dv.DBNumber = Modbus.fctReadHoldingRegister;
+                        if (index > 0)
+                        {
+                            dv.Start = int.Parse(address.Substring(1, index - 1));
+                            dv.Bit = byte.Parse(address.Substring(index + 1));
+                        }
+                        else
+                            dv.Start = int.Parse(address.Substring(1));
+                        dv.Start--;
+                    }
+                    break;
+                case '3':
+                    {
+                        int index = address.IndexOf('.');
+                        dv.DBNumber = Modbus.fctReadInputRegister;
+                        if (index > 0)
+                        {
+                            dv.Start = int.Parse(address.Substring(1, index - 1));
+                            dv.Bit = byte.Parse(address.Substring(index + 1));
+                        }
+                        else
+                            dv.Start = int.Parse(address.Substring(1));
+                        dv.Start--;
+                    }
+                    break;
+            }
+            return dv;
+        }
+
+        public string GetAddress(DeviceAddress address)
+        {
+            return string.Empty;
+        }
+
+        #endregion
         private int _timeout;
 
         private Socket tcpSynCl;
@@ -239,78 +325,6 @@ namespace ModbusDriver
             return WriteSyncData(data);
         }
 
-        public int PDU
-        {
-            get { return 252; }
-            //get { return 256; }
-        }
-
-        public DeviceAddress GetDeviceAddress(string address)
-        {
-            DeviceAddress dv = DeviceAddress.Empty;
-            if (string.IsNullOrEmpty(address))
-                return dv;
-            dv.Area = _slaveId;
-            switch (address[0])
-            {
-                case '0':
-                    {
-                        dv.DBNumber = Modbus.fctReadCoil;
-                        int st;
-                        int.TryParse(address, out st);
-                        //dv.Start = (st / 16) * 16;//???????????????????
-                        dv.Bit = (byte)(st % 16);
-                        st /= 16;
-                        dv.Start = st;
-                    }
-                    break;
-                case '1':
-                    {
-                        dv.DBNumber = Modbus.fctReadDiscreteInputs;
-                        int st;
-                        int.TryParse(address.Substring(1), out st);
-                        //dv.Start = (st / 16) * 16;//???????????????????
-                        dv.Bit = (byte)(st % 16);
-                        st /= 16;
-                        dv.Start = st;
-                    }
-                    break;
-                case '4':
-                    {
-                        int index = address.IndexOf('.');
-                        dv.DBNumber = Modbus.fctReadHoldingRegister;
-                        if (index > 0)
-                        {
-                            dv.Start = int.Parse(address.Substring(1, index - 1));
-                            dv.Bit = byte.Parse(address.Substring(index + 1));
-                        }
-                        else
-                            dv.Start = int.Parse(address.Substring(1));
-                        dv.Start--;
-                    }
-                    break;
-                case '3':
-                    {
-                        int index = address.IndexOf('.');
-                        dv.DBNumber = Modbus.fctReadInputRegister;
-                        if (index > 0)
-                        {
-                            dv.Start = int.Parse(address.Substring(1, index - 1));
-                            dv.Bit = byte.Parse(address.Substring(index + 1));
-                        }
-                        else
-                            dv.Start = int.Parse(address.Substring(1));
-                        dv.Start--;
-                    }
-                    break;
-            }
-            return dv;
-        }
-
-        public string GetAddress(DeviceAddress address)
-        {
-            return string.Empty;
-        }
 
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0f, bool active = false)
