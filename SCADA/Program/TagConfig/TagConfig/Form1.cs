@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -178,10 +179,11 @@ namespace TagConfig
             start = true;
         }
 
-        private void Save()
+        private bool Save()
         {
             //dataGridView1.CurrentCell = null;
             //bindingSource1.EndEdit();
+            bool result = true;
             TagDataReader reader = new TagDataReader(list);
             ConditionReader condReader = new ConditionReader(conditions);
             SubConditionReader subReader = new SubConditionReader(subConds);
@@ -198,11 +200,12 @@ namespace TagConfig
                 sql = string.Concat(sql, string.Format("INSERT INTO Meta_Group(GroupID,GroupName,DriverID,UpdateRate,DeadBand,IsActive) VALUES({0},'{1}',{2},{3},{4},'{5}');",
                     grp.ID, grp.Name, grp.DriverID, grp.UpdateRate, grp.DeadBand, grp.Active));
             }
-            DataHelper.Instance.ExecuteNonQuery(sql);
-            DataHelper.Instance.BulkCopy(reader, "Meta_Tag", "DELETE FROM Meta_Tag", SqlBulkCopyOptions.KeepIdentity);
-            DataHelper.Instance.BulkCopy(condReader, "Meta_Condition", "DELETE FROM Meta_Condition", SqlBulkCopyOptions.KeepIdentity);
-            DataHelper.Instance.BulkCopy(subReader, "Meta_SubCondition", "DELETE FROM Meta_SubCondition", SqlBulkCopyOptions.KeepIdentity);
-            DataHelper.Instance.BulkCopy(scalereader, "Meta_Scale", "DELETE FROM Meta_Scale", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.ExecuteNonQuery(sql) >= 0;
+            result &= DataHelper.Instance.BulkCopy(reader, "Meta_Tag", "DELETE FROM Meta_Tag", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.BulkCopy(condReader, "Meta_Condition", "DELETE FROM Meta_Condition", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.BulkCopy(subReader, "Meta_SubCondition", "DELETE FROM Meta_SubCondition", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.BulkCopy(scalereader, "Meta_Scale", "DELETE FROM Meta_Scale", SqlBulkCopyOptions.KeepIdentity);
+            return result;
         }
 
         private void LoadFromXml(string file)
@@ -398,34 +401,44 @@ namespace TagConfig
             }
         }
 
-        private void LoadFromCsv(string file)
+        private void LoadFromCsv()
         {
-            Excel.Application app = new Excel.Application();
-            Workbook book = app.Workbooks.Open(file);
-            Worksheet sheet = (Worksheet)book.Sheets[1];
-            list.Clear();
-            for (int i = 2; i < sheet.Rows.Count; i++)
+            if (Clipboard.ContainsText(TextDataFormat.Text))
             {
-                if (((Range)sheet.Cells[i, 1]).Value2 == null)
-                    break;
-                try
+                string data = Clipboard.GetText(TextDataFormat.Text);
+                if (string.IsNullOrEmpty(data)) return;
+                list.Clear();
+                using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
                 {
-                    short id = Convert.ToInt16(((Range)sheet.Cells[i, 1]).Value2);
-                    TagData tag = new TagData(id, Convert.ToInt16(((Range)sheet.Cells[i, 2]).Value2), ((Range)sheet.Cells[i, 3]).Value2.ToString(),
-                         ((Range)sheet.Cells[i, 4]).Value2.ToString(), Convert.ToByte(((Range)sheet.Cells[i, 5]).Value2), Convert.ToUInt16(((Range)sheet.Cells[i, 6]).Value2),
-                        Convert.ToBoolean(((Range)sheet.Cells[i, 7]).Value2), Convert.ToBoolean(((Range)sheet.Cells[i, 8]).Value2), Convert.ToBoolean(((Range)sheet.Cells[i, 9]).Value2),
-                        Convert.ToBoolean(((Range)sheet.Cells[i, 10]).Value2), ((Range)sheet.Cells[i, 11]).Value2, ((Range)sheet.Cells[i, 12]).Value2 as string,
-                        Convert.ToSingle(((Range)sheet.Cells[i, 13]).Value2), Convert.ToSingle(((Range)sheet.Cells[i, 14]).Value2), Convert.ToInt32(((Range)sheet.Cells[i, 15]).Value2));
-                    list.Add(tag);
+                    using (var mysr = new StreamReader(stream))
+                    {
+                        string strline = mysr.ReadLine();
+                        while ((strline = mysr.ReadLine()) != null)
+                        {
+                            string[] aryline = strline.Split('\t');
+                            try
+                            {
+                                var id = Convert.ToInt16(aryline[0]);
+                                var groupid = Convert.ToInt16(aryline[1]);
+                                var name = aryline[2];
+                                var address = aryline[3];
+                                var type = Convert.ToByte(aryline[4]);
+                                var size = Convert.ToUInt16(aryline[5]);
+                                var active = Convert.ToBoolean(aryline[6]);
+                                var desp = aryline[7];
+                                TagData tag = new TagData(id, groupid, name, address, type, size, active, false, false, false, null, desp, 0, 0, 0);
+                                list.Add(tag);
+                            }
+                            catch (Exception err)
+                            {
+                                continue;
+                            }
+                        }
+                    }
                 }
-                catch (Exception e)
-                {
-                    continue;
-                    //Program.AddErrorLog(e);
-                }
+                list.Sort();
+                start = true;
             }
-            list.Sort();
-            start = true;
         }
 
         private void LoadFromExcel(string file)
@@ -644,7 +657,7 @@ namespace TagConfig
         public void AddNode()
         {
             TreeNode node = treeView1.SelectedNode;
-            if (node != null && node.Level != 2)
+            if (node != null)
             {
                 short did = 0;// short.MinValue;
                 if (node.Level == 0)
@@ -658,7 +671,7 @@ namespace TagConfig
                     did++;
                     devices.Add(new Driver { ID = did });
                 }
-                else
+                else if (node.Level == 1)
                 {
                     for (int i = 0; i < groups.Count; i++)
                     {
@@ -668,7 +681,12 @@ namespace TagConfig
                     }
                     did++;
                     groups.Add(new Group { ID = did, DriverID = short.Parse(node.Name) });
-                };
+                }
+                else if (node.Level == 2)
+                {
+                    AddTag();
+                    return;
+                }
                 TreeNode nwNode = node.Nodes.Add(did.ToString(), "", node.Level + 1, node.Level + 1);
                 treeView1.SelectedNode = nwNode;
                 treeView1.LabelEdit = true;
@@ -802,6 +820,16 @@ namespace TagConfig
             }
         }
 
+        private void AddTag()
+        {
+            TagData tag = new TagData((short)(list.Count == 0 ? 1 : list.Max(x => x.ID) + 1), short.Parse(treeView1.SelectedNode.Name), "", "", 1, 1, true, false, false, false, null, "", 0, 0, 0);
+            bindingSource1.Add(tag);
+            int index = list.BinarySearch(tag);
+            if (index < 0) index = ~index;
+            list.Insert(index, tag);
+            dataGridView1.FirstDisplayedScrollingRowIndex = bindingSource1.Count - 1;
+        }
+
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             switch (e.ClickedItem.Text)
@@ -809,12 +837,7 @@ namespace TagConfig
                 case "增加":
                     if (treeView1.SelectedNode != null && treeView1.SelectedNode.Level == 2)
                     {
-                        TagData tag = new TagData((short)(list.Count == 0 ? 1 : list.Max(x => x.ID) + 1), short.Parse(treeView1.SelectedNode.Name), "", "", 1, 1, true, false, false, false, null, "", 0, 0, 0);
-                        bindingSource1.Add(tag);
-                        int index = list.BinarySearch(tag);
-                        if (index < 0) index = ~index;
-                        list.Insert(index, tag);
-                        dataGridView1.FirstDisplayedScrollingRowIndex = bindingSource1.Count - 1;
+                        AddTag();
                     }
                     break;
                 case "删除":
@@ -825,11 +848,15 @@ namespace TagConfig
                     }
                     break;
                 case "清除":
-                    bindingSource1.Clear();
-                    list.Clear();
+                    if (MessageBox.Show("将清除所有的标签，是否确定？", "警告", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        bindingSource1.Clear();
+                        list.Clear();
+                    }
                     break;
                 case "保存":
-                    Save();
+                    if(Save())
+                        MessageBox.Show("保存成功!");
                     break;
                
                 case "注册":
@@ -914,7 +941,7 @@ namespace TagConfig
                     }
                     break;
                 case "导入变量":
-                    openFileDialog1.Filter = "xml文件 (*.xml)|*.xml|csv文件 (*.csv)|*.csv|excel文件 (*.xlsx)|*.xlsx|kepserver文件 (*.csv)|*.csv|All files (*.*)|*.*";
+                    openFileDialog1.Filter = "xml文件 (*.xml)|*.xml|excel文件 (*.xlsx)|*.xlsx|kepserver文件 (*.csv)|*.csv|All files (*.*)|*.*";
                     openFileDialog1.DefaultExt = "xml";
                     if (openFileDialog1.ShowDialog() == DialogResult.OK)
                     {
@@ -925,12 +952,9 @@ namespace TagConfig
                                 LoadFromXml(file);
                                 break;
                             case 2:
-                                LoadFromCsv(file);
-                                break;
-                            case 3:
                                 LoadFromExcel(file);
                                 break;
-                            case 4:
+                            case 3:
                                 LoadFromKepserverCSV(file);
                                 break;
                         }
@@ -1169,6 +1193,9 @@ namespace TagConfig
                         }
                         isCut = true;
                     }
+                    break;
+                case "粘贴CSV":
+                    LoadFromCsv();
                     break;
                 case "粘帖":
                     {
