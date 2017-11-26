@@ -134,7 +134,7 @@ QQ群：102486275
 
 贡献代码
 -------------
-[topmail](https://github.com/topmail),  [qwe7922142](https://github.com/qwe7922142),  [tonyshen277](https://github.com/tonyshen277)
+[topmail](https://github.com/topmail),  [qwe7922142](https://github.com/qwe7922142),  [tonyshen277](https://github.com/tonyshen277),  [yangjingzhao123](https://github.com/yangjingzhao123)
 
 License
 -------------
