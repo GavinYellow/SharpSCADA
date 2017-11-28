@@ -561,7 +561,7 @@ namespace ModbusDriver
             this._cacheReader = new NetShortCacheReader();
         }
 
-        protected override unsafe int Poll()
+        protected override unsafe void Poll()
         {
             short[] cache = (short[])_cacheReader.Cache;
             int offset = 0;
@@ -571,7 +571,7 @@ namespace ModbusDriver
                 if (rcvBytes == null || rcvBytes.Length == 0)
                 {
                     //_plcReader.Connect();
-                    return -1;
+                    continue;
                 }
                 else
                 {
@@ -638,7 +638,6 @@ namespace ModbusDriver
                     offset += len;
                 }
             }
-            return 1;
         }
 
     }

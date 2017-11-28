@@ -514,7 +514,7 @@ namespace ModbusDriver
             this._cacheReader = new ShortCacheReader();
         }
 
-        protected override unsafe int Poll()
+        protected override unsafe void Poll()
         {
             short[] cache = (short[])_cacheReader.Cache;
             int k = 0;
@@ -523,8 +523,7 @@ namespace ModbusDriver
                 byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
                 if (rcvBytes == null)
                 {
-                    _plcReader.Connect();
-                    return -1;
+                    continue;
                 }
                 else
                 {
@@ -637,7 +636,6 @@ namespace ModbusDriver
                     }
                 }
             }
-            return 1;
         }
     }
 

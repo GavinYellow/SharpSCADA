@@ -734,9 +734,9 @@ namespace SiemensPLCDriver
             this._cacheReader = new NetByteCacheReader();
         }
 
-        protected override int Poll()
+        protected override void Poll()
         {
-            if (_items == null || _items.Count == 0) return -1;
+            if (_items == null || _items.Count == 0) return;
             byte[] cache = (byte[])_cacheReader.Cache;
             int offset = 0;
             foreach (PDUArea area in _rangeList)
@@ -745,7 +745,7 @@ namespace SiemensPLCDriver
                 if (rcvBytes == null)
                 {
                     //_plcReader.Connect();
-                    return -1;
+                    continue;
                 }
                 else
                 {
@@ -798,7 +798,6 @@ namespace SiemensPLCDriver
                 }
                 offset += rcvBytes.Length;
             }
-            return 1;
         }
     }
 }

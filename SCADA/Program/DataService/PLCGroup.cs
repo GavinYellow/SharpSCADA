@@ -314,9 +314,9 @@ namespace DataService
                 return;
         }
 
-        protected virtual int Poll()
+        protected virtual void Poll()
         {
-            if (_plcReader.IsClosed) return -1;
+            if (_plcReader.IsClosed) return;
             byte[] cache = (byte[])_cacheReader.Cache;
             int offset = 0;
             foreach (PDUArea area in _rangeList)
@@ -325,7 +325,7 @@ namespace DataService
                 if (rcvBytes == null)
                 {
                     //_plcReader.Connect();
-                    return -1;
+                    continue;
                 }
                 else
                 {
@@ -378,7 +378,6 @@ namespace DataService
                 }
                 offset += rcvBytes.Length;
             }
-            return 1;
         }
 
         protected void Update()
