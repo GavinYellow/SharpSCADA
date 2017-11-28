@@ -12,8 +12,6 @@ namespace ModbusDriver
     [Description("Modbus TCP协议")]
     public sealed class ModbusTCPReader : IPLCDriver, IMultiReadWrite                    //IPLCDriver : IDriver, IReaderWriter       IDriver : IDisposable
     {
-
-
         #region
         public int PDU
         {
@@ -27,7 +25,6 @@ namespace ModbusDriver
                        所以PDU应为： 249字节
              */
             get { return 249; } //0xF9 十进制为249
-
         }
 
         public DeviceAddress GetDeviceAddress(string address)
@@ -164,14 +161,14 @@ namespace ModbusDriver
             get { return _server; }
         }
 
-        public ModbusTCPReader(IDataServer server, short id, string name, string ip, int timeOut = 500, string spare1 = null, string spare2 = null)
+        public ModbusTCPReader(IDataServer server, short id, string name, string ip, int timeOut = 500, string spare1 = "0", string spare2 = null)
         {
             _id = id;
             _name = name;
             _server = server;
             _ip = ip;
             _timeout = timeOut;
-            byte.TryParse(spare1, out _slaveId);
+            if (!string.IsNullOrEmpty(spare1)) byte.TryParse(spare1, out _slaveId);
         }
 
         public bool Connect()
@@ -404,7 +401,7 @@ namespace ModbusDriver
         public byte[] ReadBytes(DeviceAddress address, ushort size)
         {
             int area = address.DBNumber;
-            return area < 2 ? WriteSyncData(CreateReadHeader(address.Area, address.Start * 16, (ushort)(16 * size), (byte)area))
+            return area < 3 ? WriteSyncData(CreateReadHeader(address.Area, address.Start * 16, (ushort)(16 * size), (byte)area))
                 : WriteSyncData(CreateReadHeader(address.Area, address.Start, size, (byte)area));
         }
 
