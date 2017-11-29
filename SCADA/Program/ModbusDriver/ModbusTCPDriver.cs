@@ -322,8 +322,6 @@ namespace ModbusDriver
             return WriteSyncData(data);
         }
 
-
-
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0f, bool active = false)
         {
             ModbusTcpGroup grp = new ModbusTcpGroup(id, name, updateRate, active, this);
@@ -570,6 +568,7 @@ namespace ModbusDriver
                 byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
                 if (rcvBytes == null || rcvBytes.Length == 0)
                 {
+                    offset += area.Len / 2;
                     //_plcReader.Connect();
                     continue;
                 }

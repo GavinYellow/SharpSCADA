@@ -809,5 +809,78 @@ namespace DataService
             var klen = bytes[start + 1];
             return Encoding.ASCII.GetString(bytes, start + 2, klen).Trim((char)0);
         }
+
+        public static ushort ReverseInt16(short value)
+        {
+            ushort low = (ushort)(((ushort)value & (ushort)0xFFU) << 8);
+            ushort high = (ushort)(((ushort)value & (ushort)0xFF00U) >> 8);
+            return (ushort)(low | high);
+        }
+
+        /// <summary>
+        /// 掐头去尾得到数据字符串 
+        /// </summary>
+        /// <param name="allStr">全部字符串</param>
+        /// <param name="startStr">头字符串</param>
+        /// <param name="endStr">尾字符串</param>
+        /// <returns></returns>
+        public static string Pinchstring(string allStr, string startStr, string endStr)
+        {
+            int i1 = allStr.IndexOf(startStr);
+            int i2 = allStr.IndexOf(endStr);
+            string result;
+            try
+            {
+                result = allStr.Substring(i1 + startStr.Length, i2 - i1 - startStr.Length);
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 异或校验
+        /// </summary>
+        /// <param name="xorStr">传进来进行校验的字符串</param>
+        /// <returns>校验码</returns>
+        public static string XorCheck(string xorStr)
+        {
+
+            try
+            {
+                //小写转换成大写，因为XOR校验区分大小写
+                /*****************************************************
+                * XOR校验（异或校验）
+                * VerifyByte是得到的校验码
+                ***************************************************/
+                xorStr = xorStr.ToUpper();
+                byte[] bt = Encoding.Default.GetBytes(xorStr);
+                byte VerifyByte = bt[0];
+                for (int i = 1; i < bt.Length; i++)
+                {
+                    VerifyByte = (byte)(VerifyByte ^ bt[i]);
+                }
+
+                /**********************************
+                 * 校验码如果小于0X10则十位补零
+                 * **********************************/
+                string xor = "";
+                if (VerifyByte < 16)
+                {
+                    xor = "0" + VerifyByte.ToString("X");
+                }
+                else
+                {
+                    xor = VerifyByte.ToString("X");
+                }
+                return xor;
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
