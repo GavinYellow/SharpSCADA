@@ -63,13 +63,13 @@ Visual Studio/Blend：做为组态设计器，推荐VS2010，VS2015版本。
 
 * 已发布：
 内存数据库
-Modbus TCP/RTU
-OPC DA
-Siemens S300/200/1200/1500
-
+Modbus TCP/RTU、
+OPC DA、
+Siemens S300/200/1200/1500、
+Panasonic 
 * 后续发布：
-DDE
-AB EtherNetIP
+DDE、
+AB EtherNetIP、
 Mitsubishi 
 
 文件目录
@@ -111,11 +111,11 @@ ClientDriver、ModbusDriver、OPCDriver、FileDriver为各类通讯组件。
 
 计划：
 -------------
-支持.NET Core。
-实现更多的通讯接口：如欧姆龙、OPC UA等。
-更丰富的图元组件：如楼宇自控、化工等各行业。
-功能扩展：如进一步处理数据、过程控制等。
-安全性：安全性是重中之重，目前做的很不够。
+* 支持.NET Core。(目前已有测试版在CoreApp文件夹）
+* 实现更多的通讯接口：如欧姆龙、OPC UA等。
+* 更丰富的图元组件：如楼宇自控、化工等各行业。
+* 功能扩展：如进一步处理数据、过程控制等。
+* 安全性：安全性是重中之重，目前做的很不够。
 
 Showcase
 -------------
