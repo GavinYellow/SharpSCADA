@@ -319,53 +319,57 @@ namespace ModbusDriver
         #endregion
 
         #region :IReaderWriter 
+        object _async = new object();
         public byte[] ReadBytes(DeviceAddress address, ushort size)
         {
             int area = address.Area;
-            try
-            {
-                //no need to multiply by 16
-                //byte[] header = area == Modbus.fctReadCoil ? CreateReadHeader(address.Start * 16, (ushort)(16 * size), (byte)area) :
-                // CreateReadHeader(address.Start, size, (byte)area);
-                byte[] header = CreateReadHeader(address.Start, size, (byte)area);
-                _serialPort.Write(header, 0, header.Length);
 
-                /* different function_code have different realy frameBytes 
-                *  function_code 1/2: one register variable use one bit
-                *  function_code 3/4: one register variable use two bytes
-                */
-                int modbus_rtu_replay_frameBytes_size = 0;
-                int modbus_rtu_replay_data_size = 0;
-                switch (area)
-                {
-                    case 1:
-                    case 2:
-                        modbus_rtu_replay_frameBytes_size = size / 8 + 1 + 5;
-                        break;
-                    case 3:
-                    case 4:
-                        modbus_rtu_replay_frameBytes_size = size * 2 + 5;
-                        break;
-                }
-                modbus_rtu_replay_data_size = modbus_rtu_replay_frameBytes_size - 5;
-
-                byte[] frameBytes = new byte[modbus_rtu_replay_frameBytes_size];
-                byte[] data = new byte[modbus_rtu_replay_data_size];
-                int numBytesRead = 0;
-                while (numBytesRead != modbus_rtu_replay_frameBytes_size)
-                    numBytesRead += _serialPort.Read(frameBytes, numBytesRead, modbus_rtu_replay_frameBytes_size - numBytesRead);
-                if (frameBytes[0] == _slaveId && Utility.CheckSumCRC(frameBytes))
-                {
-                    Array.Copy(frameBytes, 3, data, 0, modbus_rtu_replay_data_size);
-                    return data;
-                }
-                return null;
-            }
-            catch (Exception e)
+            //no need to multiply by 16
+            //byte[] header = area == Modbus.fctReadCoil ? CreateReadHeader(address.Start * 16, (ushort)(16 * size), (byte)area) :
+            // CreateReadHeader(address.Start, size, (byte)area);
+            byte[] header = CreateReadHeader(address.Start, size, (byte)area);
+            lock (_async)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(e.Message));
-                return null;
+                try
+                {
+                    _serialPort.Write(header, 0, header.Length);
+                    /* different function_code have different realy frameBytes 
+                    *  function_code 1/2: one register variable use one bit
+                    *  function_code 3/4: one register variable use two bytes
+                    */
+                    int modbus_rtu_replay_frameBytes_size = 0;
+                    int modbus_rtu_replay_data_size = 0;
+                    switch (area)
+                    {
+                        case 1:
+                        case 2:
+                            modbus_rtu_replay_frameBytes_size = size / 8 + 1 + 5;
+                            break;
+                        case 3:
+                        case 4:
+                            modbus_rtu_replay_frameBytes_size = size * 2 + 5;
+                            break;
+                    }
+                    modbus_rtu_replay_data_size = modbus_rtu_replay_frameBytes_size - 5;
+
+                    byte[] frameBytes = new byte[modbus_rtu_replay_frameBytes_size];
+                    byte[] data = new byte[modbus_rtu_replay_data_size];
+                    int numBytesRead = 0;
+                    while (numBytesRead != modbus_rtu_replay_frameBytes_size)
+                        numBytesRead += _serialPort.Read(frameBytes, numBytesRead, modbus_rtu_replay_frameBytes_size - numBytesRead);
+                    if (frameBytes[0] == _slaveId && Utility.CheckSumCRC(frameBytes))
+                    {
+                        Array.Copy(frameBytes, 3, data, 0, modbus_rtu_replay_data_size);
+                        return data;
+                    }
+                    return null;
+                }
+                catch (Exception e)
+                {
+                    if (OnClose != null)
+                        OnClose(this, new ShutdownRequestEventArgs(e.Message));
+                    return null;
+                }
             }
         }
 
