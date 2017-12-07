@@ -236,49 +236,53 @@ namespace ModbusDriver
             return data;
         }
 
+        object _async = new object();
         private byte[] WriteSyncData(byte[] write_data)
         {
             short id = BitConverter.ToInt16(write_data, 0);
             if (IsClosed) CallException(id, write_data[7], Modbus.excExceptionConnectionLost);
             else
             {
-                try
+                lock (_async)
                 {
-                    tcpSynCl.Send(write_data, 0, write_data.Length, SocketFlags.None);//是否存在lock的问题？
-                    int result = tcpSynCl.Receive(tcpSynClBuffer, 0, 0xFF, SocketFlags.None);
-
-                    byte function = tcpSynClBuffer[7];
-                    byte[] data;
-
-                    if (result == 0) CallException(id, write_data[7], Modbus.excExceptionConnectionLost);
-
-                    // ------------------------------------------------------------
-                    // Response data is slave ModbusModbus.exception
-                    if (function > Modbus.excExceptionOffset)
+                    try
                     {
-                        function -= Modbus.excExceptionOffset;
-                        CallException(id, function, tcpSynClBuffer[8]);
-                        return null;
+                        tcpSynCl.Send(write_data, 0, write_data.Length, SocketFlags.None);//是否存在lock的问题？
+                        int result = tcpSynCl.Receive(tcpSynClBuffer, 0, 0xFF, SocketFlags.None);
+
+                        byte function = tcpSynClBuffer[7];
+                        byte[] data;
+
+                        if (result == 0) CallException(id, write_data[7], Modbus.excExceptionConnectionLost);
+
+                        // ------------------------------------------------------------
+                        // Response data is slave ModbusModbus.exception
+                        if (function > Modbus.excExceptionOffset)
+                        {
+                            function -= Modbus.excExceptionOffset;
+                            CallException(id, function, tcpSynClBuffer[8]);
+                            return null;
+                        }
+                        // ------------------------------------------------------------
+                        // Write response data
+                        else if ((function >= Modbus.fctWriteSingleCoil) && (function != Modbus.fctReadWriteMultipleRegister))
+                        {
+                            data = new byte[2];
+                            Array.Copy(tcpSynClBuffer, 10, data, 0, 2);
+                        }
+                        // ------------------------------------------------------------
+                        // Read response data
+                        else
+                        {
+                            data = new byte[tcpSynClBuffer[8]];
+                            Array.Copy(tcpSynClBuffer, 9, data, 0, tcpSynClBuffer[8]);
+                        }
+                        return data;
                     }
-                    // ------------------------------------------------------------
-                    // Write response data
-                    else if ((function >= Modbus.fctWriteSingleCoil) && (function != Modbus.fctReadWriteMultipleRegister))
+                    catch (SocketException)
                     {
-                        data = new byte[2];
-                        Array.Copy(tcpSynClBuffer, 10, data, 0, 2);
+                        CallException(id, write_data[7], Modbus.excExceptionConnectionLost);
                     }
-                    // ------------------------------------------------------------
-                    // Read response data
-                    else
-                    {
-                        data = new byte[tcpSynClBuffer[8]];
-                        Array.Copy(tcpSynClBuffer, 9, data, 0, tcpSynClBuffer[8]);
-                    }
-                    return data;
-                }
-                catch (SocketException)
-                {
-                    CallException(id, write_data[7], Modbus.excExceptionConnectionLost);
                 }
             }
             return null;
@@ -568,7 +572,7 @@ namespace ModbusDriver
                 byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
                 if (rcvBytes == null || rcvBytes.Length == 0)
                 {
-                    offset += area.Len / 2;
+                    //offset += area.Len / 2;
                     //_plcReader.Connect();
                     continue;
                 }
