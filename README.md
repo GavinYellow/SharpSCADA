@@ -66,7 +66,8 @@ Visual Studio/Blend：做为组态设计器，推荐VS2010，VS2015版本。
 Modbus TCP/RTU、
 OPC DA、
 Siemens S300/200/1200/1500、
-Panasonic 
+Panasonic 、
+Omron UDP
 * 后续发布：
 DDE、
 AB EtherNetIP、
