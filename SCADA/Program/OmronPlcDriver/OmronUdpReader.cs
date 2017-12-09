@@ -10,14 +10,17 @@ using System.Timers;
 namespace OmronPlcDriver
 {
     [Description("Omron(CS/CJ) UDP协议")]
-    public sealed class OmronUdpReader : IPLCDriver, IMultiReadWrite  
+    public sealed class OmronCsCjUDPReader : IPLCDriver, IMultiReadWrite                    //IPLCDriver : IDriver, IReaderWriter       IDriver : IDisposable
     {
+
+
         #region
 
         /****************************************/
-        //更新人：新增_pdu,可以根据实际情况进行采集
+        //更新人： zjf
+        //更新内容：新增_pdu,可以根据实际情况进行采集
         //更新日期：20171205
-        //更新原因：根据现场进行参数调整以提供采集响应速度
+        //更新原因：根据现场进行参数调整以提高采集响应速度或者减小网络压力
         /***************************************/
         /// <summary>
         /// PDU的值
@@ -75,7 +78,7 @@ namespace OmronPlcDriver
                             dv.Bit = byte.Parse(address.Substring(index + 1));
                         }
                         else
-                            dv.Start = int.Parse(address.Substring(index + 1));
+                            dv.Start = int.Parse(address.Substring(1));
                     }
                     break;
                 case 'H'://HR区
@@ -151,8 +154,10 @@ namespace OmronPlcDriver
                 if (!string.IsNullOrEmpty(value))
                 {
                     int index = value.IndexOf(':');
-                    _ip = value.Substring(0, index - 1);//ip地址
-                    _port = int.Parse(value.Substring(index + 1));//端口号
+                    _ip = value.Substring(0, index);//ip地址
+                    int index0 = value.Substring(index + 1).IndexOf(',');
+                    _port = int.Parse(value.Substring(index + 1, index0 - index - 1));//端口号
+                    _pdu = int.Parse(value.Substring(index0 + 1));//pdu
                 }
             }
         }
@@ -208,7 +213,7 @@ namespace OmronPlcDriver
             get { return _server; }
         }
 
-        public OmronUdpReader(IDataServer server, short id, string name, string servername, int timeOut = 500, string spare1 = null, string spare2 = null)
+        public OmronCsCjUDPReader(IDataServer server, short id, string name, string servername, int timeOut = 500, string spare1 = null, string spare2 = null)
         {
             _id = id;
             _name = name;
@@ -216,8 +221,10 @@ namespace OmronPlcDriver
             if (!string.IsNullOrEmpty(servername))
             {
                 int index = servername.IndexOf(':');
-                _ip = servername.Substring(0, index - 1);//ip地址
-                _port = int.Parse(servername.Substring(index + 1));//端口号
+                _ip = servername.Substring(0, index);//ip地址
+                int index0 = servername.IndexOf(',');
+                _port = int.Parse(servername.Substring(index + 1, index0 - index - 1));//端口号
+                _pdu = int.Parse(servername.Substring(index0 + 1));//pdu
             }
             _timeout = timeOut;
             byte.TryParse(spare1, out _plcNodeId);
@@ -237,11 +244,15 @@ namespace OmronPlcDriver
                 //IPAddress ip = IPAddress.Parse(_ip);
                 // ----------------------------------------------------------------
                 // Connect synchronous client
-                udpSynCl = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Udp);
+                udpSynCl = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 udpSynCl.SendTimeout = _timeout;
                 udpSynCl.ReceiveTimeout = _timeout;
-                udpSynCl.NoDelay = true;
                 udpSynCl.Connect(_ip, _port);
+
+                //if (OnConnect != null)
+                //{
+                //    OnConnect(this,new ConnectRequestEventArgs(Name + ServerName +"连接打开"));
+                //}
                 return true;
             }
             catch (SocketException error)
@@ -262,6 +273,8 @@ namespace OmronPlcDriver
         /// <returns></returns>
         private byte[] CreateReadHeader(byte pcnode, int startAddress, ushort length, byte function, byte plcnode = 0)
         {
+            //80 00 00 14 00 00 00 FD 00 00 01 01 00 00 00 00 00 01 
+            //80 00 02 00 41 00 00 0B 00 00 01 01 82 00 64 00 00 14
             byte[] data = new byte[18];
             data[0] = 0x80;
             data[1] = 0;
@@ -358,10 +371,14 @@ namespace OmronPlcDriver
                     }
                     // ------------------------------------------------------------
                     // Read response data
+                    else if (function == 0x1)
+                    {
+                        data = new byte[(write_data[16] * 256 + write_data[17])];
+                        Array.Copy(udpSynClBuffer, 14, data, 0, data.Length);
+                    }
                     else
                     {
-                        data = new byte[(write_data[16] * 256 + write_data[17]) * 2];
-                        Array.Copy(udpSynClBuffer, 14, data, 0, data.Length);
+                        return null;
                     }
                     return data;
                 }
@@ -412,7 +429,7 @@ namespace OmronPlcDriver
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0f, bool active = false)
         {
-            OmronUdpGroup grp = new OmronUdpGroup(id, name, updateRate, active, this);
+            OmronCsCjUDPGroup grp = new OmronCsCjUDPGroup(id, name, updateRate, active, this);
             _grps.Add(grp);
             return grp;
         }
@@ -656,7 +673,7 @@ namespace OmronPlcDriver
 
         public int Limit
         {
-            get { return 60; }
+            get { return 960; }
         }
 
         public ItemData<Storage>[] ReadMultiple(DeviceAddress[] addrsArr)
@@ -670,9 +687,9 @@ namespace OmronPlcDriver
         }
     }
 
-    public sealed class OmronUdpGroup : PLCGroup
+    public sealed class OmronCsCjUDPGroup : PLCGroup
     {
-        public OmronUdpGroup(short id, string name, int updateRate, bool active, IPLCDriver plcReader)
+        public OmronCsCjUDPGroup(short id, string name, int updateRate, bool active, IPLCDriver plcReader)
         {
             this._id = id;
             this._name = name;
@@ -694,7 +711,6 @@ namespace OmronPlcDriver
                 byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
                 if (rcvBytes == null || rcvBytes.Length == 0)
                 {
-                    //_plcReader.Connect();
                     continue;
                 }
                 else
