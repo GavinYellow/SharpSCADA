@@ -20,14 +20,14 @@ namespace CoreTest
 
             btnStart.Click += new RoutedEventHandler((s, e) =>
             {
-                var tag = App.Server[dev + "_Manu"];
-                if (tag != null) tag.Write(1);
+                var tag = App.Server[dev + "_Running"];
+                if (tag != null) tag.Write(true);
                 this.Close();
             });
             btnStop.Click += new RoutedEventHandler((s, e) =>
             {
-                var tag = App.Server[dev + "_Manu"];
-                if (tag != null) tag.Write(2);
+                var tag = App.Server[dev + "_Running"];
+                if (tag != null) tag.Write(false);
                 this.Close();
             });
 
