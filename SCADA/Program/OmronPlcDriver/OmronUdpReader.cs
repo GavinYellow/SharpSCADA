@@ -23,7 +23,7 @@ namespace OmronPlcDriver
         //更新原因：根据现场进行参数调整以提高采集响应速度或者减小网络压力
         /***************************************/
         /// <summary>
-        /// PDU的值
+        /// PDU的值,包大小上限
         /// </summary>
         int _pdu;
         /// <summary>
@@ -120,6 +120,7 @@ namespace OmronPlcDriver
         private int _timeout;//超时数据
 
         private Socket udpSynCl;
+        //接受字符串
         private byte[] udpSynClBuffer = new byte[1024];
 
         short _id;//驱动id
@@ -215,6 +216,7 @@ namespace OmronPlcDriver
 
         public OmronCsCjUDPReader(IDataServer server, short id, string name, string servername, int timeOut = 500, string spare1 = null, string spare2 = null)
         {
+
             _id = id;
             _name = name;
             _server = server;
@@ -229,6 +231,7 @@ namespace OmronPlcDriver
             _timeout = timeOut;
             byte.TryParse(spare1, out _plcNodeId);
             byte.TryParse(spare2, out _pcNodeId);
+            Console.WriteLine("id->" + _id.ToString() + " name->" + _name + " _server->" + _server + " _ip->" + _ip + " _port->" + _port + " _pdu->" + _pdu + " _timeout->" + _timeout + " plcNodeId->" + _plcNodeId + " pcNodeId->" + PcNodeId);
         }
 
         /// <summary>
@@ -239,6 +242,8 @@ namespace OmronPlcDriver
         {
             try
             {
+                Console.WriteLine("开始连接");
+
                 if (udpSynCl != null)
                     udpSynCl.Close();
                 //IPAddress ip = IPAddress.Parse(_ip);
@@ -267,7 +272,7 @@ namespace OmronPlcDriver
         /// </summary>        
         /// <param name="pcnode">电脑节点号，设置和PLC节点不一致即可</param>
         /// <param name="startAddress">读取的起始地址</param>
-        /// <param name="length">读取长度</param>
+        /// <param name="length">读取长度,2个字节为一个单位</param>
         /// <param name="function"></param>
         /// <param name="plcnode">PLC节点号，可为0</param>
         /// <returns></returns>
@@ -373,7 +378,7 @@ namespace OmronPlcDriver
                     // Read response data
                     else if (function == 0x1)
                     {
-                        data = new byte[(write_data[16] * 256 + write_data[17])];
+                        data = new byte[(write_data[16] * 256 + write_data[17]) * 2];
                         Array.Copy(udpSynClBuffer, 14, data, 0, data.Length);
                     }
                     else
@@ -492,18 +497,20 @@ namespace OmronPlcDriver
         internal void CallException(int id, byte function, byte exception)
         {
             if (udpSynCl == null) return;
+            Console.WriteLine("OmronReader错误->" + GetErrorString(exception));
             if (exception == OmronCSCJ.excExceptionConnectionLost && IsClosed == false)
             {
                 if (OnClose != null)
                     OnClose(this, new ShutdownRequestEventArgs(GetErrorString(exception)));
             }
+
         }
 
         /// <summary>
         /// 读取字节数组
         /// </summary>
         /// <param name="address">标签变量地址结构</param>
-        /// <param name="size">长度</param>
+        /// <param name="size">长度,</param>
         /// <returns></returns>
         public byte[] ReadBytes(DeviceAddress address, ushort size)
         {
@@ -512,7 +519,7 @@ namespace OmronPlcDriver
             {
                 len++;
             }
-            return WriteSyncData(CreateReadHeader(PcNodeId, address.Start, (ushort)(len / 2), (byte)address.DBNumber, (byte)address.Area));
+            return WriteSyncData(CreateReadHeader(PcNodeId, address.Start, (ushort)(len), (byte)address.DBNumber, (byte)address.Area));
         }
         /// <summary>
         /// 读取32位整数
@@ -704,18 +711,22 @@ namespace OmronPlcDriver
 
         protected override unsafe void Poll()
         {
+            //Console.WriteLine("开始遍历》》");
             short[] cache = (short[])_cacheReader.Cache;
             int offset = 0;
             foreach (PDUArea area in _rangeList)
             {
+                //Console.WriteLine(">>读取:" + area.Start.DBNumber.ToString() + "@" + DateTime.Now.ToString());
                 byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
                 if (rcvBytes == null || rcvBytes.Length == 0)
                 {
+                    //Console.WriteLine(">>结果:" + area.Start.DBNumber.ToString() + "->失败");
                     continue;
                 }
                 else
                 {
-                    int len = rcvBytes.Length / 2;
+                    //Console.WriteLine(">>结果:" + area.Start.DBNumber.ToString() + "->" + BitConverter.ToString(rcvBytes) + " at" + DateTime.Now.ToString());
+                    int len = area.Len;// rcvBytes.Length / 2;
                     fixed (byte* p1 = rcvBytes)
                     {
                         short* prcv = (short*)p1;
@@ -734,7 +745,8 @@ namespace OmronPlcDriver
                                 {
                                     while (addr.Start == next.Start)
                                     {
-                                        if ((tmp & (1 << next.Bit)) > 0) _changedList.Add(index);
+                                        if ((tmp & 1 << next.Bit.BitSwap()) > 0)
+                                            _changedList.Add(index);
                                         if (++index < count)
                                             next = _items[index].Address;
                                         else
@@ -753,6 +765,7 @@ namespace OmronPlcDriver
                             {
                                 if (addr.DataSize <= 2)
                                 {
+
                                     if (prcv[iShort1] != cache[iShort]) _changedList.Add(index);
                                 }
                                 else

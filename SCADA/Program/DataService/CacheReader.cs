@@ -503,7 +503,7 @@ namespace DataService
 
         public unsafe ItemData<bool> ReadBit(DeviceAddress address)
         {
-            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
+            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit.BitSwap())) != 0, 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)

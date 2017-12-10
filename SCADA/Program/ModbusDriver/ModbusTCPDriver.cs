@@ -597,7 +597,7 @@ namespace ModbusDriver
                                 {
                                     while (addr.Start == next.Start)
                                     {
-                                        if ((tmp & (1 << next.Bit)) > 0) _changedList.Add(index);
+                                        if ((tmp & (1 << next.Bit.BitSwap())) > 0) _changedList.Add(index);
                                         if (++index < count)
                                             next = _items[index].Address;
                                         else
