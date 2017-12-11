@@ -506,13 +506,13 @@ namespace ModbusDriver
 
         public int WriteInt16(DeviceAddress address, short value)
         {
-            var data = WriteSingleRegister(address.Area, address.Start, BitConverter.GetBytes(value));
+            var data = WriteSingleRegister(address.Area, address.Start, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)));
             return data == null ? -1 : 0;
         }
 
         public int WriteInt32(DeviceAddress address, int value)
         {
-            var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes(value));
+            var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)));
             return data == null ? -1 : 0;
         }
 
