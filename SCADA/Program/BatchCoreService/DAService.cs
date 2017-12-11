@@ -50,6 +50,8 @@ namespace BatchCoreService
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, Namespace = "http://BatchCoreService")]
     public class DAService : IDataExchangeService, IDataServer, IAlarmServer
     {
+        #region 服务器参数
+
         const int PORT = 6543;
 
         const char SPLITCHAR = '.';
@@ -58,8 +60,12 @@ namespace BatchCoreService
         const string PATH = @"C:\DataConfig\";
         const string FILENAME = "server.xml";
 
+        #endregion
+
 
         //可配置参数，从XML文件读取
+        #region 可选配置参数，延迟时间，报警和归档时间等
+
         int DELAY = 3000;
         int MAXHDACAP = 10000;
         int ALARMLIMIT = 1000;
@@ -67,19 +73,21 @@ namespace BatchCoreService
         int CYCLE2 = 600000;
         int SENDTIMEOUT = 60000;
         //int SENDSIZE = ushort.MaxValue;
-        int HDALEN = 1024 * 1024;
-        int MAXLOGSIZE = 1024;
-        int HDADELAY = 3600 * 1000;
+        int HDALEN = 1024 * 1024;//历史记录数
+        int MAXLOGSIZE = 1024;//最大日志数
+        int HDADELAY = 3600 * 1000;//
         int ALARMDELAY = 3600 * 1000;
         int ARCHIVEINTERVAL = 100;
 
-        static EventLog Log;
+        #endregion
+
+        static EventLog Log;//创建事件记录
 
         private System.Timers.Timer timer1 = new System.Timers.Timer();
         private System.Timers.Timer timer2 = new System.Timers.Timer();
         private System.Timers.Timer timer3 = new System.Timers.Timer();
-        private DateTime _hdastart = DateTime.Now;
-        private DateTime _alarmstart = DateTime.Now;
+        private DateTime _hdastart = DateTime.Now;//历史记录起始时间
+        private DateTime _alarmstart = DateTime.Now;//报警起始时间
 
         #region DAServer（标签数据服务器）
         public ITag this[short id]
@@ -138,7 +146,7 @@ namespace BatchCoreService
 
         bool _hasHda = false;
         List<HistoryData> _hda;
-        Dictionary<short, ArchiveTime> _archiveTimes = new Dictionary<short, ArchiveTime>();
+        Dictionary<short, ArchiveTime> _archiveTimes = new Dictionary<short, ArchiveTime>();//归档时间
 
         Socket tcpServer = null;
 
@@ -309,7 +317,9 @@ namespace BatchCoreService
             Log.WriteEntry(e.GetExceptionMsg(), EventLogEntryType.Error);
         }
 
-        private void timer1_Elapsed(object sender, ElapsedEventArgs e)
+        #region 每隔一段时间检测驱动是否启动，如果关闭，则重新启动
+
+        private void timer1_Elapsed(object sender, ElapsedEventArgs e)//驱动定时启动
         {
             foreach (IDriver d in Drivers)
             {
@@ -319,6 +329,8 @@ namespace BatchCoreService
                 }
             }
         }
+
+        #endregion
 
         private void timer2_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -370,7 +382,7 @@ namespace BatchCoreService
 
         private void timer3_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var now = e.SignalTime;
+            var now = e.SignalTime;//引发定时器的时间
             List<HistoryData> tempData = new List<HistoryData>();
             foreach (var archive in _archiveTimes)
             {
@@ -569,28 +581,28 @@ namespace BatchCoreService
             ThreadPool.QueueUserWorkItem(new WaitCallback(AcceptWorkThread));
         }
 
-        void InitServerByXml()
+        void InitServerByXml()//通过XML文件初始化服务
         {
-            string path = PATH + '\\' + FILENAME;
-            if (File.Exists(path))
+            string path = PATH + '\\' + FILENAME;//xml路径
+            if (File.Exists(path))//如果路径存在
             {
                 try
                 {
-                    using (var reader = XmlTextReader.Create(path))
+                    using (var reader = XmlReader.Create(path))//则创建一个XmlReader的实例。
                     {
-                        while (reader.Read())
+                        while (reader.Read())//如果成功读取了下一个节点，则为 true；如果没有其他节点可读取，则为 false。
                         {
-                            if (reader.NodeType == XmlNodeType.Element)
+                            if (reader.NodeType == XmlNodeType.Element)//读取节点的类型，如果为XmlNodeType.Element
                             {
-                                switch (reader.Name)
+                                switch (reader.Name)//判断Reader的name
                                 {
                                     case "Server":
                                         {
-                                            if (reader.MoveToAttribute("MaxLogSize"))
-                                                int.TryParse(reader.Value, out MAXLOGSIZE);
+                                            if (reader.MoveToAttribute("MaxLogSize"))//在节点名为Server下，查找MaxLogSize的属性。
+                                                int.TryParse(reader.Value, out MAXLOGSIZE);//将读取的字符串的值传送给MAXLOGSIZE参数
                                         }
                                         break;
-                                    case "Data":
+                                    case "Data"://这里主要学习XMl的读法。
                                         {
                                             if (reader.MoveToAttribute("TestCycle"))
                                                 int.TryParse(reader.Value, out CYCLE);
@@ -598,7 +610,7 @@ namespace BatchCoreService
                                                 int.TryParse(reader.Value, out SENDTIMEOUT);
                                         }
                                         break;
-                                    case "Hda":
+                                    case "Hda"://历史记录的参数
                                         {
                                             if (reader.MoveToAttribute("MaxHdaCap"))
                                             {
@@ -614,7 +626,7 @@ namespace BatchCoreService
                                                 int.TryParse(reader.Value, out ARCHIVEINTERVAL);
                                         }
                                         break;
-                                    case "Alarm":
+                                    case "Alarm"://报警的数量和延迟时间
                                         {
                                             if (reader.MoveToAttribute("AlarmLimit"))
                                                 int.TryParse(reader.Value, out ALARMLIMIT);
@@ -2080,6 +2092,8 @@ namespace BatchCoreService
 
     internal sealed class ArchiveTime
     {
+        #region 归档时间里有循环周期和上次的归档时间
+
         public int Cycle;
         public DateTime LastTime;
         public ArchiveTime(int cycle, DateTime last)
@@ -2087,5 +2101,7 @@ namespace BatchCoreService
             Cycle = cycle;
             LastTime = last;
         }
+
+        #endregion
     }
 }
