@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Timers;
 
 namespace OmronPlcDriver
 {
@@ -232,7 +231,7 @@ namespace OmronPlcDriver
             _timeout = timeOut;
             byte.TryParse(spare1, out _plcNodeId);
             byte.TryParse(spare2, out _pcNodeId);
-            Console.WriteLine("id->" + _id.ToString() + " name->" + _name + " _server->" + _server + " _ip->" + _ip + " _port->" + _port + " _pdu->" + _pdu + " _timeout->" + _timeout + " plcNodeId->" + _plcNodeId + " pcNodeId->" + PcNodeId);
+            //Console.WriteLine("id->" + _id.ToString() + " name->" + _name + " _server->" + _server + " _ip->" + _ip + " _port->" + _port + " _pdu->" + _pdu + " _timeout->" + _timeout + " plcNodeId->" + _plcNodeId + " pcNodeId->" + PcNodeId);
         }
 
         /// <summary>
@@ -498,7 +497,7 @@ namespace OmronPlcDriver
         internal void CallException(int id, byte function, byte exception)
         {
             if (udpSynCl == null) return;
-            Console.WriteLine("OmronReader错误->" + GetErrorString(exception));
+            //Console.WriteLine("OmronReader错误->" + GetErrorString(exception));
             if (exception == OmronCSCJ.excExceptionConnectionLost && IsClosed == false)
             {
                 if (OnClose != null)
@@ -650,13 +649,13 @@ namespace OmronPlcDriver
 
         public int WriteInt16(DeviceAddress address, short value)
         {
-            var data = WriteSingleRegister(PcNodeId, address.Start, (byte)address.DBNumber, BitConverter.GetBytes(value), (byte)address.Area);
+            var data = WriteSingleRegister(PcNodeId, address.Start, (byte)address.DBNumber, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)), (byte)address.Area);
             return data == null ? -1 : 0;
         }
 
         public int WriteInt32(DeviceAddress address, int value)
         {
-            var data = WriteMultipleRegister(PcNodeId, address.Start, (byte)address.DBNumber, BitConverter.GetBytes(value), (byte)address.Area);
+            var data = WriteMultipleRegister(PcNodeId, address.Start, (byte)address.DBNumber, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)), (byte)address.Area);
             return data == null ? -1 : 0;
         }
 
