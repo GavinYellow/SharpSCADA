@@ -328,11 +328,11 @@ namespace ModbusDriver
                 int numBytesRead = 0;
                 lock (_async)
                 {
-                    while (numBytesRead != size)
-                        numBytesRead += _serialPort.Read(frameBytes, numBytesRead, size - numBytesRead);
-                    if (frameBytes[0] == (byte)_id && Utility.CheckSumCRC(frameBytes))
+                    while (numBytesRead != frameBytes.Length)
+                        numBytesRead += _serialPort.Read(frameBytes, numBytesRead, frameBytes.Length - numBytesRead);
+                    if (frameBytes[0] == _slaveId && Utility.CheckSumCRC(frameBytes))
                     {
-                        Array.Copy(frameBytes, 3, data, 0, size);
+                        Array.Copy(frameBytes, 3, data, 0, data.Length);
                         return data;
                     }
                 }
