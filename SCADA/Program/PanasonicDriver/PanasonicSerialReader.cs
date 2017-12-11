@@ -94,7 +94,7 @@ namespace PanasonicPLCriver
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0, bool active = false)
         {
-            PanasonicGroup grp = new PanasonicGroup(id, name, updateRate, active, this);
+            NetShortGroup grp = new NetShortGroup(id, name, updateRate, active, this);
             _grps.Add(grp);
             return grp;
         }
@@ -211,6 +211,7 @@ namespace PanasonicPLCriver
                         break;
                 }
             }
+            dv.ByteOrder = ByteOrder.Network;
             return dv;
         }
         #region 实现了四个命令 其余没有做
@@ -553,100 +554,6 @@ namespace PanasonicPLCriver
             return num.ToString().PadLeft(5, '0');  //9->00009
         }
         #endregion
-    }
-    public sealed class PanasonicGroup : PLCGroup
-    {
-        public PanasonicGroup(short id, string name, int updateRate, bool active, IPLCDriver plcReader)
-        {
-            this._id = id;
-            this._name = name;
-            this._updateRate = updateRate;
-            this._isActive = active;
-            this._plcReader = plcReader;
-            this._server = _plcReader.Parent;
-            this._timer = new System.Timers.Timer();
-            this._changedList = new List<int>();
-            this._cacheReader = new NetShortCacheReader();
-        }
-       
-        protected override  void Poll()
-        {
-            short[] cache = (short[])_cacheReader.Cache;
-            int offset = 0;
-            foreach (PDUArea area in _rangeList)
-            {
-                byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
-                if (rcvBytes == null || rcvBytes.Length == 0)
-                {
-                    continue;
-                }
-                else
-                {
-                    int len = rcvBytes.Length / 2;
-                    short[] prcv = new short[rcvBytes.Length / 2];
-                    for (int i = 0; i < prcv.Length; i++)
-                        prcv[i] = IPAddress.HostToNetworkOrder(BitConverter.ToInt16(rcvBytes, i * 2));
-                    int index = area.StartIndex;//index指向_items中的Tag元数据
-                    int count = index + area.Count;
-                    while (index < count)
-                    {
-                        DeviceAddress addr = _items[index].Address;
-                        int iShort = addr.CacheIndex;
-                        int iShort1 = iShort - offset;
-                        if (addr.VarType == DataType.BOOL)
-                        {
-                            short tt = prcv[iShort1];
-                            short tmp = IPAddress.HostToNetworkOrder((short)(tt ^ cache[iShort]));
-                            DeviceAddress next = addr;
-                            if (tmp != 0)
-                            {
-                                while (addr.Start == next.Start)
-                                {
-                                    short ne = (short)(1 << next.Bit);
-                                    if ((tmp & (ne)) > 0) _changedList.Add(index);
-                                    if (++index < count)
-                                        next = _items[index].Address;
-                                    else
-                                        break;
-                                }
-                            }
-                            else
-                            {
-                                while (addr.Start == next.Start && ++index < count)
-                                {
-                                    next = _items[index].Address;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (addr.DataSize <= 2)
-                            {
-                                if (prcv[iShort1] != cache[iShort]) _changedList.Add(index);
-                            }
-                            else
-                            {
-                                int size = addr.DataSize / 2;
-                                for (int i = 0; i < size; i++)
-                                {
-                                    if (prcv[iShort1 + i] != cache[iShort + i])
-                                    {
-                                        _changedList.Add(index);
-                                        break;
-                                    }
-                                }
-                            }
-                            index++;
-                        }
-                    }
-                    for (int j = 0; j < len; j++)
-                    {
-                        cache[j + offset] = prcv[j];
-                    }//将PLC读取的数据写入到CacheReader中
-                    offset += len;
-                }
-            }
-        }
     }
 
     public struct Panasonic

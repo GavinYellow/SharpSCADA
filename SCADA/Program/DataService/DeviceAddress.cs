@@ -13,8 +13,9 @@ namespace DataService
         public ushort CacheIndex;
         public byte Bit;
         public DataType VarType;
+        public ByteOrder ByteOrder;
 
-        public DeviceAddress(int area, ushort dbnumber, ushort cIndex, int start, ushort size, byte bit, DataType type)
+        public DeviceAddress(int area, ushort dbnumber, ushort cIndex, int start, ushort size, byte bit, DataType type, ByteOrder order = ByteOrder.None)
         {
             Area = area;
             DBNumber = dbnumber;
@@ -23,6 +24,7 @@ namespace DataService
             DataSize = size;
             Bit = bit;
             VarType = type;
+            ByteOrder = order;
         }
 
         public static readonly DeviceAddress Empty = new DeviceAddress(0, 0, 0, 0, 0, 0, DataType.NONE);

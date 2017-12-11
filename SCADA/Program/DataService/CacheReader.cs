@@ -551,7 +551,7 @@ namespace DataService
 
         public int WriteBit(DeviceAddress address, bool bit)
         {
-            _cache[address.CacheIndex] |= (short)(1 << address.Bit.BitSwap());
+            _cache[address.CacheIndex] |= (short)(1 << address.Bit);
             return 0;
         }
 

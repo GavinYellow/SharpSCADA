@@ -579,26 +579,6 @@ namespace DataService
         }
     }
 
-    public enum DataSource
-    {
-        Cache = 1,
-        Device = 2
-    }
-
-    public enum DataType : byte
-    {
-        NONE = 0,
-        BOOL = 1,
-        BYTE = 3,
-        SHORT = 4,
-        WORD = 5,
-        TIME = 6,
-        INT = 7,
-        FLOAT = 8,
-        SYS = 9,
-        STR = 11
-    }
-
     public delegate void ValueChangingEventHandler<T>(object sender, ValueChangingEventArgs<T> e);
     public delegate void ValueChangedEventHandler(object sender, ValueChangedEventArgs e);
 
