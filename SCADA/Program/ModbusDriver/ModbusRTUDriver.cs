@@ -84,7 +84,7 @@ namespace ModbusDriver
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0f, bool active = false)
         {
-            ModbusRtuGroup grp = new ModbusRtuGroup(id, name, updateRate, active, this);
+            ShortGroup grp = new ShortGroup(id, name, updateRate, active, this);
             _grps.Add(grp);
             return grp;
         }
@@ -247,43 +247,37 @@ namespace ModbusDriver
             set { _slaveId = value; }
         }
 
-        public DeviceAddress GetDeviceAddress(string address)//PLC地址一般为5位 如40001，也有可能为40001.1      首位代表地址类型
+        public DeviceAddress GetDeviceAddress(string address)
         {
             DeviceAddress dv = DeviceAddress.Empty;
             if (string.IsNullOrEmpty(address))
                 return dv;
             switch (address[0])
             {
-                case '0'://功能码：01 读线圈或离散量输出状态    00001 - 09999：数字量输出（ 线圈）
+                case '0':
                     {
                         dv.Area = Modbus.fctReadCoil;
                         int st;
                         int.TryParse(address, out st);
-                        //delete : if st<16, execute st /= 16, st will equal 0, in func ReadBytes() address.Start * 16 has no effect
-                        //dv.Bit = (byte)(st % 16);
-                        //st /= 16;
+                        dv.Bit = (byte)(st % 16);
+                        st /= 16;
                         dv.Start = st;
-                        //add : use PLC address(base 1)
-                        dv.Start--;
                     }
                     break;
-                case '1'://功能码：02 读离散量输入   10001 - 19999：数字量输入（触点） 
+                case '1':
                     {
                         dv.Area = Modbus.fctReadDiscreteInputs;
                         int st;
                         int.TryParse(address.Substring(1), out st);
-                        //delete : if st<16, execute st /= 16, st will equal 0, in func ReadBytes() address.Start * 16 has no effect
-                        //dv.Bit = (byte)(st % 16);
-                        //st /= 16;
+                        dv.Bit = (byte)(st % 16);
+                        st /= 16;
                         dv.Start = st;
-                        //add : use PLC address(base 1)
-                        dv.Start--;
                     }
-                    break;          
+                    break;
                 case '4':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadHoldingRegister;//功能码：03 读取保持寄存器   40001 - 49999：数据保持寄存器
+                        dv.Area = Modbus.fctReadHoldingRegister;
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
@@ -291,13 +285,13 @@ namespace ModbusDriver
                         }
                         else
                             dv.Start = int.Parse(address.Substring(1));
-                        dv.Start--;                //PLC的寄存器地址比modbus协议的通讯地址大1   如：40002 对应寻 址地址 0x0001
+                        dv.Start--;
                     }
                     break;
                 case '3':
                     {
                         int index = address.IndexOf('.');
-                        dv.Area = Modbus.fctReadInputRegister;//功能码：04读输入寄存器   30001 - 39999：输入数据寄存器（通常为模拟量输入）
+                        dv.Area = Modbus.fctReadInputRegister;
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
@@ -305,10 +299,11 @@ namespace ModbusDriver
                         }
                         else
                             dv.Start = int.Parse(address.Substring(1));
-                        dv.Start--;            //PLC的寄存器地址比modbus协议的通讯地址大1   如：40002 对应寻 址地址 0x0001
+                        dv.Start--;
                     }
                     break;
             }
+            dv.Bit--;
             return dv;
         }
 
@@ -323,53 +318,31 @@ namespace ModbusDriver
         public byte[] ReadBytes(DeviceAddress address, ushort size)
         {
             int area = address.Area;
-
-            //no need to multiply by 16
-            //byte[] header = area == Modbus.fctReadCoil ? CreateReadHeader(address.Start * 16, (ushort)(16 * size), (byte)area) :
-            // CreateReadHeader(address.Start, size, (byte)area);
-            byte[] header = CreateReadHeader(address.Start, size, (byte)area);
-            lock (_async)
+            try
             {
-                try
+                byte[] header = area == Modbus.fctReadCoil ? CreateReadHeader(address.Start * 16, (ushort)(16 * size), (byte)area) :
+                 CreateReadHeader(address.Start, size, (byte)area);
+                _serialPort.Write(header, 0, header.Length);
+                byte[] frameBytes = new byte[size * 2 + 5];
+                byte[] data = new byte[size * 2];
+                int numBytesRead = 0;
+                lock (_async)
                 {
-                    _serialPort.Write(header, 0, header.Length);
-                    /* different function_code have different realy frameBytes 
-                    *  function_code 1/2: one register variable use one bit
-                    *  function_code 3/4: one register variable use two bytes
-                    */
-                    int modbus_rtu_replay_frameBytes_size = 0;
-                    int modbus_rtu_replay_data_size = 0;
-                    switch (area)
+                    while (numBytesRead != size)
+                        numBytesRead += _serialPort.Read(frameBytes, numBytesRead, size - numBytesRead);
+                    if (frameBytes[0] == (byte)_id && Utility.CheckSumCRC(frameBytes))
                     {
-                        case 1:
-                        case 2:
-                            modbus_rtu_replay_frameBytes_size = size / 8 + 1 + 5;
-                            break;
-                        case 3:
-                        case 4:
-                            modbus_rtu_replay_frameBytes_size = size * 2 + 5;
-                            break;
-                    }
-                    modbus_rtu_replay_data_size = modbus_rtu_replay_frameBytes_size - 5;
-
-                    byte[] frameBytes = new byte[modbus_rtu_replay_frameBytes_size];
-                    byte[] data = new byte[modbus_rtu_replay_data_size];
-                    int numBytesRead = 0;
-                    while (numBytesRead != modbus_rtu_replay_frameBytes_size)
-                        numBytesRead += _serialPort.Read(frameBytes, numBytesRead, modbus_rtu_replay_frameBytes_size - numBytesRead);
-                    if (frameBytes[0] == _slaveId && Utility.CheckSumCRC(frameBytes))
-                    {
-                        Array.Copy(frameBytes, 3, data, 0, modbus_rtu_replay_data_size);
+                        Array.Copy(frameBytes, 3, data, 0, size);
                         return data;
                     }
-                    return null;
                 }
-                catch (Exception e)
-                {
-                    if (OnClose != null)
-                        OnClose(this, new ShutdownRequestEventArgs(e.Message));
-                    return null;
-                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                if (OnClose != null)
+                    OnClose(this, new ShutdownRequestEventArgs(e.Message));
+                return null;
             }
         }
 
@@ -501,146 +474,6 @@ namespace ModbusDriver
             _serialPort.Close();
         }
         #endregion
-    }
-
-    public sealed class ModbusRtuGroup : PLCGroup
-    {
-        public ModbusRtuGroup(short id, string name, int updateRate, bool active, ModbusRTUReader plcReader)
-        {
-            this._id = id;
-            this._name = name;
-            this._updateRate = updateRate;
-            this._isActive = active;
-            this._plcReader = plcReader;
-            this._server = _plcReader.Parent;
-            this._timer = new Timer();
-            this._changedList = new List<int>();
-            this._cacheReader = new ShortCacheReader();
-        }
-
-        protected override unsafe void Poll()
-        {
-            short[] cache = (short[])_cacheReader.Cache;
-            int k = 0;
-            foreach (PDUArea area in _rangeList)
-            {
-                byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
-                if (rcvBytes == null)
-                {
-                    continue;
-                }
-                else
-                {
-                    //function code = 01 or 02
-                    if ((area.Start.Area == 1) || (area.Start.Area == 2))
-                    {
-                        fixed (byte* p1_coil = rcvBytes)
-                        {
-                            byte* prcv_coil = p1_coil;
-                            int index = area.StartIndex;//index指向_items中的Tag元数据
-                            int count = index + area.Count;
-                            int len = rcvBytes.Length;
-                            for (int rcvBytes_index = 0; rcvBytes_index < len; rcvBytes_index++) //for index whitch byte
-                            {
-                                for (int rcvBytes_bit_index = 0; rcvBytes_bit_index < 8; rcvBytes_bit_index++) //for index whitch bit
-                                {
-                                    short change_flag = 0;
-                                    if ((prcv_coil[rcvBytes_index] & (0x01 << rcvBytes_bit_index)) != 0)
-                                    {
-                                        change_flag = 1;
-                                    }
-                                    int tmp = change_flag ^ cache[index];
-                                    if (tmp != 0)
-                                    {
-                                        _changedList.Add(index);
-                                        cache[index] = change_flag;
-                                    }
-                                    index++;
-                                    if (index >= count)
-                                    {
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else //function code = 03 or 04
-                    {
-                        #region apply on small endian, if you are big endian, no need to do this
-                        byte exchange_temp;
-                        for (int index = 0; index < rcvBytes.Length; index = index + 2)
-                        {
-                            exchange_temp = rcvBytes[index + 1];
-                            rcvBytes[index + 1] = rcvBytes[index];
-                            rcvBytes[index] = exchange_temp;
-                        }
-                        #endregion
-
-                        int len = rcvBytes.Length / 2;
-                        fixed (byte* p1 = rcvBytes)
-                        {
-                            short* prcv = (short*)p1;
-                            int index = area.StartIndex;//index指向_items中的Tag元数据
-                            int count = index + area.Count;
-                            while (index < count)
-                            {
-                                DeviceAddress addr = _items[index].Address;
-                                int iShort = addr.CacheIndex;
-                                int iShort1 = iShort - k;
-                                if (addr.VarType == DataType.BOOL)
-                                {
-                                    int tmp = prcv[iShort1] ^ cache[iShort];
-                                    DeviceAddress next = addr;
-                                    if (tmp != 0)
-                                    {
-                                        while (addr.Start == next.Start)
-                                        {
-                                            if ((tmp & (1 << next.Bit)) > 0) _changedList.Add(index);
-                                            if (++index < count)
-                                                next = _items[index].Address;
-                                            else
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        while (addr.Start == next.Start && ++index < count)
-                                        {
-                                            next = _items[index].Address;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if (addr.DataSize <= 2)
-                                    {
-                                        if (prcv[iShort1] != cache[iShort]) _changedList.Add(index);
-                                    }
-                                    else
-                                    {
-                                        int size = addr.DataSize / 2;
-                                        for (int i = 0; i < size; i++)
-                                        {
-                                            if (prcv[iShort1 + i] != cache[iShort + i])
-                                            {
-                                                _changedList.Add(index);
-                                                break;
-                                            }
-                                        }
-                                    }
-                                    index++;
-                                }
-                            }
-                            for (int j = 0; j < len; j++)
-                            {
-                                cache[j + k] = prcv[j];
-                            }//将PLC读取的数据写入到CacheReader中
-                        }
-                        k += len;
-                    }
-                }
-            }
-        }
     }
 
 
