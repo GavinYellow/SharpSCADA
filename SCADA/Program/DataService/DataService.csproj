@@ -158,6 +158,7 @@
   <ItemGroup>
     <Compile Include="CacheReader.cs" />
     <Compile Include="DeviceAddress.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Eval.cs" />
     <Compile Include="TagMetaData.cs" />
     <Compile Include="Condition.cs" />

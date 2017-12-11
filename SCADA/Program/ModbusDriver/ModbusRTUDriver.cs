@@ -151,8 +151,8 @@ namespace ModbusDriver
             data[0] = _slaveId;				// Slave id high byte
             data[1] = Modbus.fctWriteSingleCoil;				// Function code
             byte[] _adr = BitConverter.GetBytes((short)startAddress);
-            data[2] = _adr[0];				// Start address
-            data[3] = _adr[1];              // Start address
+            data[2] = _adr[1];				// Start address
+            data[3] = _adr[0];              // Start address
             if (OnOff) data[4] = 0xFF;
             byte[] arr = Utility.CalculateCrc(data, 6);
             data[6] = arr[0];
@@ -169,11 +169,11 @@ namespace ModbusDriver
             data[0] = _slaveId;				// Slave id high byte  从站地址高八位
             data[1] = Modbus.fctWriteMultipleCoils;				// Function code  功能码
             byte[] _adr = BitConverter.GetBytes((short)startAddress);
-            data[2] = _adr[0];				// Start address       开始地址高八位
-            data[3] = _adr[1];				// Start address       开始地址低八位
+            data[2] = _adr[1];				// Start address       开始地址高八位
+            data[3] = _adr[0];				// Start address       开始地址低八位
             byte[] _length = BitConverter.GetBytes((short)numBits);
-            data[4] = _length[0];			// Number of data to read  寄存器数量高八位
-            data[5] = _length[1];           // Number of data to read  寄存器数量低八位
+            data[4] = _length[1];			// Number of data to read  寄存器数量高八位
+            data[5] = _length[0];           // Number of data to read  寄存器数量低八位
             data[6] = (byte)len;            //字节数量
             Array.Copy(values, 0, data, 7, len);  //在data中加入变更数据
             byte[] arr = Utility.CalculateCrc(data, len + 7);
@@ -190,10 +190,10 @@ namespace ModbusDriver
             data[0] = _slaveId;				// Slave id high byte 从站地址高八位
             data[1] = Modbus.fctWriteSingleRegister;				// Function code 功能码
             byte[] _adr = BitConverter.GetBytes((short)startAddress);
-            data[2] = _adr[0];				// Start address    开始地址高八位
-            data[3] = _adr[1];				// Start address    开始地址高八位
-            data[4] = values[0];            //变更数据的高位
-            data[5] = values[1];            //变更数据的低位
+            data[2] = _adr[1];				// Start address    开始地址高八位
+            data[3] = _adr[0];				// Start address    开始地址高八位
+            data[4] = values[1];            //变更数据的高位
+            data[5] = values[0];            //变更数据的低位
             byte[] arr = Utility.CalculateCrc(data, 6);
             data[6] = arr[0];               //CRC校验码低八位
             data[7] = arr[1];               //CRC校验码高八位
@@ -210,11 +210,11 @@ namespace ModbusDriver
             data[0] = _slaveId;				// Slave id high byte  从站地址
             data[1] = Modbus.fctWriteMultipleRegister;				// Function code  功能码
             byte[] _adr = BitConverter.GetBytes((short)startAddress);
-            data[2] = _adr[0];				// Start address        开始地址高八位
-            data[3] = _adr[1];				// Start address        开始地址低八位
+            data[2] = _adr[1];				// Start address        开始地址高八位
+            data[3] = _adr[0];				// Start address        开始地址低八位
             byte[] _length = BitConverter.GetBytes((short)(len >> 1));
-            data[4] = _length[0];			// Number of data to read 寄存器数量高八位
-            data[5] = _length[1];			// Number of data to read 寄存器数量低八位
+            data[4] = _length[1];			// Number of data to read 寄存器数量高八位
+            data[5] = _length[0];			// Number of data to read 寄存器数量低八位
             data[6] = (byte)len;            //字节数
             Array.Copy(values, 0, data, 7, len); //把变更数据加入data中
             byte[] arr = Utility.CalculateCrc(data, len + 7);

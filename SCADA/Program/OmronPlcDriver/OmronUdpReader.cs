@@ -108,6 +108,7 @@ namespace OmronPlcDriver
                     }
                     break;
             }
+            dv.ByteOrder = ByteOrder.Network;
             return dv;
         }
 
@@ -434,7 +435,7 @@ namespace OmronPlcDriver
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0f, bool active = false)
         {
-            OmronCsCjUDPGroup grp = new OmronCsCjUDPGroup(id, name, updateRate, active, this);
+            NetShortGroup grp = new NetShortGroup(id, name, updateRate, active, this);
             _grps.Add(grp);
             return grp;
         }
@@ -691,106 +692,6 @@ namespace OmronPlcDriver
         public int WriteMultiple(DeviceAddress[] addrArr, object[] buffer)
         {
             return this.PLCWriteMultiple(new NetShortCacheReader(), addrArr, buffer, Limit);
-        }
-    }
-
-    public sealed class OmronCsCjUDPGroup : PLCGroup
-    {
-        public OmronCsCjUDPGroup(short id, string name, int updateRate, bool active, IPLCDriver plcReader)
-        {
-            this._id = id;
-            this._name = name;
-            this._updateRate = updateRate;
-            this._isActive = active;
-            this._plcReader = plcReader;
-            this._server = _plcReader.Parent;
-            this._timer = new Timer();
-            this._changedList = new List<int>();
-            this._cacheReader = new NetShortCacheReader();
-        }
-
-        protected override unsafe void Poll()
-        {
-            //Console.WriteLine("开始遍历》》");
-            short[] cache = (short[])_cacheReader.Cache;
-            int offset = 0;
-            foreach (PDUArea area in _rangeList)
-            {
-                //Console.WriteLine(">>读取:" + area.Start.DBNumber.ToString() + "@" + DateTime.Now.ToString());
-                byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
-                if (rcvBytes == null || rcvBytes.Length == 0)
-                {
-                    //Console.WriteLine(">>结果:" + area.Start.DBNumber.ToString() + "->失败");
-                    continue;
-                }
-                else
-                {
-                    //Console.WriteLine(">>结果:" + area.Start.DBNumber.ToString() + "->" + BitConverter.ToString(rcvBytes) + " at" + DateTime.Now.ToString());
-                    int len = area.Len;// rcvBytes.Length / 2;
-                    fixed (byte* p1 = rcvBytes)
-                    {
-                        short* prcv = (short*)p1;
-                        int index = area.StartIndex;//index指向_items中的Tag元数据
-                        int count = index + area.Count;
-                        while (index < count)
-                        {
-                            DeviceAddress addr = _items[index].Address;
-                            int iShort = addr.CacheIndex;
-                            int iShort1 = iShort - offset;
-                            if (addr.VarType == DataType.BOOL)
-                            {
-                                int tmp = prcv[iShort1] ^ cache[iShort];
-                                DeviceAddress next = addr;
-                                if (tmp != 0)
-                                {
-                                    while (addr.Start == next.Start)
-                                    {
-                                        if ((tmp & 1 << next.Bit.BitSwap()) > 0)
-                                            _changedList.Add(index);
-                                        if (++index < count)
-                                            next = _items[index].Address;
-                                        else
-                                            break;
-                                    }
-                                }
-                                else
-                                {
-                                    while (addr.Start == next.Start && ++index < count)
-                                    {
-                                        next = _items[index].Address;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (addr.DataSize <= 2)
-                                {
-
-                                    if (prcv[iShort1] != cache[iShort]) _changedList.Add(index);
-                                }
-                                else
-                                {
-                                    int size = addr.DataSize / 2;
-                                    for (int i = 0; i < size; i++)
-                                    {
-                                        if (prcv[iShort1 + i] != cache[iShort + i])
-                                        {
-                                            _changedList.Add(index);
-                                            break;
-                                        }
-                                    }
-                                }
-                                index++;
-                            }
-                        }
-                        for (int j = 0; j < len; j++)
-                        {
-                            cache[j + offset] = prcv[j];
-                        }//将PLC读取的数据写入到CacheReader中
-                    }
-                    offset += len;
-                }
-            }
         }
     }
 

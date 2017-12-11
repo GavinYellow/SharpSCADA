@@ -44,6 +44,7 @@ namespace ModbusDriver
                         dv.Bit = (byte)(st % 16);
                         st /= 16;
                         dv.Start = st;
+                        dv.Bit--;
                     }
                     break;
                 case '1':
@@ -55,6 +56,7 @@ namespace ModbusDriver
                         dv.Bit = (byte)(st % 16);
                         st /= 16;
                         dv.Start = st;
+                        dv.Bit--;
                     }
                     break;
                 case '4':
@@ -69,6 +71,8 @@ namespace ModbusDriver
                         else
                             dv.Start = int.Parse(address.Substring(1));
                         dv.Start--;
+                        dv.Bit--;
+                        dv.ByteOrder = ByteOrder.Network;
                     }
                     break;
                 case '3':
@@ -83,6 +87,8 @@ namespace ModbusDriver
                         else
                             dv.Start = int.Parse(address.Substring(1));
                         dv.Start--;
+                        dv.Bit--;
+                        dv.ByteOrder = ByteOrder.Network;
                     }
                     break;
             }
@@ -328,7 +334,7 @@ namespace ModbusDriver
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0f, bool active = false)
         {
-            ModbusTcpGroup grp = new ModbusTcpGroup(id, name, updateRate, active, this);
+            NetShortGroup grp = new NetShortGroup(id, name, updateRate, active, this);
             _grps.Add(grp);
             return grp;
         }
@@ -393,11 +399,8 @@ namespace ModbusDriver
         internal void CallException(int id, byte function, byte exception)
         {
             if (tcpSynCl == null) return;
-            if (exception == Modbus.excExceptionConnectionLost && IsClosed == false)
-            {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(GetErrorString(exception)));
-            }
+            if (OnClose != null)
+                OnClose(this, new ShutdownRequestEventArgs(GetErrorString(exception)));
         }
 
         public byte[] ReadBytes(DeviceAddress address, ushort size)
@@ -546,102 +549,5 @@ namespace ModbusDriver
         {
             return this.PLCWriteMultiple(new NetShortCacheReader(), addrArr, buffer, Limit);
         }
-    }
-
-    public sealed class ModbusTcpGroup : PLCGroup
-    {
-        public ModbusTcpGroup(short id, string name, int updateRate, bool active, IPLCDriver plcReader)
-        {
-            this._id = id;
-            this._name = name;
-            this._updateRate = updateRate;
-            this._isActive = active;
-            this._plcReader = plcReader;
-            this._server = _plcReader.Parent;
-            this._timer = new Timer();
-            this._changedList = new List<int>();
-            this._cacheReader = new NetShortCacheReader();
-        }
-
-        protected override unsafe void Poll()
-        {
-            short[] cache = (short[])_cacheReader.Cache;
-            int offset = 0;
-            foreach (PDUArea area in _rangeList)
-            {
-                byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
-                if (rcvBytes == null || rcvBytes.Length == 0)
-                {
-                    //offset += area.Len / 2;
-                    //_plcReader.Connect();
-                    continue;
-                }
-                else
-                {
-                    int len = rcvBytes.Length / 2;
-                    fixed (byte* p1 = rcvBytes)
-                    {
-                        short* prcv = (short*)p1;
-                        int index = area.StartIndex;//index指向_items中的Tag元数据
-                        int count = index + area.Count;
-                        while (index < count)
-                        {
-                            DeviceAddress addr = _items[index].Address;
-                            int iShort = addr.CacheIndex;
-                            int iShort1 = iShort - offset;
-                            if (addr.VarType == DataType.BOOL)
-                            {
-                                int tmp = prcv[iShort1] ^ cache[iShort];
-                                DeviceAddress next = addr;
-                                if (tmp != 0)
-                                {
-                                    while (addr.Start == next.Start)
-                                    {
-                                        if ((tmp & (1 << next.Bit.BitSwap())) > 0) _changedList.Add(index);
-                                        if (++index < count)
-                                            next = _items[index].Address;
-                                        else
-                                            break;
-                                    }
-                                }
-                                else
-                                {
-                                    while (addr.Start == next.Start && ++index < count)
-                                    {
-                                        next = _items[index].Address;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (addr.DataSize <= 2)
-                                {
-                                    if (prcv[iShort1] != cache[iShort]) _changedList.Add(index);
-                                }
-                                else
-                                {
-                                    int size = addr.DataSize / 2;
-                                    for (int i = 0; i < size; i++)
-                                    {
-                                        if (prcv[iShort1 + i] != cache[iShort + i])
-                                        {
-                                            _changedList.Add(index);
-                                            break;
-                                        }
-                                    }
-                                }
-                                index++;
-                            }
-                        }
-                        for (int j = 0; j < len; j++)
-                        {
-                            cache[j + offset] = prcv[j];
-                        }//将PLC读取的数据写入到CacheReader中
-                    }
-                    offset += len;
-                }
-            }
-        }
-
     }
 }

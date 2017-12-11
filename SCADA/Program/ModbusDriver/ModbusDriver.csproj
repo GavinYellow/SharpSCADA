@@ -104,7 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ModbusRTUDriver.cs" />
-    <Compile Include="ModbusRTU_TCP.cs" />
     <Compile Include="ModbusTCPDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
