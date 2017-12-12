@@ -135,6 +135,11 @@ namespace CoreTest
         public int Write(string value)
         {
             if (string.IsNullOrEmpty(value)) return -1;
+            if (_tag.Address.VarType == DataType.BOOL)
+            {
+                if (value == "1") value = "true";
+                if (value == "0") value = "false";
+            }
             return _tag.Write(value);
         }
 
