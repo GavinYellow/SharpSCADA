@@ -212,9 +212,13 @@ namespace BatchCoreService
             }
         }
 
+        #region 初始化服务器，连接和主机等
+
         public DAService()
         {
-            if (!EventLog.SourceExists(SERVICELOGSOURCE))
+
+            #region 创建事件日志
+            if (!EventLog.SourceExists(SERVICELOGSOURCE))//服务器记录的源和名称都是"DataProcess"
             {
                 EventLog.CreateEventSource(SERVICELOGSOURCE, SERVICELOGNAME);
             }
@@ -228,6 +232,8 @@ namespace BatchCoreService
                 // 當EventLog 滿了就把最早的那一筆log 蓋掉。
                 Log.ModifyOverflowPolicy(OverflowAction.OverwriteAsNeeded, 7);
             }
+            #endregion
+
             _scales = new List<Scaling>();
             _drivers = new SortedList<short, IDriver>();
             _alarmList = new List<AlarmItem>(ALARMLIMIT + 10);
@@ -261,6 +267,8 @@ namespace BatchCoreService
                 }
             }
         }
+
+        #endregion
 
         public void Dispose()
         {
@@ -409,7 +417,7 @@ namespace BatchCoreService
         {
             foreach (IDriver reader in _drivers.Values)
             {
-                reader.OnClose += new ShutdownRequestEventHandler(reader_OnClose);
+                reader.OnClose += new ShutdownRequestEventHandler(reader_OnClose);//每次连接失败，记录失败原因日志。
                 if (reader.IsClosed)
                 {
                     //if (reader is IFileDriver)
@@ -574,8 +582,8 @@ namespace BatchCoreService
              * 服务启动时，向整个局域网UDP广播加密的主机名、连接字符串等信息
              */
             //socketThreadList = new Dictionary<IPAddress, Socket>();
-            tcpServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            IPEndPoint LocalPort = new IPEndPoint(IPAddress.Any, PORT);
+            tcpServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);//新建一个套接字
+            IPEndPoint LocalPort = new IPEndPoint(IPAddress.Any, PORT);//IPEndPoint是IP和端口对的组合，IPAdress.Any使用你机器上一个可用的IP来初始化这个IP地址对象。
             tcpServer.Bind(LocalPort);
             tcpServer.Listen(100);
             ThreadPool.QueueUserWorkItem(new WaitCallback(AcceptWorkThread));
@@ -607,7 +615,7 @@ namespace BatchCoreService
                                             if (reader.MoveToAttribute("TestCycle"))
                                                 int.TryParse(reader.Value, out CYCLE);
                                             if (reader.MoveToAttribute("SendTimeout"))
-                                                int.TryParse(reader.Value, out SENDTIMEOUT);
+                                                int.TryParse(reader.Value, out SENDTIMEOUT);//客户端Socket通讯发送超时
                                         }
                                         break;
                                     case "Hda"://历史记录的参数
@@ -652,37 +660,37 @@ namespace BatchCoreService
             while (true)
             {
                 //if (tcpServer.Poll(0, SelectMode.SelectRead))
-                Socket s_Accept = tcpServer.Accept();
+                Socket s_Accept = tcpServer.Accept();//有连接后，接受客户端的连接请求。
                 //IPAddress addr = (s_Accept.RemoteEndPoint as IPEndPoint).Address;
                 s_Accept.SendTimeout = SENDTIMEOUT;
-                IPAddress addr = (s_Accept.RemoteEndPoint as IPEndPoint).Address;
+                IPAddress addr = (s_Accept.RemoteEndPoint as IPEndPoint).Address;//客户端的IP地址
                 try
                 {
-                    if (!_socketThreadList.ContainsKey(addr))
+                    if (!_socketThreadList.ContainsKey(addr))//键查找：如果字典中不存在IP地址，将客户端的IP添加到字典中
                         _socketThreadList.Add(addr, s_Accept);
                 }
                 catch (Exception err)
                 {
                     AddErrorLog(err);
                 }
-                ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(ReceiveWorkThread), s_Accept);
+                ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(ReceiveWorkThread), s_Accept);//线程池中不安全的线程。线程池将s_Accept传送给ReceiveWorkThread
             }
         }
 
         void ReceiveWorkThread(object obj)
         {
-            Socket s_Receive = (Socket)obj;
+            Socket s_Receive = (Socket)obj;//创建新的接收通道Socket
             IPAddress addr = null;
             try
             {
-                addr = (s_Receive.RemoteEndPoint as IPEndPoint).Address;
+                addr = (s_Receive.RemoteEndPoint as IPEndPoint).Address;//获取远程终结点。
             }
             catch (Exception err)
             {
                 AddErrorLog(err);
                 return;
             }
-            byte[] buffer = new byte[s_Receive.ReceiveBufferSize];     // 创建接收缓冲
+            byte[] buffer = new byte[s_Receive.ReceiveBufferSize];     // 创建接收缓冲，默认的接收缓冲区的大小是多少？
             while (true)
             {
                 try
@@ -698,12 +706,12 @@ namespace BatchCoreService
                     {
                         //buffer[0]是协议头，1是指令号，2是读方式（缓存还是设备），3、4是ID，5是长度，后接变量值
                         byte command = buffer[1];
-                        switch (command)
+                        switch (command)//根据指令号来操作对应的程序。
                         {
-                            case FCTCOMMAND.fctReadSingle:
+                            case FCTCOMMAND.fctReadSingle://来自DataServer中的IServer下面的类FCTCOMMAND
                                 {
                                     //DataSource source = buffer[2] == 0 ? DataSource.Cache : DataSource.Device;
-                                    short id = BitConverter.ToInt16(buffer, 3);
+                                    short id = BitConverter.ToInt16(buffer, 3);//将二进制数转换成整数
                                     byte length = buffer[5];
                                     byte[] send = new byte[5 + length];
                                     for (int i = 0; i < 5; i++)
@@ -1347,6 +1355,8 @@ namespace BatchCoreService
             return rs;
         }
 
+        #region New region
+
         void grp_DataChange(object sender, DataChangeEventArgs e)
         {
             var data = e.Values;
@@ -1376,7 +1386,11 @@ namespace BatchCoreService
                 ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(this.SendData), new TempCachedData(addr, data));
             }
         }
+
+        #endregion
+
         //此处发生内存泄漏；需要试验CLRProfile确定泄漏原因；改回原方法测试；看是否解决队列堵塞问题。对于客户端Grp,要过滤掉
+
         private void SendData(object obj)
         {
             var tempdata = obj as TempCachedData;

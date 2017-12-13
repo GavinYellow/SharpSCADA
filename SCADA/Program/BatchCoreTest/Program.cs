@@ -30,7 +30,7 @@ namespace BatchCoreService
 
             // Create a ServiceHost for the CalculatorService type and 
             // provide the base address.
-            serviceHost = new ServiceHost(typeof(DAService));
+            serviceHost = new ServiceHost(typeof(DAService));//MCF通讯
 
             // Open the ServiceHostBase to create listeners and start 
             // listening for messages.
