@@ -4,7 +4,7 @@ using System;
 namespace DataService
 {
     [StructLayout(LayoutKind.Explicit, Size = 4)]
-    public struct Storage
+    public struct Storage//储存类型的结构，有bool,byte,短整型，长整型，和浮点型
     {
         // Fields
         [FieldOffset(0)]
@@ -18,7 +18,7 @@ namespace DataService
         [FieldOffset(0)]
         public float Single;
 
-        public static readonly Storage Empty ;
+        public static readonly Storage Empty ;//只读属性
 
         static Storage()
         {
@@ -28,7 +28,7 @@ namespace DataService
         public override bool Equals(object obj)
         {
             if (obj == null) return false;
-            Type type = obj.GetType();
+            Type type = obj.GetType();//获得obj的类型
             if (type == typeof(Storage))
                 return this.Int32 == ((Storage)obj).Int32;
             else

@@ -212,7 +212,7 @@ namespace BatchCoreService
             }
         }
 
-        #region 初始化服务器，连接和主机等
+        #region 初始化服务：数据库中的参数--→驱动器连接和组更新--→通过Socket建立客户端的连接
 
         public DAService()
         {
@@ -239,10 +239,10 @@ namespace BatchCoreService
             _alarmList = new List<AlarmItem>(ALARMLIMIT + 10);
             reval = new ExpressionEval(this);
             _hda = new List<HistoryData>();
-            InitServerByDatabase();
-            InitConnection();
-            _socketThreadList = new Dictionary<IPAddress, Socket>();
-            InitHost();
+            InitServerByDatabase();//先从数据库中读取一些参数和驱动配置；
+            InitConnection();//然后通过驱动中Connect函数和Group更新函数来更新组中的值；
+            _socketThreadList = new Dictionary<IPAddress, Socket>();//最后建立一些Socket来处理与客户端的连接和数据交换；
+            InitHost();//建立TCP通讯服务器端。
 
             timer1.Elapsed += timer1_Elapsed;
             timer2.Elapsed += timer2_Elapsed;
@@ -421,7 +421,7 @@ namespace BatchCoreService
                 if (reader.IsClosed)
                 {
                     //if (reader is IFileDriver)
-                    reader.Connect();
+                  var bitConnect=  reader.Connect();
                 }
                 foreach (IGroup grp in reader.Groups)
                 {
@@ -433,25 +433,25 @@ namespace BatchCoreService
             //此处需改进,与Condition采用相同的处理方式，可配置
         }
 
-        void InitServerByDatabase()
+        void InitServerByDatabase()//通过数据库初始化服务器
         {
-            using (var dataReader = DataHelper.Instance.ExecuteProcedureReader("InitServer", DataHelper.CreateParam("@TYPE", SqlDbType.Int, 0)))
+            using (var dataReader = DataHelper.Instance.ExecuteProcedureReader("InitServer", DataHelper.CreateParam("@TYPE", SqlDbType.Int, 0)))//执行存储过程操作，参数时0，服务端
             {
                 if (dataReader == null) return;// Stopwatch sw = Stopwatch.StartNew();
-                while (dataReader.Read())
+                while (dataReader.Read())//读取驱动器配置表Meta_Driver的值：1	S1	127.0.0.1	3000	D:\dll\SiemensPLCDriver.dll	SiemensPLCDriver.SiemensTCPReader	0	1
                 {
                     AddDriver(dataReader.GetInt16(0), dataReader.GetNullableString(1),
                        dataReader.GetNullableString(2), dataReader.GetInt32(3), dataReader.GetNullableString(4), dataReader.GetNullableString(5),
                         dataReader.GetNullableString(6), dataReader.GetNullableString(7));
                 }
 
-                dataReader.NextResult();
+                dataReader.NextResult();//读取变量数量的值：2
                 dataReader.Read();
                 int count = dataReader.GetInt32(0);
                 _list = new List<TagMetaData>(count);
                 _mapping = new Dictionary<string, ITag>(count);
                 dataReader.NextResult();
-                while (dataReader.Read())
+                while (dataReader.Read())//读取变量配置表Meta_Tag里的值：1	1	M1	M0.0	1	1	0	0	0	0
                 {
                     var meta = new TagMetaData(dataReader.GetInt16(0), dataReader.GetInt16(1), dataReader.GetString(2), dataReader.GetString(3), (DataType)dataReader.GetByte(4),
                      (ushort)dataReader.GetInt16(5), dataReader.GetBoolean(6), dataReader.GetFloat(7), dataReader.GetFloat(8), dataReader.GetInt32(9));
@@ -463,7 +463,7 @@ namespace BatchCoreService
                     //Advise(DDETOPIC, meta.Name);
                 }
                 _list.Sort();
-                dataReader.NextResult();
+                dataReader.NextResult();//读取变量组配置表Meta_Group里的值：1	G1	1	300	0	1
                 while (dataReader.Read())
                 {
                     IDriver dv;
@@ -476,7 +476,7 @@ namespace BatchCoreService
                             grp.AddItems(_list);
                     }
                 }
-                dataReader.NextResult();
+                dataReader.NextResult();//
                 while (dataReader.Read())
                 {
                     ITag tag = this[dataReader.GetNullableString(0)];
@@ -485,7 +485,7 @@ namespace BatchCoreService
                         tag.ValueChanged += OnValueChanged;
                     }
                 }
-                dataReader.NextResult();
+                dataReader.NextResult();//读取报警配置表Log_Alarm里的数据
                 _conditions = new List<ICondition>();
                 _conditionList = new List<ICondition>();
                 while (dataReader.Read())
@@ -558,7 +558,7 @@ namespace BatchCoreService
                     //_conditions.Add(cond);// UpdateCondition(cond);
                     _conditions.Add(cond);
                 }
-                dataReader.NextResult();
+                dataReader.NextResult();//读取变量量程转换表Meta_Tag里的值
                 while (dataReader.Read())
                 {
                     _scales.Add(new Scaling(dataReader.GetInt16(0), (ScaleType)dataReader.GetByte(1),
@@ -576,7 +576,7 @@ namespace BatchCoreService
             _conditions.Sort(_compare);
         }
 
-        void InitHost()
+        void InitHost()//创建TCP服务器通讯
         {
             /*对关闭状态的判断，最好用心跳检测；冗余切换，可广播冗余命令，包含新主机名、数据库连接、IP地址等。
              * 服务启动时，向整个局域网UDP广播加密的主机名、连接字符串等信息
@@ -721,7 +721,7 @@ namespace BatchCoreService
                                     ITag tag = this[id];
                                     if (tag != null)
                                     {
-                                        Storage value = buffer[2] == 0 ? tag.Value : tag.Read(DataSource.Device);
+                                        Storage value = buffer[2] == 0 ? tag.Value : tag.Read(DataSource.Device);//读方式：0则读变量的值，否则读设备
                                         byte[] bt = tag.ToByteArray(value);
                                         for (int k = 0; k < bt.Length; k++)
                                         {
@@ -735,7 +735,7 @@ namespace BatchCoreService
                                     s_Receive.Send(send);
                                 }
                                 break;
-                            case FCTCOMMAND.fctReadMultiple:
+                            case FCTCOMMAND.fctReadMultiple://批量读
                                 {
                                     //buffer[0]是协议头，1是指令号，2是读方式（缓存还是设备），3、4是变量数，后接变量值
                                     //DataSource source = buffer[2] == 0 ? DataSource.Cache : DataSource.Device;
@@ -806,7 +806,7 @@ namespace BatchCoreService
                                     s_Receive.Send(send, 0, j, SocketFlags.None);
                                 }
                                 break;
-                            case FCTCOMMAND.fctWriteSingle:
+                            case FCTCOMMAND.fctWriteSingle://单个写
                                 {
                                     //buffer[0]是协议头，1是指令号，2是写方式（缓存还是设备），3、4是ID，5是长度
                                     short id = BitConverter.ToInt16(buffer, 3);
@@ -860,7 +860,7 @@ namespace BatchCoreService
                                     s_Receive.Send(new byte[] { FCTCOMMAND.fctWriteSingle, rs }, 0, 2, SocketFlags.None);//应返回一个错误代码;
                                 }
                                 break;
-                            case FCTCOMMAND.fctWriteMultiple:
+                            case FCTCOMMAND.fctWriteMultiple://批量写
                                 {  //int BatchWrite(IDictionary<ITag, object> items, bool isSync = true);
                                     int count = BitConverter.ToInt16(buffer, 2);
                                     int j = 4; byte rs = 0;
@@ -1355,7 +1355,7 @@ namespace BatchCoreService
             return rs;
         }
 
-        #region New region
+        #region 组更新
 
         void grp_DataChange(object sender, DataChangeEventArgs e)
         {
@@ -1495,8 +1495,10 @@ namespace BatchCoreService
             }
         }
 
+        #region 通过数据库里的配置循环添加驱动，将值保存在新建的_drivers字典中
+
         public IDriver AddDriver(short id, string name, string server, int timeOut,
-            string assembly, string className, string spare1, string spare2)
+            string assembly, string className, string spare1, string spare2)//通过读取数据库Meta_Driver里的值来添加驱动
         {
             if (_drivers.ContainsKey(id))
                 return _drivers[id];
@@ -1509,7 +1511,7 @@ namespace BatchCoreService
                 {
                     dv = Activator.CreateInstance(dvType, new object[] { this, id, name, server, timeOut, spare1, spare2 }) as IDriver;
                     if (dv != null)
-                        _drivers.Add(id, dv);
+                        _drivers.Add(id, dv);//添加驱动到字典中
                 }
             }
             catch (Exception e)
@@ -1532,6 +1534,8 @@ namespace BatchCoreService
                 return false;
             }
         }
+
+        #endregion
 
         void reader_OnClose(object sender, ShutdownRequestEventArgs e)
         {
