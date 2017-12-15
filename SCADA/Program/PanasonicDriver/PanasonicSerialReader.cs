@@ -94,7 +94,7 @@ namespace PanasonicPLCriver
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0, bool active = false)
         {
-            NetShortGroup grp = new NetShortGroup(id, name, updateRate, active, this);
+            ShortGroup grp = new ShortGroup(id, name, updateRate, active, this);
             _grps.Add(grp);
             return grp;
         }
@@ -211,7 +211,6 @@ namespace PanasonicPLCriver
                         break;
                 }
             }
-            dv.ByteOrder = ByteOrder.Network;
             return dv;
         }
         #region 实现了四个命令 其余没有做
