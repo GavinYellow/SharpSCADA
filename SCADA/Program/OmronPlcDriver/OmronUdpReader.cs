@@ -107,7 +107,7 @@ namespace OmronPlcDriver
                     }
                     break;
             }
-            //dv.ByteOrder = ByteOrder.Network;
+            dv.ByteOrder = ByteOrder.Network;
             return dv;
         }
 
