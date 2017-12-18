@@ -419,6 +419,24 @@ namespace ModbusDriver
                 return new ItemData<int>(IPAddress.HostToNetworkOrder(BitConverter.ToInt32(data, 0)), 0, QUALITIES.QUALITY_GOOD);
         }
 
+        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        {
+            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 2, (byte)address.DBNumber));
+            if (data == null)
+                return new ItemData<uint>(0, 0, QUALITIES.QUALITY_BAD);
+            else
+                return new ItemData<uint>((uint)IPAddress.HostToNetworkOrder(BitConverter.ToInt32(data, 0)), 0, QUALITIES.QUALITY_GOOD);
+        }
+
+        public ItemData<ushort> ReadUInt16(DeviceAddress address)
+        {
+            byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.DBNumber));
+            if (data == null)
+                return new ItemData<ushort>(0, 0, QUALITIES.QUALITY_BAD);
+            else
+                return new ItemData<ushort>((ushort)IPAddress.HostToNetworkOrder(BitConverter.ToInt16(data, 0)), 0, QUALITIES.QUALITY_GOOD);
+        }
+
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
             byte[] data = WriteSyncData(CreateReadHeader(address.Area, address.Start, 1, (byte)address.DBNumber));
@@ -507,6 +525,18 @@ namespace ModbusDriver
         public int WriteInt16(DeviceAddress address, short value)
         {
             var data = WriteSingleRegister(address.Area, address.Start, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)));
+            return data == null ? -1 : 0;
+        }
+
+        public int WriteUInt16(DeviceAddress address, ushort value)
+        {
+            var data = WriteSingleRegister(address.Area, address.Start, BitConverter.GetBytes((ushort)IPAddress.HostToNetworkOrder((short)value)));
+            return data == null ? -1 : 0;
+        }
+
+        public int WriteUInt32(DeviceAddress address, uint value)
+        {
+            var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder((int)value)));
             return data == null ? -1 : 0;
         }
 

@@ -130,6 +130,18 @@ namespace FileDriver
             return tag == null ? new ItemData<int>(0, 0, QUALITIES.QUALITY_BAD) : new ItemData<int>(tag.Value.Int32, 0, QUALITIES.QUALITY_GOOD);
         }
 
+        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        {
+            var tag = _parent[(short)address.CacheIndex];
+            return tag == null ? new ItemData<uint>(0, 0, QUALITIES.QUALITY_BAD) : new ItemData<uint>(tag.Value.DWord, 0, QUALITIES.QUALITY_GOOD);
+        }
+
+        public ItemData<ushort> ReadUInt16(DeviceAddress address)
+        {
+            var tag = _parent[(short)address.CacheIndex];
+            return tag == null ? new ItemData<ushort>(0, 0, QUALITIES.QUALITY_BAD) : new ItemData<ushort>(tag.Value.Word, 0, QUALITIES.QUALITY_GOOD);
+        }
+
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
             var tag = _parent[(short)address.CacheIndex];
@@ -181,6 +193,16 @@ namespace FileDriver
         }
 
         public int WriteInt16(DeviceAddress address, short value)
+        {
+            return 0;
+        }
+
+        public int WriteUInt16(DeviceAddress address, ushort value)
+        {
+            return 0;
+        }
+
+        public int WriteUInt32(DeviceAddress address, uint value)
         {
             return 0;
         }

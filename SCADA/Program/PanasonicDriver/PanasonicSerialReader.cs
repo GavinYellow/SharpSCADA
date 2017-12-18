@@ -436,11 +436,19 @@ namespace PanasonicPLCriver
         {
             throw new NotImplementedException();
         }
+        public ItemData<ushort> ReadUInt16(DeviceAddress address)
+        {
+            throw new NotImplementedException();
+        }
         /// <summary>
         /// 读取一个32位数  返回如果是6300  则认为是0063H 高低位要反 而且是16进账
         /// </summary>
         /// <param name="address"></param>
         public ItemData<int> ReadInt32(DeviceAddress address)
+        {
+            throw new NotImplementedException();
+        }
+        public ItemData<uint> ReadUInt32(DeviceAddress address)
         {
             throw new NotImplementedException();
         }
@@ -494,6 +502,16 @@ namespace PanasonicPLCriver
             string cmd = CreateWDCmd(address.Start, new short[1] {value}, out respBeginStr);
             WriteSyncData(respBeginStr, cmd);
             return 0;
+        }
+
+        public int WriteUInt16(DeviceAddress address, ushort value)
+        {
+            return WriteInt16(address, (short)value);
+        }
+
+        public int WriteUInt32(DeviceAddress address, uint value)
+        {
+            throw new NotImplementedException();
         }
 
         public int WriteInt32(DeviceAddress address, int value)

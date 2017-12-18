@@ -510,9 +510,12 @@ namespace BatchCoreService
                             return ff > -2E-38 && ff < 2E-38 ? 0f : ff;
                         case DataType.BOOL:
                             return _enumer.Current.Value.Boolean ? 1f : 0f;
+                        case DataType.DWORD:
+                            return _enumer.Current.Value.DWord;
                         case DataType.INT:
                             return _enumer.Current.Value.Int32;
                         case DataType.WORD:
+                            return _enumer.Current.Value.Word;
                         case DataType.SHORT:
                             return _enumer.Current.Value.Int16;
                         case DataType.BYTE:

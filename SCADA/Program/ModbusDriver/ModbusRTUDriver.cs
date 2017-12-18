@@ -348,9 +348,23 @@ namespace ModbusDriver
 
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
-            byte[] bit = ReadBytes(address, 2);
+            byte[] bit = ReadBytes(address, 4);
             return bit == null ? new ItemData<int>(0, 0, QUALITIES.QUALITY_BAD) :
                 new ItemData<int>(BitConverter.ToInt32(bit, 0), 0, QUALITIES.QUALITY_GOOD);
+        }
+
+        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        {
+            byte[] bit = ReadBytes(address, 4);
+            return bit == null ? new ItemData<uint>(0, 0, QUALITIES.QUALITY_BAD) :
+                new ItemData<uint>(BitConverter.ToUInt32(bit, 0), 0, QUALITIES.QUALITY_GOOD);
+        }
+
+        public ItemData<ushort> ReadUInt16(DeviceAddress address)
+        {
+            byte[] bit = ReadBytes(address, 1);
+            return bit == null ? new ItemData<ushort>(0, 0, QUALITIES.QUALITY_BAD) :
+                new ItemData<ushort>(BitConverter.ToUInt16(bit, 0), 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)
@@ -424,6 +438,23 @@ namespace ModbusDriver
         {
             var data = WriteSingleRegister(address.Start, BitConverter.GetBytes(value));
             _serialPort.Write(data, 0, data.Length);
+            var chr = _serialPort.ReadByte();
+            return (chr & 0x80) > 0 ? -1 : 0;
+        }
+
+        public int WriteUInt16(DeviceAddress address, ushort value)
+        {
+            var data = WriteSingleRegister(address.Start, BitConverter.GetBytes(value));
+            _serialPort.Write(data, 0, data.Length);
+            var chr = _serialPort.ReadByte();
+            return (chr & 0x80) > 0 ? -1 : 0;
+        }
+
+        public int WriteUInt32(DeviceAddress address, uint value)
+        {
+            var data = WriteMultipleRegister(address.Start, BitConverter.GetBytes(value));
+            _serialPort.Write(data, 0, data.Length);
+            _serialPort.ReadByte();
             var chr = _serialPort.ReadByte();
             return (chr & 0x80) > 0 ? -1 : 0;
         }

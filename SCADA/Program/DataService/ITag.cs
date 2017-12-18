@@ -366,6 +366,75 @@ namespace DataService
         }
     }
 
+    public sealed class UShortTag : ITag
+    {
+
+        public UShortTag(short id, DeviceAddress addr, IGroup group)
+            : base(id, addr, group)
+        {
+        }
+
+
+        #region IDevice Members
+        public override bool Refresh(DataSource source = DataSource.Device)
+        {
+            var _newvalue = _group.ReadUInt16(_plcAddress, source);
+            if (_newvalue.Value != _value.Word)
+            {
+                Storage value = Storage.Empty;
+                value.Word = _newvalue.Value;
+                DateTime time = _newvalue.TimeStamp.ToDateTime();
+                if (ValueChanging != null)
+                {
+                    ValueChanging(this, new ValueChangingEventArgs<Storage>(_newvalue.Quality, _value, value, _timeStamp, time));
+                }
+                _timeStamp = time;
+                _quality = _newvalue.Quality;
+                if (_quality == QUALITIES.QUALITY_GOOD)
+                {
+                    _value = value;
+                    if (ValueChanged != null)
+                    {
+                        ValueChanged(this, new ValueChangedEventArgs(value));
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public override Storage Read(DataSource source = DataSource.Cache)
+        {
+            Storage value = Storage.Empty;
+            value.Word = _group.ReadUInt16(_plcAddress, source).Value;
+            return value;
+        }
+
+        public override int Write(object value)
+        {
+            var temp = _value.Word;
+            var str = value as string;
+            if (str == null)
+                temp = Convert.ToUInt16(value);
+            else if (!ushort.TryParse(str, out temp))
+                return -1;
+            _timeStamp = DateTime.Now;
+            return _group.WriteUInt16(_plcAddress, temp);
+        }
+
+        protected override int InnerWrite(Storage value)
+        {
+            return _group.WriteUInt16(_plcAddress, value.Word);
+        }
+
+        #endregion
+
+        public override string ToString()
+        {
+            return _value.Word.ToString();
+        }
+    }
+
     public sealed class IntTag : ITag
     {
 
@@ -431,6 +500,74 @@ namespace DataService
         public override string ToString()
         {
             return _value.Int32.ToString();
+        }
+    }
+
+    public sealed class UIntTag : ITag
+    {
+
+        public UIntTag(short id, DeviceAddress addr, IGroup group)
+            : base(id, addr, group)
+        {
+        }
+
+        #region IDevice Members
+        public override bool Refresh(DataSource source = DataSource.Device)
+        {
+            var _newvalue = _group.ReadUInt32(_plcAddress, source);
+            if (_newvalue.Value != _value.DWord)
+            {
+                Storage value = Storage.Empty;
+                value.DWord = _newvalue.Value;
+                DateTime time = _newvalue.TimeStamp.ToDateTime();
+                if (ValueChanging != null)
+                {
+                    ValueChanging(this, new ValueChangingEventArgs<Storage>(_newvalue.Quality, _value, value, _timeStamp, time));
+                }
+                _timeStamp = time;
+                _quality = _newvalue.Quality;
+                if (_quality == QUALITIES.QUALITY_GOOD)
+                {
+                    _value = value;
+                    if (ValueChanged != null)
+                    {
+                        ValueChanged(this, new ValueChangedEventArgs(value));
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public override Storage Read(DataSource source = DataSource.Cache)
+        {
+            Storage value = Storage.Empty;
+            value.DWord = _group.ReadUInt32(_plcAddress, source).Value;
+            return value;
+        }
+
+        public override int Write(object value)
+        {
+            var temp = _value.DWord;
+            var str = value as string;
+            if (str == null)
+                temp = Convert.ToUInt32(value);
+            else if (!uint.TryParse(str, out temp))
+                return -1;
+            _timeStamp = DateTime.Now;
+            return _group.WriteUInt32(_plcAddress, temp);
+        }
+
+        protected override int InnerWrite(Storage value)
+        {
+            return _group.WriteUInt32(_plcAddress, value.DWord);
+        }
+
+        #endregion
+
+        public override string ToString()
+        {
+            return _value.DWord.ToString();
         }
     }
 

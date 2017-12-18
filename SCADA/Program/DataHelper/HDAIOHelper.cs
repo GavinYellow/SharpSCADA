@@ -169,8 +169,13 @@ namespace DatabaseLib
                                                                 w.Write((byte)dataReader.GetFloat(1));
                                                                 break;
                                                             case DataType.WORD:
+                                                                w.Write((ushort)dataReader.GetFloat(1));
+                                                                break;
                                                             case DataType.SHORT:
                                                                 w.Write((short)dataReader.GetFloat(1));
+                                                                break;
+                                                            case DataType.DWORD:
+                                                                w.Write((uint)dataReader.GetFloat(1));
                                                                 break;
                                                             case DataType.INT:
                                                                 w.Write((int)dataReader.GetFloat(1));
@@ -305,9 +310,16 @@ namespace DatabaseLib
                                             pos++;
                                             break;
                                         case DataType.WORD:
+                                            data.Value.Word = acc.ReadUInt16(pos);
+                                            pos += 2;
+                                            break;
                                         case DataType.SHORT:
                                             data.Value.Int16 = acc.ReadInt16(pos);
                                             pos += 2;
+                                            break;
+                                        case DataType.DWORD:
+                                            data.Value.DWord = acc.ReadUInt32(pos);
+                                            pos += 4;
                                             break;
                                         case DataType.INT:
                                             data.Value.Int32 = acc.ReadInt32(pos);
@@ -416,9 +428,16 @@ namespace DatabaseLib
                                         pos++;
                                         break;
                                     case DataType.WORD:
+                                        data.Value.Word = acc2.ReadUInt16(pos);
+                                        pos += 2;
+                                        break;
                                     case DataType.SHORT:
                                         data.Value.Int16 = acc2.ReadInt16(pos);
                                         pos += 2;
+                                        break;
+                                    case DataType.DWORD:
+                                        data.Value.DWord = acc2.ReadUInt32(pos);
+                                        pos += 4;
                                         break;
                                     case DataType.INT:
                                         data.Value.Int32 = acc2.ReadInt32(pos);
@@ -464,8 +483,13 @@ namespace DatabaseLib
                             data.Value.Byte = Convert.ToByte(dataReader.GetFloat(ivalue));
                             break;
                         case DataType.WORD:
+                            data.Value.Word = Convert.ToUInt16(dataReader.GetFloat(ivalue));
+                            break;
                         case DataType.SHORT:
                             data.Value.Int16 = Convert.ToInt16(dataReader.GetFloat(ivalue));
+                            break;
+                        case DataType.DWORD:
+                            data.Value.DWord = Convert.ToUInt32(dataReader.GetFloat(ivalue));
                             break;
                         case DataType.INT:
                             data.Value.Int32 = Convert.ToInt32(dataReader.GetFloat(ivalue));
@@ -511,8 +535,13 @@ namespace DatabaseLib
                             data.Value.Byte = Convert.ToByte(dataReader.GetFloat(ivalue));
                             break;
                         case DataType.WORD:
+                            data.Value.Word = Convert.ToUInt16(dataReader.GetFloat(ivalue));
+                            break;
                         case DataType.SHORT:
                             data.Value.Int16 = Convert.ToInt16(dataReader.GetFloat(ivalue));
+                            break;
+                        case DataType.DWORD:
+                            data.Value.DWord = Convert.ToUInt32(dataReader.GetFloat(ivalue));
                             break;
                         case DataType.INT:
                             data.Value.Int32 = Convert.ToInt32(dataReader.GetFloat(ivalue));
