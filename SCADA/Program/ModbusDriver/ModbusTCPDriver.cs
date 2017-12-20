@@ -32,7 +32,14 @@ namespace ModbusDriver
             DeviceAddress dv = DeviceAddress.Empty;
             if (string.IsNullOrEmpty(address))
                 return dv;
-            dv.Area = _slaveId;
+            var sindex = address.IndexOf(':');
+            if (sindex > 0)
+            {
+                int slaveId;
+                if (int.TryParse(address.Substring(0, sindex), out slaveId))
+                    dv.Area = slaveId;
+                address = address.Substring(sindex + 1);
+            }
             switch (address[0])
             {
                 case '0':
@@ -145,16 +152,6 @@ namespace ModbusDriver
             set { _timeout = value; }
         }
 
-        byte _slaveId;//设备ID 单元号  字节号
-        /// <summary>
-        /// 设备ID 单元号  字节号
-        /// </summary>
-        public byte SlaveId
-        {
-            get { return _slaveId; }
-            set { _slaveId = value; }
-        }
-
         List<IGroup> _grps = new List<IGroup>(20);
         public IEnumerable<IGroup> Groups
         {
@@ -167,14 +164,13 @@ namespace ModbusDriver
             get { return _server; }
         }
 
-        public ModbusTCPReader(IDataServer server, short id, string name, string ip, int timeOut = 500, string spare1 = "0", string spare2 = null)
+        public ModbusTCPReader(IDataServer server, short id, string name, string ip, int timeOut = 500, string spare1 = null, string spare2 = null)
         {
             _id = id;
             _name = name;
             _server = server;
             _ip = ip;
             _timeout = timeOut;
-            if (!string.IsNullOrEmpty(spare1)) byte.TryParse(spare1, out _slaveId);
         }
 
         public bool Connect()
