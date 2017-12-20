@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.IO.Ports;
-using System.Net;
 using System.Text;
 
 namespace PanasonicPLCriver
@@ -43,7 +42,7 @@ namespace PanasonicPLCriver
             _server = server;
             _id = id;
             //spare1 = {COM3,9600,Odd,8,One}
-            _serialPort = new SerialPort("COM2",57600,Parity.Odd,8,StopBits.One);
+            _serialPort = new SerialPort("COM2", 57600, Parity.Odd, 8, StopBits.One);
             _devId = byte.Parse(spare2);
         }
         public bool IsClosed
@@ -299,7 +298,7 @@ namespace PanasonicPLCriver
         /// <param name="values">写入的值</param>
         /// <param name="respBeginStr">响应的开始帧</param>
         /// <returns></returns>
-        public string CreateWDCmd(int start,  short[] values, out string respBeginStr)
+        public string CreateWDCmd(int start, short[] values, out string respBeginStr)
         {
             string dataStr = string.Empty;
             int size = values.Length;
@@ -330,17 +329,18 @@ namespace PanasonicPLCriver
             {
                 if (!isBool(startAddress.Area))//读寄存器的情况 
                 {
-                     cmd = CreateRDCmd(startAddress.Start,size,out respBeginStr);
+                    cmd = CreateRDCmd(startAddress.Start, size, out respBeginStr);
                 }
                 else //读触点的情况
                 {
-                     cmd = CreateRCCCmd(startAddress.Start, size, startAddress.Area, out respBeginStr);
+                    cmd = CreateRCCCmd(startAddress.Start, size, startAddress.Area, out respBeginStr);
                 }
                 return WriteSyncData(respBeginStr, cmd);
             }
             catch (Exception e)
             {
-                OnClose?.Invoke(this, new ShutdownRequestEventArgs(e.Message));
+                if (OnClose != null)
+                    OnClose(this, new ShutdownRequestEventArgs(e.Message));
                 return null;
             }
         }
@@ -350,7 +350,7 @@ namespace PanasonicPLCriver
             byte[] writeData = Encoding.Default.GetBytes(cmd);
             string recv = string.Empty;
             lock (syncLock)//这里加锁 防止一个刚写完还没全读来  另一就去写 
-                //但这就会造成锁死的情况  比如循环读的时候  触发去写 这时候必须要等读完才能去写
+                           //但这就会造成锁死的情况  比如循环读的时候  触发去写 这时候必须要等读完才能去写
             {
                 _serialPort.Write(writeData, 0, writeData.Length);
                 try
@@ -359,14 +359,16 @@ namespace PanasonicPLCriver
                 }
                 catch (Exception)
                 {
-                    OnClose?.Invoke(this, new ShutdownRequestEventArgs("读取超时"));
+                    if (OnClose != null)
+                        OnClose(this, new ShutdownRequestEventArgs("读取超时"));
                     return null;
-                } 
+                }
             }
             if (recv.Substring(3, 1) == "!")//返回为错误代码
             {
                 string err = recv.Substring(4, 2);
-                OnClose?.Invoke(this, new ShutdownRequestEventArgs(daveStrerror(err)));
+                if (OnClose != null)
+                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(err)));
                 return null;
             }
             string needXorStr = recv.Substring(0, recv.Length - 2);//需要进行xor校验的字符串
@@ -374,14 +376,15 @@ namespace PanasonicPLCriver
             string checkStr = Utility.XorCheck(needXorStr);
             if (checkStr != recvCheck)
             {
-                OnClose?.Invoke(this, new ShutdownRequestEventArgs("校验失败"));
+                if (OnClose != null)
+                    OnClose(this, new ShutdownRequestEventArgs("校验失败"));
                 return null;
             }
             else
             {
                 if (recv.Substring(4, 1) == "W")//如果是写入命令
                 {
-                    return  new byte[0];
+                    return new byte[0];
                 }
                 string dataStr = Utility.Pinchstring(recv, respBeginStr, checkStr);
                 return Utility.HexToBytes(dataStr);
@@ -391,7 +394,7 @@ namespace PanasonicPLCriver
         {
             switch (code)
             {
-                case "20":return "未定义";
+                case "20": return "未定义";
                 case "21": return "远程单元无法被正确识别，或者发生了数据错误.";
                 case "22": return "用于远程单元的接收缓冲区已满.";
                 case "23": return "远程单元编号(01 至16)设置与本地单元重复.";
@@ -430,7 +433,7 @@ namespace PanasonicPLCriver
         }
         public ItemData<float> ReadFloat(DeviceAddress address)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
@@ -475,10 +478,10 @@ namespace PanasonicPLCriver
 
         public int WriteBit(DeviceAddress address, bool bit)
         {
-          string respBeginStr = string.Empty;
-          string cmd =  CreateWCSCmd(address.Start,address.Bit,address.Area,bit,out respBeginStr);
-          WriteSyncData(respBeginStr, cmd);
-          return 0;
+            string respBeginStr = string.Empty;
+            string cmd = CreateWCSCmd(address.Start, address.Bit, address.Area, bit, out respBeginStr);
+            WriteSyncData(respBeginStr, cmd);
+            return 0;
         }
 
         public int WriteBits(DeviceAddress address, byte bits)
@@ -499,7 +502,7 @@ namespace PanasonicPLCriver
         public int WriteInt16(DeviceAddress address, short value)
         {
             string respBeginStr = string.Empty;
-            string cmd = CreateWDCmd(address.Start, new short[1] {value}, out respBeginStr);
+            string cmd = CreateWDCmd(address.Start, new short[1] { value }, out respBeginStr);
             WriteSyncData(respBeginStr, cmd);
             return 0;
         }
@@ -609,12 +612,12 @@ namespace PanasonicPLCriver
         /// </summary>
         public const string WDCmd = "WD";
 
-        public const byte Xarea =  0;//外部输入
-        public const byte Yarea =  1;//外部输出
-        public const byte Rarea =  2;//内部继电器
-        public const byte Tarea =  3;//定时器
-        public const byte Carea =  4;//计数器 不支持
-        public const byte Larea =  5;//链接继电器 不支持
+        public const byte Xarea = 0;//外部输入
+        public const byte Yarea = 1;//外部输出
+        public const byte Rarea = 2;//内部继电器
+        public const byte Tarea = 3;//定时器
+        public const byte Carea = 4;//计数器 不支持
+        public const byte Larea = 5;//链接继电器 不支持
 
         public const byte DTarea = 6;//数据寄存器 DT
         public const byte LDarea = 7;//链接寄存器 LD 不支持
