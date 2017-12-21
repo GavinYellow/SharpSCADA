@@ -34,24 +34,14 @@ namespace DataService
             return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : ushort.MaxValue;
         }
 
-        public ItemData<bool> ReadBit(DeviceAddress address)
-        {
-            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
-        }
-
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
             return new ItemData<int>(BitConverter.ToInt32(_cache, address.CacheIndex), 0, QUALITIES.QUALITY_GOOD);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        public ItemData<bool> ReadBit(DeviceAddress address)
         {
-            return new ItemData<uint>(BitConverter.ToUInt32(_cache, address.CacheIndex), 0, QUALITIES.QUALITY_GOOD);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            return new ItemData<ushort>(BitConverter.ToUInt16(_cache, address.CacheIndex), 0, QUALITIES.QUALITY_GOOD);
+            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)
@@ -96,24 +86,6 @@ namespace DataService
             fixed (byte* p1 = _cache)
             {
                 Marshal.WriteInt16((IntPtr)(p1 + address.CacheIndex), value);
-            }
-            return 0;
-        }
-
-        public unsafe int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            fixed (byte* p1 = _cache)
-            {
-                Marshal.WriteInt16((IntPtr)(p1 + address.CacheIndex), (short)value);
-            }
-            return 0;
-        }
-
-        public unsafe int WriteUInt32(DeviceAddress address, uint value)
-        {
-            fixed (byte* p1 = _cache)
-            {
-                Marshal.WriteInt32((IntPtr)(p1 + address.CacheIndex), (int)value);
             }
             return 0;
         }
@@ -196,24 +168,14 @@ namespace DataService
             return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : ushort.MaxValue;
         }
 
-        public ItemData<bool> ReadBit(DeviceAddress address)
-        {
-            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
-        }
-
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
             return new ItemData<int>(Utility.NetToInt32(_cache, address.CacheIndex), 0, QUALITIES.QUALITY_GOOD);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        public ItemData<bool> ReadBit(DeviceAddress address)
         {
-            return new ItemData<uint>((uint)Utility.NetToInt32(_cache, address.CacheIndex), 0, QUALITIES.QUALITY_GOOD);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            return new ItemData<ushort>((ushort)Utility.NetToInt16(_cache, address.CacheIndex), 0, QUALITIES.QUALITY_GOOD);
+            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)
@@ -258,24 +220,6 @@ namespace DataService
             fixed (byte* p1 = _cache)
             {
                 Marshal.WriteInt16((IntPtr)(p1 + address.CacheIndex), IPAddress.HostToNetworkOrder(value));
-            }
-            return 0;
-        }
-
-        public unsafe int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            fixed (byte* p1 = _cache)
-            {
-                Marshal.WriteInt16((IntPtr)(p1 + address.CacheIndex), IPAddress.HostToNetworkOrder((short)value));
-            }
-            return 0;
-        }
-
-        public unsafe int WriteUInt32(DeviceAddress address, uint value)
-        {
-            fixed (byte* p1 = _cache)
-            {
-                Marshal.WriteInt32((IntPtr)(p1 + address.CacheIndex), IPAddress.HostToNetworkOrder((int)value));
             }
             return 0;
         }
@@ -374,11 +318,6 @@ namespace DataService
             return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : ushort.MaxValue;
         }
 
-        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
-        {
-            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
-        }
-
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
             int startIndex = address.CacheIndex;
@@ -394,19 +333,14 @@ namespace DataService
             return new ItemData<int>(result, 0, QUALITIES.QUALITY_GOOD);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
         {
-            return new ItemData<uint>((uint)ReadInt32(address).Value, 0, QUALITIES.QUALITY_GOOD);
+            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
             return new ItemData<short>(_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            return new ItemData<ushort>((ushort)_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<byte> ReadByte(DeviceAddress address)
@@ -453,24 +387,9 @@ namespace DataService
             return 0;
         }
 
-        public int WriteInt16(DeviceAddress address, short value)
+        public unsafe int WriteInt16(DeviceAddress address, short value)
         {
             _cache[address.CacheIndex] = value;
-            return 0;
-        }
-
-        public int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            _cache[address.CacheIndex] = (short)value;
-            return 0;
-        }
-
-        public unsafe int WriteUInt32(DeviceAddress address, uint value)
-        {
-            fixed (short* p1 = _cache)
-            {
-                Marshal.WriteInt32((IntPtr)(p1 + address.CacheIndex), (int)value);
-            }
             return 0;
         }
 
@@ -567,11 +486,6 @@ namespace DataService
             return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : ushort.MaxValue;
         }
 
-        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
-        {
-            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
-        }
-
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
             int startIndex = address.CacheIndex;
@@ -587,14 +501,9 @@ namespace DataService
             return new ItemData<int>(result, 0, QUALITIES.QUALITY_GOOD);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
         {
-            return new ItemData<uint>((uint)ReadInt32(address).Value, 0, QUALITIES.QUALITY_GOOD);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            return new ItemData<ushort>((ushort)IPAddress.HostToNetworkOrder(_cache[address.CacheIndex]), 0, QUALITIES.QUALITY_GOOD);
+            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)
@@ -652,15 +561,9 @@ namespace DataService
             return 0;
         }
 
-        public int WriteInt16(DeviceAddress address, short value)
+        public unsafe int WriteInt16(DeviceAddress address, short value)
         {
             _cache[address.CacheIndex] = value;
-            return 0;
-        }
-
-        public int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            _cache[address.CacheIndex] = (short)value;
             return 0;
         }
 
@@ -669,15 +572,6 @@ namespace DataService
             fixed (short* p1 = _cache)
             {
                 Marshal.WriteInt32((IntPtr)(p1 + address.CacheIndex), IPAddress.HostToNetworkOrder(value));
-            }
-            return 0;
-        }
-
-        public unsafe int WriteUInt32(DeviceAddress address, uint value)
-        {
-            fixed (short* p1 = _cache)
-            {
-                Marshal.WriteInt32((IntPtr)(p1 + address.CacheIndex), IPAddress.HostToNetworkOrder((int)value));
             }
             return 0;
         }
@@ -767,24 +661,15 @@ namespace DataService
             return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : ushort.MaxValue;
         }
 
-        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
-        {
-            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
-        }
-
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
+
             return new ItemData<int>(_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
         {
-            return new ItemData<uint>((uint)_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            return new ItemData<ushort>((ushort)_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
+            return new ItemData<bool>((_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)
@@ -830,18 +715,6 @@ namespace DataService
         public unsafe int WriteInt16(DeviceAddress address, short value)
         {
             _cache[address.CacheIndex] = value;
-            return 0;
-        }
-
-        public unsafe int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            _cache[address.CacheIndex] = value;
-            return 0;
-        }
-
-        public unsafe int WriteUInt32(DeviceAddress address, uint value)
-        {
-            _cache[address.CacheIndex] = (int)value;
             return 0;
         }
 
@@ -936,25 +809,15 @@ namespace DataService
             return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : ushort.MaxValue;
         }
 
-        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
-        {
-            return new ItemData<bool>(((int)_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
-        }
-
         public ItemData<int> ReadInt32(DeviceAddress address)
         {
 
             return new ItemData<int>((int)_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
+        public unsafe ItemData<bool> ReadBit(DeviceAddress address)
         {
-            return new ItemData<uint>((uint)_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            return new ItemData<ushort>((ushort)_cache[address.CacheIndex], 0, QUALITIES.QUALITY_GOOD);
+            return new ItemData<bool>(((int)_cache[address.CacheIndex] & (1 << address.Bit)) != 0, 0, QUALITIES.QUALITY_GOOD);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address)
@@ -996,31 +859,19 @@ namespace DataService
             return 0;
         }
 
-        public int WriteInt16(DeviceAddress address, short value)
+        public unsafe int WriteInt16(DeviceAddress address, short value)
         {
             _cache[address.CacheIndex] = value;
             return 0;
         }
 
-        public int WriteUInt16(DeviceAddress address, ushort value)
+        public unsafe int WriteInt32(DeviceAddress address, int value)
         {
             _cache[address.CacheIndex] = value;
             return 0;
         }
 
-        public int WriteUInt32(DeviceAddress address, uint value)
-        {
-            _cache[address.CacheIndex] = value;
-            return 0;
-        }
-
-        public int WriteInt32(DeviceAddress address, int value)
-        {
-            _cache[address.CacheIndex] = value;
-            return 0;
-        }
-
-        public int WriteFloat(DeviceAddress address, float value)
+        public unsafe int WriteFloat(DeviceAddress address, float value)
         {
             _cache[address.CacheIndex] = value;
             return 0;

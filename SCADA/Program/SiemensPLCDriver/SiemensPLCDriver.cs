@@ -133,7 +133,6 @@ namespace SiemensPLCDriver
                 case DataType.SHORT:
                     return string.Concat(addr, "W", address.Start);
                 case DataType.FLOAT:
-                case DataType.DWORD:
                 case DataType.INT:
                     return string.Concat(addr, "D", address.Start);
                 default:
@@ -399,44 +398,6 @@ namespace SiemensPLCDriver
             return new ItemData<int>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
-        {
-            if (dc != null)
-            {
-                int res = -1;
-                lock (_async)
-                {
-                    res = dc.readBytes(address.Area, address.DBNumber, address.Start, 4, null);
-                    if (res == 0) return new ItemData<uint>((uint)dc.getS32(), 0, QUALITIES.QUALITY_GOOD);
-                }
-                _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
-                {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
-                }
-            }
-            return new ItemData<uint>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            if (dc != null)
-            {
-                int res = -1;
-                lock (_async)
-                {
-                    res = dc.readBytes(address.Area, address.DBNumber, address.Start, 2, null);
-                    if (res == 0) return new ItemData<ushort>((ushort)dc.getS16(), 0, QUALITIES.QUALITY_GOOD);
-                }
-                _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
-                {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
-                }
-            }
-            return new ItemData<ushort>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
-        }
-
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
             if (dc != null)
@@ -542,24 +503,6 @@ namespace SiemensPLCDriver
             }
         }
 
-        public int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            byte[] b = BitConverter.GetBytes(value); Array.Reverse(b);
-            lock (_async)
-            {
-                return dc == null ? -1 : dc.writeBytes(address.Area, address.DBNumber, address.Start, 2, b);
-            }
-        }
-
-        public int WriteUInt32(DeviceAddress address, uint value)
-        {
-            byte[] b = BitConverter.GetBytes(value); Array.Reverse(b);
-            lock (_async)
-            {
-                return dc == null ? -1 : dc.writeBytes(address.Area, address.DBNumber, address.Start, 4, b);
-            }
-        }
-
         public int WriteInt32(DeviceAddress address, int value)
         {
             byte[] b = BitConverter.GetBytes(value); Array.Reverse(b);
@@ -662,13 +605,8 @@ namespace SiemensPLCDriver
                                     itemArr[i].Value.Byte = (byte)dc.getU8();
                                     break;
                                 case DataType.WORD:
-                                    itemArr[i].Value.Word = (ushort)dc.getS16();
-                                    break;
                                 case DataType.SHORT:
                                     itemArr[i].Value.Int16 = (short)dc.getS16();
-                                    break;
-                                case DataType.DWORD:
-                                    itemArr[i].Value.DWord = (uint)dc.getS32();
                                     break;
                                 case DataType.INT:
                                     itemArr[i].Value.Int32 = dc.getS32();
@@ -743,12 +681,8 @@ namespace SiemensPLCDriver
                                 b = BitConverter.GetBytes(Convert.ToInt16(buffer[i])); Array.Reverse(b);
                                 p2.addVarToWriteRequest(addr.Area, addr.DBNumber, addr.Start, 2, b);
                                 break;
-                            case DataType.DWORD:
-                                b = BitConverter.GetBytes(Convert.ToUInt32(buffer[i])); Array.Reverse(b);
-                                p2.addVarToWriteRequest(addr.Area, addr.DBNumber, addr.Start, 4, b);
-                                break;
                             case DataType.INT:
-                                b = BitConverter.GetBytes(Convert.ToInt32(buffer[i])); Array.Reverse(b);
+                                b = BitConverter.GetBytes((int)Convert.ToDouble(buffer[i])); Array.Reverse(b);
                                 p2.addVarToWriteRequest(addr.Area, addr.DBNumber, addr.Start, 4, b);
                                 break;
                             case DataType.FLOAT:

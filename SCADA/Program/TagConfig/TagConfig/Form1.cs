@@ -33,10 +33,24 @@ namespace TagConfig
 
         SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
+        public enum DataType : byte
+        {
+            NONE = 0,
+            BOOL = 1,
+            BYTE = 3,
+            SHORT = 4,
+            WORD = 5,
+            TIME = 6,
+            INT = 7,
+            FLOAT = 8,
+            SYS = 9,
+            STR = 11
+        }
+
         public static readonly List<DataTypeSource> DataDict = new List<DataTypeSource>
         {
            new DataTypeSource (1,"开关型"),new DataTypeSource (3,"字节"), new DataTypeSource (4,"短整型"),
-           new DataTypeSource (5,"单字型"),new DataTypeSource (6,"双字型"),new DataTypeSource (7,"长整型"),
+           new DataTypeSource (5,"单字型"),new DataTypeSource (6,"时间型"),new DataTypeSource (7,"双字型"),
            new DataTypeSource (8,"浮点型"),new DataTypeSource (9,"系统型"),new DataTypeSource (10,"ASCII字符串"),
            new DataTypeSource (11,"UNICODE字符串"),new DataTypeSource(0,"")
         };
@@ -199,7 +213,7 @@ namespace TagConfig
             list.Clear();
             majorTop.Nodes.Clear();
 
-            using (XmlReader reader = XmlReader.Create(file))
+            using (XmlReader reader = XmlTextReader.Create(file))
             {
                 while (reader.Read())
                 {
@@ -328,7 +342,7 @@ namespace TagConfig
 
         private void SaveToXml(string file)
         {
-            using (var writer = XmlWriter.Create(file))
+            using (var writer = XmlTextWriter.Create(file))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Sever");

@@ -837,14 +837,10 @@ namespace BatchCoreService
                                                     value.Byte = buffer[6];
                                                     break;
                                                 case DataType.WORD:
-                                                    value.Word = BitConverter.ToUInt16(buffer, 6);
-                                                    break;
                                                 case DataType.SHORT:
                                                     value.Int16 = BitConverter.ToInt16(buffer, 6);
                                                     break;
-                                                case DataType.DWORD:
-                                                    value.DWord = BitConverter.ToUInt32(buffer, 6);
-                                                    break;
+                                                case DataType.TIME:
                                                 case DataType.INT:
                                                     value.Int32 = BitConverter.ToInt32(buffer, 6);
                                                     break;
@@ -895,14 +891,10 @@ namespace BatchCoreService
                                                     values.Add(tag, buffer[j]);
                                                     break;
                                                 case DataType.WORD:
-                                                    values.Add(tag, BitConverter.ToUInt16(buffer, j));
-                                                    break;
                                                 case DataType.SHORT:
                                                     values.Add(tag, BitConverter.ToInt16(buffer, j));
                                                     break;
-                                                case DataType.DWORD:
-                                                    values.Add(tag, BitConverter.ToUInt32(buffer, j));
-                                                    break;
+                                                case DataType.TIME:
                                                 case DataType.INT:
                                                     values.Add(tag, BitConverter.ToInt32(buffer, j));
                                                     break;
@@ -1288,7 +1280,7 @@ namespace BatchCoreService
             DataHelper.Instance.ExecuteStoredProcedure("AddEventLog",
                 DataHelper.CreateParam("@StartTime", SqlDbType.DateTime, tag.TimeStamp),
                 DataHelper.CreateParam("@Source", SqlDbType.NVarChar, tag.ID.ToString(), 50),
-                DataHelper.CreateParam("@Comment", SqlDbType.NVarChar, tag.ToString(), 50));
+                DataHelper.CreateParam("@StartTime", SqlDbType.NVarChar, tag.ToString(), 50));
         }
 
         public HistoryData[] BatchRead(DataSource source, bool sync, params ITag[] itemArray)
@@ -1426,13 +1418,6 @@ namespace BatchCoreService
                         sendBuffer[j++] = data[i].Value.Byte;
                         break;
                     case DataType.WORD:
-                        {
-                            sendBuffer[j++] = 2;
-                            byte[] bt = BitConverter.GetBytes(data[i].Value.Word);
-                            sendBuffer[j++] = bt[0];
-                            sendBuffer[j++] = bt[1];
-                        }
-                        break;
                     case DataType.SHORT:
                         {
                             sendBuffer[j++] = 2;
@@ -1441,16 +1426,7 @@ namespace BatchCoreService
                             sendBuffer[j++] = bt[1];
                         }
                         break;
-                    case DataType.DWORD:
-                        {
-                            sendBuffer[j++] = 4;
-                            byte[] bt = BitConverter.GetBytes(data[i].Value.DWord);
-                            sendBuffer[j++] = bt[0];
-                            sendBuffer[j++] = bt[1];
-                            sendBuffer[j++] = bt[2];
-                            sendBuffer[j++] = bt[3];
-                        }
-                        break;
+                    case DataType.TIME:
                     case DataType.INT:
                         {
                             sendBuffer[j++] = 4;

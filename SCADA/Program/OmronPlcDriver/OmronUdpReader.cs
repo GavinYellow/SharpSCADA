@@ -534,24 +534,6 @@ namespace OmronPlcDriver
             else
                 return new ItemData<int>(IPAddress.HostToNetworkOrder(BitConverter.ToInt32(data, 0)), 0, QUALITIES.QUALITY_GOOD);
         }
-
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
-        {
-            byte[] data = WriteSyncData(CreateReadHeader(PcNodeId, address.Start, 2, (byte)address.DBNumber, (byte)address.Area));
-            if (data == null)
-                return new ItemData<uint>(0, 0, QUALITIES.QUALITY_BAD);
-            else
-                return new ItemData<uint>((uint)IPAddress.HostToNetworkOrder(BitConverter.ToInt32(data, 0)), 0, QUALITIES.QUALITY_GOOD);
-        }
-     
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            byte[] data = WriteSyncData(CreateReadHeader(PcNodeId, address.Start, 1, (byte)address.DBNumber, (byte)address.Area));
-            if (data == null)
-                return new ItemData<ushort>(0, 0, QUALITIES.QUALITY_BAD);
-            else
-                return new ItemData<ushort>((ushort)IPAddress.HostToNetworkOrder(BitConverter.ToInt16(data, 0)), 0, QUALITIES.QUALITY_GOOD);
-        }
         /// <summary>
         /// 读取16位整数
         /// </summary>
@@ -668,18 +650,6 @@ namespace OmronPlcDriver
         public int WriteInt16(DeviceAddress address, short value)
         {
             var data = WriteSingleRegister(PcNodeId, address.Start, (byte)address.DBNumber, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)), (byte)address.Area);
-            return data == null ? -1 : 0;
-        }
-
-        public int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            var data = WriteSingleRegister(PcNodeId, address.Start, (byte)address.DBNumber, BitConverter.GetBytes((ushort)IPAddress.HostToNetworkOrder((short)value)), (byte)address.Area);
-            return data == null ? -1 : 0;
-        }
-
-        public int WriteUInt32(DeviceAddress address, uint value)
-        {
-            var data = WriteMultipleRegister(PcNodeId, address.Start, (byte)address.DBNumber, BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder((int)value)), (byte)address.Area);
             return data == null ? -1 : 0;
         }
 

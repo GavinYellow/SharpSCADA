@@ -591,14 +591,10 @@ namespace CoreTest
                         source.SetYMapping(Y => Y.Value.Byte);
                         break;
                     case DataType.WORD:
-                        source.SetYMapping(Y => Y.Value.Word);
-                        break;
                     case DataType.SHORT:
                         source.SetYMapping(Y => Y.Value.Int16);
                         break;
-                    case DataType.DWORD:
-                        source.SetYMapping(Y => Y.Value.DWord);
-                        break;
+                    case DataType.TIME:
                     case DataType.INT:
                         source.SetYMapping(Y => Y.Value.Int32);
                         break;
@@ -622,14 +618,10 @@ namespace CoreTest
                         source.SetYMapping(Y => Y.Value.Byte);
                         break;
                     case DataType.WORD:
-                        source.SetYMapping(Y => Y.Value.Word);
-                        break;
                     case DataType.SHORT:
                         source.SetYMapping(Y => Y.Value.Int16);
                         break;
-                    case DataType.DWORD:
-                        source.SetYMapping(Y => Y.Value.DWord);
-                        break;
+                    case DataType.TIME:
                     case DataType.INT:
                         source.SetYMapping(Y => Y.Value.Int32);
                         break;

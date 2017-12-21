@@ -823,7 +823,7 @@ namespace CoreTest
                         case DataType.SHORT:
                             max = short.MaxValue; min = short.MinValue;
                             break;
-                        case DataType.DWORD:
+                        case DataType.TIME:
                             max = uint.MaxValue; min = 0;
                             break;
                         case DataType.INT:

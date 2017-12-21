@@ -414,13 +414,8 @@ namespace ClientDriver
                                         value.Byte = temp[j];
                                         break;
                                     case DataType.WORD:
-                                        value.Word = BitConverter.ToUInt16(temp, j);//需测试
-                                        break;
                                     case DataType.SHORT:
                                         value.Int16 = BitConverter.ToInt16(temp, j);//需测试
-                                        break;
-                                    case DataType.DWORD:
-                                        value.DWord = BitConverter.ToUInt32(temp, j);//需测试
                                         break;
                                     case DataType.INT:
                                         value.Int32 = BitConverter.ToInt32(temp, j);//需测试
@@ -488,13 +483,8 @@ namespace ClientDriver
                                         value.Byte = bytes[j];
                                         break;
                                     case DataType.WORD:
-                                        value.Word = BitConverter.ToUInt16(bytes, j);//需测试
-                                        break;
                                     case DataType.SHORT:
                                         value.Int16 = BitConverter.ToInt16(bytes, j);//需测试
-                                        break;
-                                    case DataType.DWORD:
-                                        value.DWord = BitConverter.ToUInt32(bytes, j);//需测试
                                         break;
                                     case DataType.INT:
                                         value.Int32 = BitConverter.ToInt32(bytes, j);//需测试
@@ -575,16 +565,12 @@ namespace ClientDriver
                             dataItem = new ByteTag(meta.ID, addr, this);
                             break;
                         case DataType.WORD:
-                            dataItem = new UShortTag(meta.ID, addr, this);
-                            break;
                         case DataType.SHORT:
                             dataItem = new ShortTag(meta.ID, addr, this);
                             break;
+                        case DataType.TIME:
                         case DataType.INT:
                             dataItem = new IntTag(meta.ID, addr, this);
-                            break;
-                        case DataType.DWORD:
-                            dataItem = new UIntTag(meta.ID, addr, this);
                             break;
                         case DataType.FLOAT:
                             dataItem = new FloatTag(meta.ID, addr, this);
@@ -692,13 +678,8 @@ namespace ClientDriver
                                 values[i].Value.Byte = tcpBuffer[j];
                                 break;
                             case DataType.WORD:
-                                values[i].Value.Word = BitConverter.ToUInt16(tcpBuffer, j);
-                                break;
                             case DataType.SHORT:
                                 values[i].Value.Int16 = BitConverter.ToInt16(tcpBuffer, j);
-                                break;
-                            case DataType.DWORD:
-                                values[i].Value.DWord = BitConverter.ToUInt32(tcpBuffer, j);
                                 break;
                             case DataType.INT:
                                 values[i].Value.Int32 = BitConverter.ToInt32(tcpBuffer, j);
@@ -746,13 +727,8 @@ namespace ClientDriver
                         list.Add(Convert.ToByte(item.Value));
                         break;
                     case DataType.WORD:
-                        list.AddRange(BitConverter.GetBytes(Convert.ToUInt16(item.Value)));
-                        break;
                     case DataType.SHORT:
                         list.AddRange(BitConverter.GetBytes(Convert.ToInt16(item.Value)));
-                        break;
-                    case DataType.DWORD:
-                        list.AddRange(BitConverter.GetBytes(Convert.ToUInt32(item.Value)));
                         break;
                     case DataType.INT:
                         list.AddRange(BitConverter.GetBytes(Convert.ToInt32(item.Value)));
@@ -830,14 +806,10 @@ namespace ClientDriver
                                 data.Value.Byte = tcpBuffer[index];
                                 break;
                             case DataType.WORD:
-                                data.Value.Word = BitConverter.ToUInt16(temp, 2);
-                                break;
                             case DataType.SHORT:
                                 data.Value.Int16 = BitConverter.ToInt16(temp, 2);
                                 break;
-                            case DataType.DWORD:
-                                data.Value.DWord = BitConverter.ToUInt32(temp, 2);
-                                break;
+                            case DataType.TIME:
                             case DataType.INT:
                                 data.Value.Int32 = BitConverter.ToInt32(temp, 2);
                                 break;
@@ -873,14 +845,10 @@ namespace ClientDriver
                                 data.Value.Byte = tcpBuffer[index];
                                 break;
                             case DataType.WORD:
-                                data.Value.Word = BitConverter.ToUInt16(tcpBuffer, index);
-                                break;
                             case DataType.SHORT:
                                 data.Value.Int16 = BitConverter.ToInt16(tcpBuffer, index);
                                 break;
-                            case DataType.DWORD:
-                                data.Value.DWord = BitConverter.ToUInt32(tcpBuffer, index);
-                                break;
+                            case DataType.TIME:
                             case DataType.INT:
                                 data.Value.Int32 = BitConverter.ToInt32(tcpBuffer, index);
                                 break;
@@ -943,81 +911,6 @@ namespace ClientDriver
                             while (index + 12 <= result)
                             {
                                 data.Value.Single = BitConverter.ToSingle(tcpBuffer, index);//未来可考虑量程转换和其他数据类型
-                                index += 4;
-                                long fileTime = BitConverter.ToInt64(tcpBuffer, index);
-                                if (fileTime == -1) yield break;
-                                data.TimeStamp = DateTime.FromFileTime(fileTime);
-                                index += 8;
-                                yield return data;
-                            }
-                            if (index == result)
-                                index = 0;
-                            else
-                                index += 12 - result;//丢弃一个值
-                        } while (result > 0);
-                        break;
-                    case DataType.SHORT:
-                        do
-                        {
-                            result = _tcpSend.Receive(tcpBuffer, 0, tcpBuffer.Length, SocketFlags.None, out error);
-                            if (error == SocketError.ConnectionReset || error == SocketError.Interrupted || error == SocketError.HostDown || error == SocketError.NetworkDown || error == SocketError.Shutdown)
-                            {
-                                _tcpSend.Dispose();
-                                yield break;
-                            }
-                            while (index + 10 <= result)
-                            {
-                                data.Value.Int16 = BitConverter.ToInt16(tcpBuffer, index);//未来可考虑量程转换和其他数据类型
-                                index += 2;
-                                long fileTime = BitConverter.ToInt64(tcpBuffer, index);
-                                if (fileTime == -1) yield break;
-                                data.TimeStamp = DateTime.FromFileTime(fileTime);
-                                index += 8;
-                                yield return data;
-                            }
-                            if (index == result)
-                                index = 0;
-                            else
-                                index += 10 - result;//丢弃一个值
-                        } while (result > 0);
-                        break;
-                    case DataType.WORD:
-                        do
-                        {
-                            result = _tcpSend.Receive(tcpBuffer, 0, tcpBuffer.Length, SocketFlags.None, out error);
-                            if (error == SocketError.ConnectionReset || error == SocketError.Interrupted || error == SocketError.HostDown || error == SocketError.NetworkDown || error == SocketError.Shutdown)
-                            {
-                                _tcpSend.Dispose();
-                                yield break;
-                            }
-                            while (index + 10 <= result)
-                            {
-                                data.Value.Word = BitConverter.ToUInt16(tcpBuffer, index);//未来可考虑量程转换和其他数据类型
-                                index += 2;
-                                long fileTime = BitConverter.ToInt64(tcpBuffer, index);
-                                if (fileTime == -1) yield break;
-                                data.TimeStamp = DateTime.FromFileTime(fileTime);
-                                index += 8;
-                                yield return data;
-                            }
-                            if (index == result)
-                                index = 0;
-                            else
-                                index += 10 - result;//丢弃一个值
-                        } while (result > 0);
-                        break;
-                    case DataType.DWORD:
-                        do
-                        {
-                            result = _tcpSend.Receive(tcpBuffer, 0, tcpBuffer.Length, SocketFlags.None, out error);
-                            if (error == SocketError.ConnectionReset || error == SocketError.Interrupted || error == SocketError.HostDown || error == SocketError.NetworkDown || error == SocketError.Shutdown)
-                            {
-                                _tcpSend.Dispose();
-                                yield break;
-                            }
-                            while (index + 12 <= result)
-                            {
-                                data.Value.DWord = BitConverter.ToUInt32(tcpBuffer, index);//未来可考虑量程转换和其他数据类型
                                 index += 4;
                                 long fileTime = BitConverter.ToInt64(tcpBuffer, index);
                                 if (fileTime == -1) yield break;
@@ -1152,20 +1045,6 @@ namespace ClientDriver
                 new ItemData<int>(BitConverter.ToInt32(data, 0), 0, QUALITIES.QUALITY_GOOD);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address, DataSource source = DataSource.Cache)
-        {
-            var data = ReadSingleData(address, source);
-            return data == null ? new ItemData<uint>(0, 0, QUALITIES.QUALITY_BAD) :
-                new ItemData<uint>(BitConverter.ToUInt32(data, 0), 0, QUALITIES.QUALITY_GOOD);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address, DataSource source = DataSource.Cache)
-        {
-            var data = ReadSingleData(address, source);
-            return data == null ? new ItemData<ushort>(0, 0, QUALITIES.QUALITY_BAD) :
-                new ItemData<ushort>(BitConverter.ToUInt16(data, 0), 0, QUALITIES.QUALITY_GOOD);
-        }
-
         public ItemData<short> ReadInt16(DeviceAddress address, DataSource source = DataSource.Cache)
         {
             var data = ReadSingleData(address, source);
@@ -1207,16 +1086,6 @@ namespace ClientDriver
         }
 
         public int WriteInt32(DeviceAddress address, int value)
-        {
-            return WriteSingleData(address, BitConverter.GetBytes(value));
-        }
-
-        public int WriteUInt32(DeviceAddress address, uint value)
-        {
-            return WriteSingleData(address, BitConverter.GetBytes(value));
-        }
-
-        public int WriteUInt16(DeviceAddress address, ushort value)
         {
             return WriteSingleData(address, BitConverter.GetBytes(value));
         }

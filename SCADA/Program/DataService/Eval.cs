@@ -531,7 +531,7 @@ namespace DataService
                 case DataType.BYTE:
                 case DataType.WORD:
                 case DataType.SHORT:
-                case DataType.DWORD:
+                case DataType.TIME:
                 case DataType.INT:
                     return Expression.Call(_param1, _intinfo, Expression.Constant(tagName));
                 case DataType.FLOAT:
@@ -554,11 +554,9 @@ namespace DataService
                 case DataType.BYTE:
                     return Convert.ToBoolean(tag.Value.Byte);
                 case DataType.WORD:
-                    return Convert.ToBoolean(tag.Value.Word);
                 case DataType.SHORT:
                     return Convert.ToBoolean(tag.Value.Int16);
-                case DataType.DWORD:
-                    return Convert.ToBoolean(tag.Value.DWord);
+                case DataType.TIME:
                 case DataType.INT:
                     return Convert.ToBoolean(tag.Value.Int32);
                 case DataType.FLOAT:
@@ -586,13 +584,11 @@ namespace DataService
                 case DataType.BOOL:
                     return tag.Value.Boolean ? 1 : 0;
                 case DataType.BYTE:
-                    return tag.Value.Byte;
+                    return (int)tag.Value.Byte;
                 case DataType.WORD:
-                    return tag.Value.Word;
                 case DataType.SHORT:
-                    return tag.Value.Int16;
-                case DataType.DWORD:
-                    return (int)tag.Value.DWord;
+                    return (int)tag.Value.Int16;
+                case DataType.TIME:
                 case DataType.INT:
                     return tag.Value.Int32;
                 case DataType.FLOAT:

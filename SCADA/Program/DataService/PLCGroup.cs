@@ -163,14 +163,10 @@ namespace DataService
                                 dataItem = new ByteTag(meta.ID, addr, this);
                                 break;
                             case DataType.WORD:
-                                dataItem = new UShortTag(meta.ID, addr, this);
-                                break;
                             case DataType.SHORT:
                                 dataItem = new ShortTag(meta.ID, addr, this);
                                 break;
-                            case DataType.DWORD:
-                                dataItem = new UIntTag(meta.ID, addr, this);
-                                break;
+                            case DataType.TIME:
                             case DataType.INT:
                                 dataItem = new IntTag(meta.ID, addr, this);
                                 break;
@@ -528,16 +524,6 @@ namespace DataService
             return source == DataSource.Cache ? _cacheReader.ReadInt32(address) : _plcReader.ReadInt32(address);
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address, DataSource source = DataSource.Cache)
-        {
-            return source == DataSource.Cache ? _cacheReader.ReadUInt32(address) : _plcReader.ReadUInt32(address);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address, DataSource source = DataSource.Cache)
-        {
-            return source == DataSource.Cache ? _cacheReader.ReadUInt16(address) : _plcReader.ReadUInt16(address);
-        }
-
         public ItemData<short> ReadInt16(DeviceAddress address, DataSource source = DataSource.Cache)
         {
             return source == DataSource.Cache ? _cacheReader.ReadInt16(address) : _plcReader.ReadInt16(address);
@@ -577,42 +563,6 @@ namespace DataService
                         DataChange(this, new DataChangeEventArgs(1, new HistoryData[1]
                 {
                     new HistoryData(tag.ID,QUALITIES.QUALITY_GOOD,new Storage{Int32=value}, DateTime.Now)
-                }));
-                }
-            }
-            return rs;
-        }
-
-        public int WriteUInt32(DeviceAddress address, uint value)
-        {
-            int rs = _plcReader.WriteUInt32(address, value);
-            if (rs >= 0)
-            {
-                if (DataChange != null)
-                {
-                    ITag tag = GetTagByAddress(address);
-                    if (tag != null)
-                        DataChange(this, new DataChangeEventArgs(1, new HistoryData[1]
-                {
-                    new HistoryData(tag.ID,QUALITIES.QUALITY_GOOD,new Storage{DWord=value}, DateTime.Now)
-                }));
-                }
-            }
-            return rs;
-        }
-
-        public int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            int rs = _plcReader.WriteUInt16(address, value);
-            if (rs >= 0)
-            {
-                if (DataChange != null)
-                {
-                    ITag tag = GetTagByAddress(address);
-                    if (tag != null)
-                        DataChange(this, new DataChangeEventArgs(1, new HistoryData[1]
-                {
-                    new HistoryData(tag.ID,QUALITIES.QUALITY_GOOD,new Storage{Word=value}, DateTime.Now)
                 }));
                 }
             }

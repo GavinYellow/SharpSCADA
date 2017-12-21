@@ -245,18 +245,6 @@ namespace FileDriver
             return data;
         }
 
-        public ItemData<uint> ReadUInt32(DeviceAddress address)
-        {
-            var res = ReadInt32(address);
-            return new ItemData<uint>((uint)res.Value, res.TimeStamp, res.Quality);
-        }
-
-        public ItemData<ushort> ReadUInt16(DeviceAddress address)
-        {
-            var res = ReadInt16(address);
-            return new ItemData<ushort>((ushort)res.Value, res.TimeStamp, res.Quality);
-        }
-
         public ItemData<short> ReadInt16(DeviceAddress address)
         {
             ItemData<short> data = new ItemData<short>();
@@ -405,20 +393,6 @@ namespace FileDriver
                  new SqlParameter("@Value", SqlDbType.Variant) { Value = value });
         }
 
-        public int WriteUInt16(DeviceAddress address, ushort value)
-        {
-            return ExecuteStoredProcedure("UpdateValueByID",
-                 new SqlParameter("@ID", SqlDbType.SmallInt) { Value = address.CacheIndex },
-                 new SqlParameter("@Value", SqlDbType.Variant) { Value = value });
-        }
-
-        public int WriteUInt32(DeviceAddress address, uint value)
-        {
-            return ExecuteStoredProcedure("UpdateValueByID",
-                  new SqlParameter("@ID", SqlDbType.SmallInt) { Value = address.CacheIndex },
-                  new SqlParameter("@Value", SqlDbType.Variant) { Value = value });
-        }
-
         public int WriteInt32(DeviceAddress address, int value)
         {
             return ExecuteStoredProcedure("UpdateValueByID",
@@ -476,14 +450,10 @@ namespace FileDriver
                             itemArr[i].Value.Byte = dataReader.GetByte(0);
                             break;
                         case DataType.WORD:
-                            itemArr[i].Value.Word = (ushort)dataReader.GetInt16(0);
-                            break;
                         case DataType.SHORT:
                             itemArr[i].Value.Int16 = dataReader.GetInt16(0);
                             break;
-                        case DataType.DWORD:
-                            itemArr[i].Value.DWord = (uint)dataReader.GetInt32(0);
-                            break;
+                        case DataType.TIME:
                         case DataType.INT:
                             itemArr[i].Value.Int32 = dataReader.GetInt32(0);
                             break;
@@ -537,14 +507,10 @@ namespace FileDriver
                                     list[i].Value.Byte = Convert.ToByte(reader.GetValue(2));
                                     break;
                                 case DataType.WORD:
-                                    list[i].Value.Word = Convert.ToUInt16(reader.GetValue(2));
-                                    break;
                                 case DataType.SHORT:
                                     list[i].Value.Int16 = Convert.ToInt16(reader.GetValue(2));
                                     break;
-                                case DataType.DWORD:
-                                    list[i].Value.DWord = Convert.ToUInt32(reader.GetValue(2));
-                                    break;
+                                case DataType.TIME:
                                 case DataType.INT:
                                     list[i].Value.Int32 = Convert.ToInt32(reader.GetValue(2));
                                     break;
