@@ -530,7 +530,7 @@ namespace BatchCoreService
                             break;
                     }
                     cond.AddSubCondition(new SubCondition((SubAlarmType)dataReader.GetInt32(9), dataReader.GetFloat(10),
-                               (Severity)dataReader.GetByte(11), dataReader.GetString(12), dataReader.GetBoolean(13)));
+                               (Severity)dataReader.GetByte(11), dataReader.GetString(12), dataReader.GetBoolean(13)));//读取数据库表Meta_SubCondition里的值
 
                     cond.IsEnabled = dataReader.GetBoolean(3);
                     var simpcond = cond as SimpleCondition;
