@@ -89,86 +89,93 @@ namespace SiemensPLCDriver
             _server = server;
             _name = name;
         }
-
+        #region 西门子驱动所有的变量组列表，通过组来划分循环时间不同的变量。
         List<IGroup> _groups = new List<IGroup>();
         public IEnumerable<IGroup> Groups
         {
             get { return _groups; }
         }
 
-        IDataServer _server;
+        IDataServer _server;//通讯服务器IDataServer
         public IDataServer Parent
         {
             get { return _server; }
         }
 
-        public IGroup AddGroup(string name, short id, int updateRate, float deadBand, bool active)
+        #endregion
+
+        #region 添加和移除组
+        public IGroup AddGroup(string name, short id, int updateRate, float deadBand, bool active)//添加变量组
         {
             NetBytePLCGroup grp = new NetBytePLCGroup(id, name, updateRate, active, this);
             _groups.Add(grp);
             return grp;
         }
-
-        public bool RemoveGroup(IGroup grp)
+        public bool RemoveGroup(IGroup grp)//移除变量组
         {
             grp.IsActive = false;
             return _groups.Remove(grp);
         }
+        #endregion
 
+        #region 建立M,I，Q对应的地址区域的字典
         private static readonly Dictionary<char, int> dict = new Dictionary<char, int>(){ {'M',libnodave.daveFlags},
-            {'I',libnodave.daveInputs},{'Q',libnodave.daveOutputs}};
-
-        public string GetAddress(DeviceAddress address)
-        {
+            {'I',libnodave.daveInputs},{'Q',libnodave.daveOutputs}};//
+        #endregion
+        #region 根据数据库里的设备地址(DeviceAddress)获取下位机PLC绝对地址（string)
+        public string GetAddress(DeviceAddress address)//获取PLC地址
+        {//如果PLC地址区域是Area,则字符串为“DB+DBNumer,D";如果是PLC区域是daveFlags,则字符串为M;如果是daveInputs，则字符串为I,否则为Q
             string addr = (address.Area == libnodave.daveDB ? string.Concat("DB", address.DBNumber, ",D") :
                     address.Area == libnodave.daveFlags ? "M" :
                     address.Area == libnodave.daveInputs ? "I" : "Q");
-            switch (address.VarType)
+            switch (address.VarType)//根据变量类型Type来确定后面的字符。以DB1,D为例
             {
                 case DataType.BOOL:
-                    return string.Concat(addr, address.Start, ".", address.Bit);
+                    return string.Concat(addr, address.Start, ".", address.Bit);//如果是布尔型，则如DB1,D2.1
                 case DataType.BYTE:
-                    return string.Concat(addr, "BB", address.Start);
+                    return string.Concat(addr, "BB", address.Start);//如果是字节型，则如DB1,DBB1
                 case DataType.WORD:
                 case DataType.SHORT:
-                    return string.Concat(addr, "W", address.Start);
+                    return string.Concat(addr, "W", address.Start);//如果是短整型型，则如DB1,DW1
                 case DataType.FLOAT:
                 case DataType.INT:
-                    return string.Concat(addr, "D", address.Start);
+                    return string.Concat(addr, "D", address.Start);//如果是浮点型或整型（32位），则如DB1,DD1
                 default:
-                    return string.Concat(addr, "BB", address.Start);
+                    return string.Concat(addr, "BB", address.Start);//其他情况则如DB1,DBB1
             }
         }
-
+        #endregion
+        #region 根据下位机PLC绝对地址（string)获取数据库里的设备地址(DeviceAddress)
         public DeviceAddress GetDeviceAddress(string address)
         {
             DeviceAddress plcAddr = new DeviceAddress();
-            if (string.IsNullOrEmpty(address) || address.Length < 2) return plcAddr;
-            if (address.Substring(0, 2) == "DB")
+            if (string.IsNullOrEmpty(address) || address.Length < 2) return plcAddr;//如果地址为空或者字符长度小于2，则返回空的地址。
+            #region 是DB存储器的处理
+            if (address.Substring(0, 2) == "DB")//PLC绝对地址（string)前两位是DB时，DB1,D2.1
             {
                 int index = 2;
-                for (int i = index; i < address.Length; i++)
+                for (int i = index; i < address.Length; i++)//从第三位开始，如果不是十进制数，则返回索引号。
                 {
                     if (!char.IsDigit(address[i]))
                     {
-                        index = i; break;
+                        index = i; break;//index=3
                     }
                 }
                 plcAddr.Area = libnodave.daveDB;
-                plcAddr.DBNumber = ushort.Parse(address.Substring(2, index - 2));
-                string str = address.Substring(index + 1);
-                if (!char.IsDigit(str[0]))
+                plcAddr.DBNumber = ushort.Parse(address.Substring(2, index - 2));//截取DB块的号，如DB1,D2.1,不是十进制的索引号是3，3-2=1，因此截取的长度为1
+                string str = address.Substring(index + 1);//截取从索引4开始的字符串，包括索引4号位置D2.1
+                if (!char.IsDigit(str[0]))//如果第一位不是数字的话，
                 {
-                    for (int i = 1; i < str.Length; i++)
+                    for (int i = 1; i < str.Length; i++)//则从第二位查找是数字的索引号，这里是1
                     {
                         if (char.IsDigit(str[i]))
                         {
-                            index = i; break;
+                            index = i; break;//index=1
                         }
                     }
-                    if (str[2] == 'W')
+                    if (str[2] == 'W')//
                     {
-                        int index1 = str.IndexOf('.');
+                        int index1 = str.IndexOf('.');//index1=2
                         if (index1 > 0)
                         {
                             int start = int.Parse(str.Substring(3, index1 - 3));
@@ -189,29 +196,35 @@ namespace SiemensPLCDriver
                     plcAddr.Bit = byte.Parse(str.RightFrom(index));
                 }
             }
+            #endregion
+            #region 不是DB存储区的处理
             else
             {
                 plcAddr.DBNumber = 0;
                 char chr = address[0];
+                #region 是M I Q 地址区时的处理
                 if (dict.ContainsKey(chr))
                 {
                     plcAddr.Area = dict[chr];
-                    int index = address.IndexOf('.');
-                    if (address[1] == 'W')
+                    int index = address.IndexOf('.');//MW1时，index=0;M1.0时，index=2
+                    if (address[1] == 'W')//当是字地址时,如MW1
                     {
-                        if (index > 0)
+                        #region 不可能执行的
+                        if (index > 0)//那index就不可能>0
                         {
                             int start = int.Parse(address.Substring(2, index - 2));
                             byte bit = byte.Parse(address.RightFrom(index));
                             plcAddr.Start = bit > 8 ? start : start + 1;
                             plcAddr.Bit = (byte)(bit > 7 ? bit - 8 : bit);
+
                         }
+                        #endregion
                         else
                         {
-                            plcAddr.Start = int.Parse(address.Substring(2));
+                            plcAddr.Start = int.Parse(address.Substring(2));//只有Start位，没有Bit位
                         }
                     }
-                    else
+                    else//当不是字地址时,如M1.0
                     {
                         if (index > 0)
                         {
@@ -220,14 +233,17 @@ namespace SiemensPLCDriver
                         }
                         else
                         {
-                            plcAddr.Start = int.Parse(address.Substring(1));
+                            plcAddr.Start = int.Parse(address.Substring(1));//只有Start位，没有Bit位
                         }
                     }
                 }
+                #endregion
             }
+            #endregion
             return plcAddr;
         }
-
+        #endregion
+        #region 通过集成于PLC上的以太网建立通讯连接
         public bool Connect()
         {
             lock (_async)
@@ -257,7 +273,7 @@ namespace SiemensPLCDriver
             _closed = true;
             return false;
         }
-
+        #endregion
         public void Dispose()
         {
             lock (_async)
@@ -271,7 +287,7 @@ namespace SiemensPLCDriver
                 _closed = true;
             }
         }
-
+        #region 报错处理
         string daveStrerror(int code)
         {
             switch (code)
@@ -336,7 +352,7 @@ namespace SiemensPLCDriver
                 default: return "no message defined!";
             }
         }
-
+        #endregion
         public byte[] ReadBytes(DeviceAddress address, ushort len)//从PLC中读取自己数组
         {
             if (dc != null)

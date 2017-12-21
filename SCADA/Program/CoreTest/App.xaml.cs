@@ -11,7 +11,7 @@ namespace CoreTest
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application
+    public partial class App : System.Windows.Application//App类另一段代码是自动生成的，App类是程序的起点，可以搜索App看到。
     {
         const string MYCOSLOGSOURCE = "MyWEM Application";
         const string MYCOSLOGNAME = "MyWEM";
@@ -20,8 +20,9 @@ namespace CoreTest
         static readonly string machine = Environment.MachineName;
         public static readonly DAServer Server = new DAServer();
 
+        #region 定义当前用户的名称
         static IPrincipal _princ;
-        public static IPrincipal Principal
+        public static IPrincipal Principal//定义用户对象的基本功能
         {
             get
             {
@@ -33,7 +34,7 @@ namespace CoreTest
             }
         }
 
-        public static string LogSource
+        public static string LogSource//获取当前用户的名称
         {
             get
             {
@@ -46,7 +47,7 @@ namespace CoreTest
         {
             get { return eventLog; }
         }
-
+        #endregion
         static App()
         {
             var curr = Process.GetCurrentProcess();
@@ -86,7 +87,7 @@ namespace CoreTest
             Current.DispatcherUnhandledException += App_DispatcherUnhandledException;
             base.OnStartup(e);
 
-            #region
+            #region 
             if (Screen.AllScreens.Length == 1)//Server.SD.ScreenCount
             {
                 w1 = new MainWindow();
