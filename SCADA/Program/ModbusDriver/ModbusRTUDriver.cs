@@ -332,7 +332,7 @@ namespace ModbusDriver
                 {
                     while (numBytesRead != frameBytes.Length)
                         numBytesRead += _serialPort.Read(frameBytes, numBytesRead, frameBytes.Length - numBytesRead);
-                    if (frameBytes[0] == func && Utility.CheckSumCRC(frameBytes))
+                    if (frameBytes[0] == address.Area && Utility.CheckSumCRC(frameBytes))
                     {
                         Array.Copy(frameBytes, 3, data, 0, data.Length);
                         return data;
