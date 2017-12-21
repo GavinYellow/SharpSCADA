@@ -1,0 +1,15 @@
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\Microsoft.Expression.Controls.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\Microsoft.Expression.Drawing.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl_MarkupCompile.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl_MarkupCompile.lref
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\Themes\Generic.baml
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.g.resources
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.Properties.Resources.resources
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.GenerateResource.Cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.CoreCompileInputs.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csprojResolveAssemblyReference.cache

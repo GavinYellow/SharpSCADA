@@ -1,0 +1,17 @@
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.exe.config
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.exe
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\BatchCoreTest.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\ClientDriver.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataService.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\MySql.Data.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\ClientDriver.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataHelper.dll.config
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\bin\Debug\DataService.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csprojResolveAssemblyReference.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreService.Properties.Resources.resources
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csproj.GenerateResource.Cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.csproj.CoreCompileInputs.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.exe
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\BatchCoreTest\obj\x86\Debug\BatchCoreTest.pdb

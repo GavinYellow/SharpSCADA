@@ -1,0 +1,8 @@
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\bin\Debug\PanasonicDriver.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\bin\Debug\PanasonicDriver.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\bin\Debug\DataService.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\bin\Debug\DataService.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\obj\Debug\PanasonicDriver.csprojResolveAssemblyReference.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\obj\Debug\PanasonicDriver.csproj.CoreCompileInputs.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\obj\Debug\PanasonicDriver.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\PanasonicDriver\obj\Debug\PanasonicDriver.pdb

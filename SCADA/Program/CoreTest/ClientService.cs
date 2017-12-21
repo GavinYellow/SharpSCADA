@@ -13,8 +13,8 @@ namespace CoreTest
 {
     public sealed class DAServer : IDataServer, IAlarmServer, IHDAServer
     {
-        int ALARMLIMIT = 1000;
-        int CYCLE = 60000;
+        int ALARMLIMIT = 1000;//报警限制1000个
+        int CYCLE = 60000;//循环时间1分钟
 
         const char SPLITCHAR = '.';
         const string SERVICELOGSOURCE = "ClientService";
@@ -22,6 +22,8 @@ namespace CoreTest
 
 
         static EventLog Log;
+
+        #region 索引器
 
         public ITag this[short id]
         {
@@ -46,6 +48,8 @@ namespace CoreTest
                 return dataItem;
             }
         }
+
+        #endregion
 
         List<TagMetaData> _list;
         public IList<TagMetaData> MetaDataList
@@ -117,15 +121,15 @@ namespace CoreTest
             _scales = new List<Scaling>();
             _linkedList = new QueueCollection<AlarmItem>(ALARMLIMIT + 10);
             reval = new ExpressionEval(this);
-            InitClient();
+            InitClient(); //初始化客户端，初始化服务器，初始化连接。
             InitServerByDatabase();
             InitConnection();
         }
 
-        void InitClient()
+        void InitClient()//初始化客户端
         {
-            string sLine = DataHelper.HostName;
-            AddDriver(1, "Client1", string.IsNullOrEmpty(sLine) ? Environment.MachineName : sLine, 20000, null, null, null, null);
+            string sLine = DataHelper.HostName;//如果HostName为空值，则是当前环境的机器名称，否则是Sline的值
+            AddDriver(1, "Client1", string.IsNullOrEmpty(sLine) ? Environment.MachineName : sLine, 20000, null, null, null, null);//如果
         }
 
         void InitConnection()
@@ -154,17 +158,17 @@ namespace CoreTest
         void InitServerByDatabase()
         {
             try
-            {
+            {//执行SQL中的存储过程的算法。@TYPE=1为客户端
                 using (var dataReader = DataHelper.Instance.ExecuteProcedureReader("InitServer", DataHelper.CreateParam("@TYPE", System.Data.SqlDbType.Int, 1)))
                 {
                     if (dataReader == null) Environment.Exit(0);
                     //dataReader.Read();
-                    dataReader.Read();
+                    dataReader.Read();//通过执行的存储过程，读取变量的个数
                     int count = dataReader.GetInt32(0);
                     _list = new List<TagMetaData>(count);
-                    _mapping = new Dictionary<string, ITag>(count);
+                    _mapping = new Dictionary<string, ITag>(count);////通过字典来查找Itag
                     dataReader.NextResult();
-                    while (dataReader.Read())
+                    while (dataReader.Read())//通过执行的存储过程，读取全部变量
                     {
                         _list.Add(new TagMetaData(dataReader.GetInt16(0), dataReader.GetInt16(1), dataReader.GetString(2), dataReader.GetString(3), (DataType)dataReader.GetByte(4),
                      (ushort)dataReader.GetInt16(5), dataReader.GetBoolean(6), dataReader.GetFloat(7), dataReader.GetFloat(8), dataReader.GetInt32(9)));
@@ -176,7 +180,7 @@ namespace CoreTest
                         group = reader.AddGroup("Group1", 1, 0, 0, true) as ClientGroup;
                         group.AddItems(_list);
                     }
-                    dataReader.NextResult();
+                    dataReader.NextResult();//通过执行的存储过程，读取报警值
                     _conditions = new List<ICondition>();
                     _conditionList = new ObservableCollection<ICondition>();
                     while (dataReader.Read())
@@ -247,7 +251,7 @@ namespace CoreTest
                         //_conditions.Add(cond);// UpdateCondition(cond);
                         _conditions.Add(cond);
                     }
-                    dataReader.NextResult();
+                    dataReader.NextResult();//通过执行的存储过程，读取量程化的值
                     while (dataReader.Read())
                     {
                         _scales.Add(new Scaling(dataReader.GetInt16(0), (ScaleType)dataReader.GetByte(1),
@@ -286,7 +290,7 @@ namespace CoreTest
         }
 
         public IDriver AddDriver(short id, string name, string server, int timeOut,
-            string assembly, string className, string spare1, string spare2)
+            string assembly, string className, string spare1, string spare2)//添加驱动
         {
             if (reader == null)
             {
@@ -295,7 +299,7 @@ namespace CoreTest
             return reader;
         }
 
-        public bool RemoveDriver(IDriver device)
+        public bool RemoveDriver(IDriver device)//移除驱动
         {
             lock (SyncRoot)
             {
