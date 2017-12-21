@@ -115,10 +115,14 @@ namespace DataService
                     var bt = reader.ReadByte(address);
                     return new ItemData<object>(bt.Value, bt.TimeStamp, bt.Quality);
                 case DataType.WORD:
+                    var ush = reader.ReadUInt16(address);
+                    return new ItemData<object>(ush.Value, ush.TimeStamp, ush.Quality);
                 case DataType.SHORT:
                     var sh = reader.ReadInt16(address);
                     return new ItemData<object>(sh.Value, sh.TimeStamp, sh.Quality);
-                case DataType.TIME:
+                case DataType.DWORD:
+                    var dw = reader.ReadUInt32(address);
+                    return new ItemData<object>(dw.Value, dw.TimeStamp, dw.Quality);
                 case DataType.INT:
                     var it = reader.ReadInt32(address);
                     return new ItemData<object>(it.Value, it.TimeStamp, it.Quality);
@@ -141,9 +145,11 @@ namespace DataService
                 case DataType.BYTE:
                     return writer.WriteBits(address, Convert.ToByte(value));
                 case DataType.WORD:
+                    return writer.WriteUInt16(address, Convert.ToUInt16(value));
                 case DataType.SHORT:
                     return writer.WriteInt16(address, Convert.ToInt16(value));
-                case DataType.TIME:
+                case DataType.DWORD:
+                    return writer.WriteUInt32(address, Convert.ToUInt32(value));
                 case DataType.INT:
                     return writer.WriteInt32(address, Convert.ToInt32(value));
                 case DataType.FLOAT:
@@ -267,10 +273,14 @@ namespace DataService
                         items[i].Value.Byte = cache.ReadByte(addrsArr[i]).Value;
                         break;
                     case DataType.WORD:
+                        items[i].Value.Word = cache.ReadUInt16(addrsArr[i]).Value;
+                        break;
                     case DataType.SHORT:
                         items[i].Value.Int16 = cache.ReadInt16(addrsArr[i]).Value;
                         break;
-                    case DataType.TIME:
+                    case DataType.DWORD:
+                        items[i].Value.DWord = cache.ReadUInt32(addrsArr[i]).Value;
+                        break;
                     case DataType.INT:
                         items[i].Value.Int32 = cache.ReadInt32(addrsArr[i]).Value;
                         break;
@@ -365,8 +375,9 @@ namespace DataService
                 case DataType.SHORT:
                     return typeof(short);
                 case DataType.INT:
-                case DataType.TIME:
                     return typeof(int);
+                case DataType.DWORD:
+                    return typeof(uint);
                 case DataType.FLOAT:
                     return typeof(float);
                 case DataType.STR:
@@ -433,10 +444,14 @@ namespace DataService
                     value.Byte = Convert.ToByte(obj);
                     break;
                 case DataType.WORD:
+                    value.Word = Convert.ToUInt16(obj);
+                    break;
                 case DataType.SHORT:
                     value.Int16 = Convert.ToInt16(obj);
                     break;
-                case DataType.TIME:
+                case DataType.DWORD:
+                    value.DWord = Convert.ToUInt32(obj);
+                    break;
                 case DataType.INT:
                     value.Int32 = Convert.ToInt32(obj);
                     break;
@@ -456,8 +471,11 @@ namespace DataService
                 case DataType.BYTE:
                     return new byte[] { tag.Value.Byte };
                 case DataType.WORD:
+                    return BitConverter.GetBytes(tag.Value.Word);
                 case DataType.SHORT:
                     return BitConverter.GetBytes(tag.Value.Int16);
+                case DataType.DWORD:
+                    return BitConverter.GetBytes(tag.Value.DWord);
                 case DataType.INT:
                     return BitConverter.GetBytes(tag.Value.Int32);
                 case DataType.FLOAT:
@@ -478,8 +496,11 @@ namespace DataService
                 case DataType.BYTE:
                     return new byte[] { value.Byte };
                 case DataType.WORD:
+                    return BitConverter.GetBytes(value.Word);
                 case DataType.SHORT:
                     return BitConverter.GetBytes(value.Int16);
+                case DataType.DWORD:
+                    return BitConverter.GetBytes(value.DWord);
                 case DataType.INT:
                     return BitConverter.GetBytes(value.Int32);
                 case DataType.FLOAT:
@@ -500,9 +521,11 @@ namespace DataService
                 case DataType.BYTE:
                     return value.Byte;
                 case DataType.WORD:
+                    return value.Word;
                 case DataType.SHORT:
                     return value.Int16;
-                case DataType.TIME:
+                case DataType.DWORD:
+                    return value.DWord;
                 case DataType.INT:
                     return value.Int32;
                 case DataType.FLOAT:
@@ -544,12 +567,15 @@ namespace DataService
                 switch (type)
                 {
                     case DataType.BYTE:
-                        return (float)value.Byte;
+                        return value.Byte;
                     case DataType.WORD:
+                        return value.Word;
                     case DataType.SHORT:
-                        return (float)value.Int16;
+                        return value.Int16;
+                    case DataType.DWORD:
+                        return value.DWord;
                     case DataType.INT:
-                        return (float)value.Int32;
+                        return value.Int32;
                     case DataType.FLOAT:
                         return value.Single;
                     case DataType.STR:
@@ -567,8 +593,13 @@ namespace DataService
                         temp = (value.Byte - meta.RawLo) / (meta.RawHi - meta.RawLo);
                         break;
                     case DataType.WORD:
+                        temp = (value.Word - meta.RawLo) / (meta.RawHi - meta.RawLo);
+                        break;
                     case DataType.SHORT:
                         temp = (value.Int16 - meta.RawLo) / (meta.RawHi - meta.RawLo);
+                        break;
+                    case DataType.DWORD:
+                        temp = (value.DWord - meta.RawLo) / (meta.RawHi - meta.RawLo);
                         break;
                     case DataType.INT:
                         temp = (value.Int32 - meta.RawLo) / (meta.RawHi - meta.RawLo);
