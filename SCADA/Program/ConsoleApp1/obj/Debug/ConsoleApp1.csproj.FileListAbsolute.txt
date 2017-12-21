@@ -1,0 +1,2 @@
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ConsoleApp1\obj\Debug\ConsoleApp1.csprojResolveAssemblyReference.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ConsoleApp1\obj\Debug\ConsoleApp1.csproj.CoreCompileInputs.cache

@@ -1,0 +1,1119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>Microsoft.Windows.Design.Extensibility</name>
+  </assembly>
+  <members>
+    <member name="T:Microsoft.Windows.Design.AssemblyReferences">
+      <summary>A context item that maintains the set of references the designer is using to resolve type information. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.AssemblyReferences.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.AssemblyReferences" /> class. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.AssemblyReferences.#ctor(System.Collections.Generic.IEnumerable{System.Reflection.AssemblyName})">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.AssemblyReferences" /> class with the specified set of references. </summary>
+      <param name="newReferences">The new set of references. This may not be null and it may not contain null values.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="newReferences" /> is null, or if one of the values in the array is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.AssemblyReferences.#ctor(System.Reflection.AssemblyName,System.Collections.Generic.IEnumerable{System.Reflection.AssemblyName})">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.AssemblyReferences" /> class with the specified local assembly name and set of references. </summary>
+      <param name="localAssemblyName">The local assembly name. This can only be set one time.</param>
+      <param name="newReferences">The new set of references. This may not be null and it may not contain null values.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="newReferences" /> is null, or if one of the values in the array is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.AssemblyReferences.GetTypes(System.Type)">
+      <summary>Returns all the types in the set of referenced assemblies that derive from or implement the specified base type.</summary>
+      <returns>An enumeration of types. An empty enumeration is returned if there are no matching types.</returns>
+      <param name="baseType">The base type that all returned types should derive from. If <paramref name="baseType" /> is an interface, all returned types will implement the interface.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="baseType" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.AssemblyReferences.ItemType">
+      <summary>Gets a key in the context item manager that is used to determine what type of context item this object is. </summary>
+      <returns>A key in the context item manager that is used to determine what type of context item this object is.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.AssemblyReferences.LocalAssemblyName">
+      <summary>Gets the local assembly name.</summary>
+      <returns>The local assembly name.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.AssemblyReferences.OnItemChanged(Microsoft.Windows.Design.EditingContext,Microsoft.Windows.Design.ContextItem)">
+      <summary>Called on a context item before it is stored in the context item manager.</summary>
+      <param name="context">The editing context that is receiving this <see cref="T:Microsoft.Windows.Design.AssemblyReferences" /> object.</param>
+      <param name="previousItem">The existing <see cref="T:Microsoft.Windows.Design.AssemblyReferences" /> object.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.AssemblyReferences.ReferencedAssemblies">
+      <summary>Gets an enumerable that can be used to enumerate the set of referenced assemblies.</summary>
+      <returns>An enumerable that can be used to enumerate the set of referenced assemblies.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.ContextItem">
+      <summary>Represents a single piece of state in the designer.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItem.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.ContextItem" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.ContextItem.ItemType">
+      <summary>When overridden in a derived class, gets the item type for this editing context item. </summary>
+      <returns>The <see cref="T:System.Type" /> for this editing context item.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItem.OnItemChanged(Microsoft.Windows.Design.EditingContext,Microsoft.Windows.Design.ContextItem)">
+      <summary>Called on a context item before it is stored in the context item manager. </summary>
+      <param name="context">The editing context that is making this change.</param>
+      <param name="previousItem">The previously active item in the context.</param>
+    </member>
+    <member name="T:Microsoft.Windows.Design.ContextItemManager">
+      <summary>Maintains a set of context items. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.ContextItemManager" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.Contains``1">
+      <summary>Returns a value indicating whether the context item manager contains an item of the specified type.</summary>
+      <returns>true if the context contains an instance of this item type; otherwise, false.</returns>
+      <typeparam name="TItemType"></typeparam>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.Contains(System.Type)">
+      <summary>When overridden in a derived class, returns a value indicating whether the context item manager contains an item of the specified type.</summary>
+      <returns>true if the context contains an instance of this item type; otherwise, false.</returns>
+      <param name="itemType">The type of item to check.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="itemType" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.GetEnumerator">
+      <summary>When overridden in a derived class, gets an enumeration of context items in the editing context.</summary>
+      <returns>An enumeration of context items.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.GetTarget(System.Delegate)">
+      <summary>A utility method that returns the target object for a delegate.</summary>
+      <returns>The target object of the callback.</returns>
+      <param name="callback">The callback whose target you want.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.GetValue``1">
+      <summary>Returns an instance of the requested item type. </summary>
+      <returns>A context item of the requested type. If there is no item in the context of this type, a default one will be created.</returns>
+      <typeparam name="TItemType"></typeparam>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.GetValue(System.Type)">
+      <summary>When overridden in a derived class, returns an instance of the requested item type. </summary>
+      <returns>A context item of the requested type. If there is no item in the context of this type, a default one will be created.</returns>
+      <param name="itemType">The type of item to return.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="itemType" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.NotifyItemChanged(Microsoft.Windows.Design.EditingContext,Microsoft.Windows.Design.ContextItem,Microsoft.Windows.Design.ContextItem)">
+      <summary>Invokes the protected <see cref="M:Microsoft.Windows.Design.ContextItem.OnItemChanged(Microsoft.Windows.Design.EditingContext,Microsoft.Windows.Design.ContextItem)" /> method on the specified <see cref="T:Microsoft.Windows.Design.ContextItem" />.</summary>
+      <param name="context">The editing context in use.</param>
+      <param name="item">The new context item.</param>
+      <param name="previousItem">The previous context item.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" />, <paramref name="item" />, or <paramref name="previousItem" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.RemoveCallback(System.Delegate,System.Delegate)">
+      <summary>A helper method that performs a Delegate.Remove, but knows how to unwrap delegates that are proxies to generic callbacks. </summary>
+      <returns>The new delegate that should be assigned to existing.</returns>
+      <param name="existing">The existing delegate.</param>
+      <param name="toRemove">The delegate to be removed from existing.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.SetValue(Microsoft.Windows.Design.ContextItem)">
+      <summary>When overridden in a derived class, sets a context item to the specified value. </summary>
+      <param name="value">The value to set into the context item manager. Cannot be null.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.Subscribe``1(Microsoft.Windows.Design.SubscribeContextCallback{``0})">
+      <summary>Adds a callback that is invoked when a context item of the specified item type changes.</summary>
+      <param name="callback">A callback that is invoked when <paramref name="ContextItemType" /> changes.</param>
+      <typeparam name="TContextItemType"></typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.Subscribe(System.Type,Microsoft.Windows.Design.SubscribeContextCallback)">
+      <summary>When overridden in a derived class, adds a callback that is invoked when a context item of the specified item type changes.</summary>
+      <param name="contextItemType">The type of item to subscribe to.</param>
+      <param name="callback">A callback that will be invoked when <paramref name="contextItemType" /> changes.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="contextItemType" /> or <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.System#Collections#IEnumerable#GetEnumerator">
+      <summary>For a description of this member, see <see cref="M:System.Collections.IEnumerable.GetEnumerator" />.</summary>
+      <returns>An enumeration of context items.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.Unsubscribe``1(Microsoft.Windows.Design.SubscribeContextCallback{``0})">
+      <summary>Removes a subscription.</summary>
+      <param name="callback">The callback to remove.</param>
+      <typeparam name="TContextItemType"></typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ContextItemManager.Unsubscribe(System.Type,Microsoft.Windows.Design.SubscribeContextCallback)">
+      <summary>When overridden in a derived class, removes a subscription.</summary>
+      <param name="contextItemType">The type of context item to remove the callback from.</param>
+      <param name="callback">The callback to remove.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="contextItemType" /> or <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="T:Microsoft.Windows.Design.EditingContext">
+      <summary>Contains contextual state about a designer.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.EditingContext.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.EditingContext" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.EditingContext.CreateContextItemManager">
+      <summary>Creates an instance of the context item manager to be returned from the <see cref="P:Microsoft.Windows.Design.EditingContext.Items" /> property. </summary>
+      <returns>An implementation of the <see cref="T:Microsoft.Windows.Design.ContextItemManager" /> class.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.EditingContext.CreateServiceManager">
+      <summary>Creates an instance of the service manager to be returned from the <see cref="P:Microsoft.Windows.Design.EditingContext.Services" /> property. </summary>
+      <returns>An implementation of the <see cref="T:Microsoft.Windows.Design.ServiceManager" /> class.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.EditingContext.Dispose">
+      <summary>Releases all resources used by the <see cref="T:Microsoft.Windows.Design.EditingContext" />.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.EditingContext.Dispose(System.Boolean)">
+      <summary>Releases the unmanaged resources used by the <see cref="T:Microsoft.Windows.Design.EditingContext" /> and optionally releases the managed resources. </summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+    </member>
+    <member name="E:Microsoft.Windows.Design.EditingContext.Disposing">
+      <summary>Occurs when the <see cref="M:Microsoft.Windows.Design.EditingContext.Dispose" /> method is called.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.EditingContext.Finalize">
+      <summary>Finalizer that implements the <see cref="T:System.IDisposable" /> pattern.</summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.EditingContext.Items">
+      <summary>Gets the local collection of context items offered by this editing context.</summary>
+      <returns>A <see cref="T:Microsoft.Windows.Design.ContextItemManager" /> of context items offered by this editing context.</returns>
+      <exception cref="T:System.InvalidOperationException">The <see cref="M:Microsoft.Windows.Design.EditingContext.CreateContextItemManager" /> method returned a null<see cref="T:Microsoft.Windows.Design.ContextItemManager" />.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.EditingContext.Services">
+      <summary>Gets the service manager for this editing context.</summary>
+      <returns>A <see cref="T:Microsoft.Windows.Design.ServiceManager" /> for this editing context.</returns>
+      <exception cref="T:System.InvalidOperationException">The <see cref="M:Microsoft.Windows.Design.EditingContext.CreateServiceManager" /> method returned a null<see cref="T:Microsoft.Windows.Design.ServiceManager" />.</exception>
+    </member>
+    <member name="T:Microsoft.Windows.Design.PublishServiceCallback">
+      <summary>A delegate that is called back when an object should publish an instance of a service.</summary>
+      <returns>An instance of type <paramref name="serviceType" />.</returns>
+      <param name="serviceType">The type of service to be published.</param>
+    </member>
+    <member name="T:Microsoft.Windows.Design.PublishServiceCallback`1">
+      <summary>A generic delegate that is called back when an object should publish an instance of a service.</summary>
+      <returns>An instance of the specified service type.</returns>
+      <typeparam name="TServiceType"></typeparam>
+    </member>
+    <member name="T:Microsoft.Windows.Design.RequirementAttribute">
+      <summary>Defines attributes used by the <see cref="T:Microsoft.Windows.Design.RequirementValidator" /> class. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementAttribute.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.RequirementAttribute" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequirementAttribute.AllRequired">
+      <summary>Gets a value indicating whether all requirement attributes of the same type are required.</summary>
+      <returns>true if all requirement attributes of the same type are required; otherwise, false.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementAttribute.CreateSubscription(Microsoft.Windows.Design.EditingContext)">
+      <summary>Returns a <see cref="T:Microsoft.Windows.Design.RequirementSubscription" /> object that can be used to be notified when the requirement contained in this attribute has changed. </summary>
+      <returns>A new <see cref="T:Microsoft.Windows.Design.RequirementSubscription" /> object.</returns>
+      <param name="context">The editing context to check.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementAttribute.MeetsRequirement(Microsoft.Windows.Design.EditingContext)">
+      <summary>Determines if the <see cref="T:Microsoft.Windows.Design.EditingContext" /> meets the requirements specified in this attribute.</summary>
+      <returns>true if the attribute's requirements are met; otherwise, false.</returns>
+      <param name="context">The editing context to check.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" /> is null.</exception>
+    </member>
+    <member name="T:Microsoft.Windows.Design.RequirementSubscription">
+      <summary>Provides a notification when changes in the editing context may have satisfied the attached requirement.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementSubscription.#ctor(Microsoft.Windows.Design.RequirementAttribute)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.RequirementSubscription" /> class.</summary>
+      <param name="requirement">The requirement to create a subscription for.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="requirement" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementSubscription.OnRequirementChanged">
+      <summary>Raises the <see cref="E:Microsoft.Windows.Design.RequirementSubscription.RequirementChanged" /> event.</summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequirementSubscription.Requirement">
+      <summary>Gets the requirement attribute that is attached to this subscription.</summary>
+      <returns>A <see cref="T:Microsoft.Windows.Design.RequirementAttribute" /> that is attached to this subscription.</returns>
+    </member>
+    <member name="E:Microsoft.Windows.Design.RequirementSubscription.RequirementChanged">
+      <summary>Occurs when the requirement has changed. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementSubscription.Subscribe">
+      <summary>Subscribes to context events.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementSubscription.Unsubscribe">
+      <summary>Removes subscriptions to context events.</summary>
+    </member>
+    <member name="T:Microsoft.Windows.Design.RequirementValidator">
+      <summary>Determines whether the required context and services are available for the specified type. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequirementValidator.#ctor(Microsoft.Windows.Design.Features.FeatureManager,System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.RequirementValidator" /> class for the specified <see cref="T:Microsoft.Windows.Design.Features.FeatureManager" /> and type.</summary>
+      <param name="featureManager">The feature manager to validate requirements against.</param>
+      <param name="type">The type to get requirement attributes from.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequirementValidator.MeetsRequirements">
+      <summary>Gets a value that indicates whether the type requirements exist in the editing context.</summary>
+      <returns>true if the type requirements exist in the editing context, or false if one or more requirements is missing.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequirementValidator.PendingRequirements">
+      <summary>Gets a list of pending requirement attributes. </summary>
+      <returns>A list of pending requirement attributes. These are requirements that have not yet been met.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequirementValidator.Requirements">
+      <summary>Gets an enumeration of all requirements for the type contained in this validator.</summary>
+      <returns>An enumeration of <see cref="T:Microsoft.Windows.Design.RequirementAttribute" /> objects for <see cref="P:Microsoft.Windows.Design.RequirementValidator.Type" />.</returns>
+    </member>
+    <member name="E:Microsoft.Windows.Design.RequirementValidator.RequirementsChanged">
+      <summary>Occurs when the set of requirements necessary to use the type have changed.</summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequirementValidator.Type">
+      <summary>Gets the type of object to validate requirements for.</summary>
+      <returns>A <see cref="T:System.Type" /> representing the object to validate requirements for.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.RequiresContextItemAttribute">
+      <summary>Indicates that the class relies on the specified context.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequiresContextItemAttribute.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.RequiresContextItemAttribute" /> class.</summary>
+      <param name="contextItemType">The type of context that is required.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequiresContextItemAttribute.ContextItemType">
+      <summary>Gets the context item type the class requires.</summary>
+      <returns>A <see cref="T:System.Type" /> that indicates the <see cref="T:Microsoft.Windows.Design.ContextItem" /> type the class requires. </returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequiresContextItemAttribute.CreateSubscription(Microsoft.Windows.Design.EditingContext)">
+      <summary>Creates an object that enables notification when the requirement specified by this attribute is fulfilled by the editing context.</summary>
+      <returns>A <see cref="T:Microsoft.Windows.Design.RequirementSubscription" /> object that you can use to handle events.</returns>
+      <param name="context">The editing context to check.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequiresContextItemAttribute.MeetsRequirement(Microsoft.Windows.Design.EditingContext)">
+      <summary>Indicates whether the editing context contains a context item of type <see cref="P:Microsoft.Windows.Design.RequiresContextItemAttribute.ContextItemType" />.</summary>
+      <returns>true if the attribute's requirements are met; otherwise, false.</returns>
+      <param name="context">The editing context to check.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequiresContextItemAttribute.TypeId">
+      <summary>Gets the type ID of this attribute.</summary>
+      <returns>An object that indicates the type ID of this attribute.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.RequiresServiceAttribute">
+      <summary>Indicates that the class relies on the specified service.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequiresServiceAttribute.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.RequiresServiceAttribute" /> class.</summary>
+      <param name="serviceType">The type of service the class requires.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequiresServiceAttribute.CreateSubscription(Microsoft.Windows.Design.EditingContext)">
+      <summary>Creates an object that enables notification when the requirement specified by this attribute is fulfilled by the editing context.</summary>
+      <returns>A <see cref="T:Microsoft.Windows.Design.RequirementSubscription" /> object that you can use to handle events.</returns>
+      <param name="context">The editing context to check.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.RequiresServiceAttribute.MeetsRequirement(Microsoft.Windows.Design.EditingContext)">
+      <summary>Indicates whether the editing context contains a service of type <see cref="P:Microsoft.Windows.Design.RequiresServiceAttribute.ServiceType" />.</summary>
+      <returns>true if the attribute's requirements are met; otherwise, false.</returns>
+      <param name="context">The editing context to check.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequiresServiceAttribute.ServiceType">
+      <summary>Gets the service type the class requires.</summary>
+      <returns>A <see cref="T:System.Type" /> that indicates the service type the class requires.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.RequiresServiceAttribute.TypeId">
+      <summary>Gets the type ID of this attribute. </summary>
+      <returns>An object that indicates the type ID of this attribute.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.ServiceManager">
+      <summary>Represents the behavior associated with an <see cref="T:Microsoft.Windows.Design.EditingContext" />.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.ServiceManager" /> class.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Contains``1">
+      <summary>Determines if the <see cref="T:Microsoft.Windows.Design.ServiceManager" /> contains a service of the specified type.</summary>
+      <returns>true if <see cref="T:Microsoft.Windows.Design.ServiceManager" /> contains <paramref name="serviceType" />; otherwise, false.</returns>
+      <typeparam name="TServiceType"></typeparam>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Contains(System.Type)">
+      <summary>When overridden in a derived class, determines whether the <see cref="T:Microsoft.Windows.Design.ServiceManager" /> contains a service of the specified type.</summary>
+      <returns>true if <see cref="T:Microsoft.Windows.Design.ServiceManager" /> contains <paramref name="serviceType" />; otherwise, false.</returns>
+      <param name="serviceType">The type of service to search for.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.GetEnumerator">
+      <summary>When overridden in a derived class, retrieves an enumerator of the published services of this <see cref="T:Microsoft.Windows.Design.ServiceManager" />.</summary>
+      <returns>An enumeration of published services.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.GetRequiredService``1">
+      <summary>Retrieves an instance of a service of the specified type.</summary>
+      <returns>An instance of the type of service requested. This method never returns null.</returns>
+      <typeparam name="TServiceType"></typeparam>
+      <exception cref="T:System.NotSupportedException">There is no service of the type requested.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.GetService``1">
+      <summary>Retrieves an instance of a service of the specified generic type.</summary>
+      <returns>An instance of the type of service requested; otherwise, null.</returns>
+      <typeparam name="TServiceType"></typeparam>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.GetService(System.Type)">
+      <summary>When overridden in a derived class, retrieves an instance of a service of the specified type.</summary>
+      <returns>An instance of the type of service requested; otherwise, null.</returns>
+      <param name="serviceType">The type of service to retrieve.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.GetTarget(System.Delegate)">
+      <summary>A helper method that gets the target object for a delegate. </summary>
+      <returns>The target of <paramref name="callback" />.</returns>
+      <param name="callback">The delegate for which to get the target.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Publish``1(Microsoft.Windows.Design.PublishServiceCallback{``0})">
+      <summary>Publishes a service of the specified type, represented by the specified method.</summary>
+      <param name="callback">The method to invoke when the service is requested.</param>
+      <typeparam name="TServiceType"></typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Publish(System.Type,Microsoft.Windows.Design.PublishServiceCallback)">
+      <summary>When overridden in a derived class, publishes a service of the specified type, represented by the specified method.</summary>
+      <param name="serviceType">The type of service that is being published.</param>
+      <param name="callback">The method to invoke when the service is requested.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Publish(System.Type,System.Object)">
+      <summary>When overridden in a derived class, publishes the specified service instance of the specified type.</summary>
+      <param name="serviceType">The type of service that is being published.</param>
+      <param name="serviceInstance">An instance of the service.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Publish``1(``0)">
+      <summary>Publishes the specified service instance of the specified type.</summary>
+      <param name="serviceInstance">An instance of the service.</param>
+      <typeparam name="TServiceType"></typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="serviceInstance" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.RemoveCallback(System.Delegate,System.Delegate)">
+      <summary>Removes a callback method from a delegate.</summary>
+      <returns>A new delegate to replace the existing delegate. If <paramref name="existing" /> is null, returns null. If <paramref name="toRemove" /> is null, returns <paramref name="existing" />.</returns>
+      <param name="existing">The delegate to remove the callback from.</param>
+      <param name="toRemove">The callback method to remove from the delegate.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Subscribe``1(Microsoft.Windows.Design.SubscribeServiceCallback{``0})">
+      <summary>Requests that the specified method is called when a service of the specified type is available.</summary>
+      <param name="callback">The method to invoke when the service is available.</param>
+      <typeparam name="TServiceType"></typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Subscribe(System.Type,Microsoft.Windows.Design.SubscribeServiceCallback)">
+      <summary>When overridden in a derived class, requests that the specified method is called when a service of the specified type is available.</summary>
+      <param name="serviceType">The type of service to subscribe to.</param>
+      <param name="callback">The method to invoke when the service is available.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.System#Collections#IEnumerable#GetEnumerator">
+      <summary>For a description of this member, see <see cref="M:System.Collections.IEnumerable.GetEnumerator" />.</summary>
+      <returns>An enumeration of published services.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Unsubscribe``1(Microsoft.Windows.Design.SubscribeServiceCallback{``0})">
+      <summary>Requests that the specified method is no longer called when a service of the specified type is available.</summary>
+      <param name="callback">The method to no longer invoke when the service is available.</param>
+      <typeparam name="TServiceType"></typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="callback" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.ServiceManager.Unsubscribe(System.Type,Microsoft.Windows.Design.SubscribeServiceCallback)">
+      <summary>When overridden in a derived class, requests that the specified method is no longer called when a service of the specified type is available.</summary>
+      <param name="serviceType">The type of service to unsubscribe from.</param>
+      <param name="callback">The method to no longer invoke when the service is available.</param>
+    </member>
+    <member name="T:Microsoft.Windows.Design.SubscribeContextCallback">
+      <summary>Defines a callback method that is invoked when a context item changes.</summary>
+      <param name="item">The context item that has changed.</param>
+    </member>
+    <member name="T:Microsoft.Windows.Design.SubscribeContextCallback`1">
+      <summary>Defines a callback method that is invoked when a context item changes.</summary>
+      <param name="item">The context item that has changed.</param>
+      <typeparam name="TContextItemType"></typeparam>
+    </member>
+    <member name="T:Microsoft.Windows.Design.SubscribeServiceCallback">
+      <summary>A delegate that is a callback for service subscriptions.</summary>
+      <param name="serviceType">The type of service that has just been published.</param>
+      <param name="serviceInstance">The instance of the service.</param>
+    </member>
+    <member name="T:Microsoft.Windows.Design.SubscribeServiceCallback`1">
+      <summary>A generic delegate that is a callback for service subscriptions.</summary>
+      <param name="serviceInstance">The instance of the service.</param>
+      <typeparam name="TServiceType"></typeparam>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.FeatureAttribute">
+      <summary>Stores a <see cref="T:System.Type" /> object that represents a <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" /> type. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureAttribute.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Features.FeatureAttribute" /> class.</summary>
+      <param name="featureProviderType">The type of feature provider this attribute describes.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="featureProviderType" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">The feature provider is not assignable from <paramref name="featureProviderType" />.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureAttribute.Equals(System.Object)">
+      <returns>true if the specified object equals this attribute; otherwise, false.</returns>
+      <param name="obj">The object to compare to.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureAttribute.FeatureProviderType">
+      <summary>Gets the <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" /> type to instantiate.</summary>
+      <returns>A <see cref="T:System.Type" /> representing the class of the feature provider to attach to the target control. </returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureAttribute.GetHashCode">
+      <returns>The hash code for this object.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureAttribute.TypeId">
+      <summary>Gets a unique identifier for this attribute.</summary>
+      <returns>An <see cref="T:System.Object" /> that is a unique identifier for the attribute.  </returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.FeatureAvailableEventArgs">
+      <summary>Provides data for the <see cref="E:Microsoft.Windows.Design.Features.FeatureManager.FeatureAvailable" /> event.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureAvailableEventArgs.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Features.FeatureAvailableEventArgs" /> class.</summary>
+      <param name="featureProviderType">The type of feature provider that is now available to be created.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="featureProviderType" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureAvailableEventArgs.FeatureProviderType">
+      <summary>Gets the type of feature provider that is available for creation.</summary>
+      <returns>A <see cref="T:System.Type" /> object that represents the feature provider that is available for creation.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.FeatureConnector`1">
+      <summary>Provides a base implementation for all feature connector-based extensibility.</summary>
+      <typeparam name="TFeatureProviderType">The type of feature provider.</typeparam>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnector`1.#ctor(Microsoft.Windows.Design.Features.FeatureManager)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Features.FeatureConnector`1" /> class. </summary>
+      <param name="manager">The feature manager associated with this feature connector.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnector`1.Context">
+      <summary>Gets the editing context for the feature connector.</summary>
+      <returns>An <see cref="T:Microsoft.Windows.Design.EditingContext" /> associated with the feature connector.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnector`1.CreateFeatureProviders(System.Type)">
+      <summary>Creates a new list of feature providers associated with the feature connector, based on the provided type.</summary>
+      <returns>An enumeration of feature providers.</returns>
+      <param name="type">The <see cref="T:System.Type" /> to query for feature providers.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnector`1.CreateFeatureProviders``1(System.Type)">
+      <summary>Creates a new list of feature providers associated with the feature connector, based on the provided type and subtype.</summary>
+      <returns>An enumeration of feature providers, filtered by the subtype.</returns>
+      <param name="type">The <see cref="T:System.Type" /> to query for feature providers.</param>
+      <typeparam name="TSubtype">The subtype of the feature provider type.</typeparam>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnector`1.Dispose">
+      <summary>Releases all resources used by the <see cref="T:Microsoft.Windows.Design.Features.FeatureConnector`1" />. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnector`1.Dispose(System.Boolean)">
+      <summary>Releases the unmanaged resources used by the <see cref="T:Microsoft.Windows.Design.Features.FeatureConnector`1" /> and optionally releases the managed resources. </summary>
+      <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnector`1.Finalize"></member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnector`1.Manager">
+      <summary>Gets the <see cref="T:Microsoft.Windows.Design.Features.FeatureManager" /> for the feature connector.</summary>
+      <returns>A <see cref="T:Microsoft.Windows.Design.Features.FeatureManager" /> associated with the feature connector.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.FeatureConnectorAttribute">
+      <summary>Indicates the type of <see cref="T:Microsoft.Windows.Design.Features.FeatureConnector`1" /> required to handle the <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" />. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnectorAttribute.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Features.FeatureConnectorAttribute" /> class. </summary>
+      <param name="featureConnectorType">The type of feature manager.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="featureConnectorType" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnectorAttribute.Equals(System.Object)">
+      <returns>true if the object is equal to this object; otherwise, false.</returns>
+      <param name="obj">The object to compare.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnectorAttribute.FeatureConnectorType">
+      <summary>Gets the type of <see cref="T:Microsoft.Windows.Design.Features.FeatureConnector`1" /> to instantiate.</summary>
+      <returns>A <see cref="T:System.Type" /> object that represents the <see cref="T:Microsoft.Windows.Design.Features.FeatureConnector`1" /> type to instantiate.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnectorAttribute.GetHashCode">
+      <returns>A hash code for this object.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnectorAttribute.TypeId">
+      <summary>Gets an object that is used to determine unique attributes.</summary>
+      <returns>A object that is used to determine unique attributes.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.FeatureConnectorInformation">
+      <summary>Contains information describing a specified feature connector. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureConnectorInformation.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Features.FeatureConnectorInformation" /> class.</summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnectorInformation.FeatureConnectorType">
+      <summary>Gets the type of feature connector this <see cref="T:Microsoft.Windows.Design.Features.FeatureConnectorInformation" /> describes.</summary>
+      <returns>A <see cref="T:System.Type" /> object that represents the type of feature connector for this <see cref="T:Microsoft.Windows.Design.Features.FeatureConnectorInformation" /> object.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnectorInformation.PendingItems">
+      <summary>Gets a list of context items that are required by the feature connector, but are not yet available in the editing context.</summary>
+      <returns>An enumeration of required context item types that are not available in the editing context.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnectorInformation.PendingServices">
+      <summary>Gets a list of services that are required by the feature connector, but are not yet available in the editing context.</summary>
+      <returns>An enumeration of required service types that are not available in the editing context.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnectorInformation.RequiredItems">
+      <summary>Gets a list of context items the feature connector requires.</summary>
+      <returns>An enumeration of required context item types that must be available in the editing context before the feature connector is created.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureConnectorInformation.RequiredServices">
+      <summary>Gets a list of services the feature connector requires.</summary>
+      <returns>An enumeration of required service types that must be available in the editing context before the feature connector is created.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.FeatureManager">
+      <summary>Manages feature providers and feature connectors. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.#ctor(Microsoft.Windows.Design.EditingContext)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Features.FeatureManager" /> class.</summary>
+      <param name="context">The editing context this feature manager uses to resolve services and context items.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="context" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureManager.Context">
+      <summary>Gets the editing context for this feature manager.</summary>
+      <returns>An <see cref="T:Microsoft.Windows.Design.EditingContext" /> for this feature manager.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.CreateFeatureProviders(System.Type)">
+      <summary>Creates and returns a set of feature providers for the specified type. </summary>
+      <returns>An enumeration of feature providers. If no feature providers for <paramref name="featureProviderType" /> are available, this method returns an empty enumeration.</returns>
+      <param name="featureProviderType">The type of feature provider to return.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="featureProviderType" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="featureProviderType" /> does not derive from <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" />.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.CreateFeatureProviders(System.Type,System.Predicate{System.Type})">
+      <summary>Creates and returns a set of feature providers for the specified type. </summary>
+      <returns>An enumeration of feature providers. If no feature providers for <paramref name="featureProviderType" /> or <paramref name="match" /> are available, this method returns an empty enumeration.</returns>
+      <param name="featureProviderType">The type of feature provider to return.</param>
+      <param name="match">A predicate to use when creating feature providers. If the predicate returns true, the feature provider will be included in the enumeration.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="featureProviderType" /> or <paramref name="match" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="featureProviderType" /> does not derive from <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" />.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.CreateFeatureProviders(System.Type,System.Type)">
+      <summary>Creates and returns a set of feature providers that exist for the specified type.</summary>
+      <returns>An enumeration of feature providers. If no feature providers for <paramref name="featureProviderType" /> or <paramref name="type" /> are available, this method returns an empty enumeration.</returns>
+      <param name="featureProviderType">The type of feature provider to return.</param>
+      <param name="type">The type to create feature providers for.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="featureProviderType" /> or <paramref name="type" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="featureProviderType" /> does not derive from <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" />.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.CreateFeatureProviders(System.Type,System.Type,System.Predicate{System.Type})">
+      <summary>Creates and returns a set of feature providers that exist for the specified type.</summary>
+      <returns>An enumeration of feature providers. If no feature providers for <paramref name="featureProviderType" />, <paramref name="type" />, or <paramref name="match" /> are available, this method returns an empty enumeration.</returns>
+      <param name="featureProviderType">The type of feature provider to return.</param>
+      <param name="type">The type to create feature providers for.</param>
+      <param name="match">A predicate to use when creating feature providers. If the predicate returns true, the feature provider will be included in the enumeration.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="featureProviderType" />, <paramref name="type" /> or <paramref name="match" /> is null.</exception>
+      <exception cref="T:System.ArgumentException">
+        <paramref name="featureProviderType" /> does not derive from <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" />.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.Dispose">
+      <summary>Releases all resources used by the <see cref="T:Microsoft.Windows.Design.Features.FeatureManager" />.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.Dispose(System.Boolean)">
+      <summary>Disposes all running feature connectors.</summary>
+      <param name="disposing">true if this object is being disposed, false if it is being finalized.</param>
+    </member>
+    <member name="E:Microsoft.Windows.Design.Features.FeatureManager.FeatureAvailable">
+      <summary>Occurs when a new type of feature is available. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.Finalize">
+      <summary>Finalizer that calls <see cref="M:Microsoft.Windows.Design.Features.FeatureManager.Dispose" />.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.GetCustomAttributes(System.Type,System.Type)">
+      <summary>Enumerates attributes on the specified type.</summary>
+      <returns>An enumeration of custom attributes.</returns>
+      <param name="type">The type whose attributes are to be enumerated.</param>
+      <param name="attributeType">The type of attribute to return.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.InitializeFeatures(System.Type)">
+      <summary>Initializes any feature connectors for the feature providers defined on the specified type.</summary>
+      <param name="type">The type to initialize feature connectors for.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureManager.MetadataProvider">
+      <summary>Gets or sets a custom metadata provider that can provide type metadata for this feature manager.</summary>
+      <returns>A <see cref="T:Microsoft.Windows.Design.Features.MetadataProviderCallback" /> that provides the type metadata.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureManager.OnFeatureAvailable(Microsoft.Windows.Design.Features.FeatureAvailableEventArgs)">
+      <summary>Raises the <see cref="E:Microsoft.Windows.Design.Features.FeatureManager.FeatureAvailable" /> event.</summary>
+      <param name="e">The <see cref="T:System.EventArgs" /> to pass to the event.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureManager.PendingConnectors">
+      <summary>Gets an enumeration of all connectors that have not been activated yet because they are waiting on context items or services.</summary>
+      <returns>An enumeration of feature connectors that are waiting for services or context items to become available in the editing context.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Features.FeatureManager.RunningConnectors">
+      <summary>Gets an enumeration of all connectors that are currently running.</summary>
+      <returns>An enumeration of feature connectors that are currently running.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.FeatureProvider">
+      <summary>Adds a class-specific contribution to a feature.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Features.FeatureProvider.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Features.FeatureProvider" /> class.</summary>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Features.MetadataProviderCallback">
+      <summary>Specifies a custom mechanism for providing metadata attributes to the <see cref="T:Microsoft.Windows.Design.Features.FeatureManager" /> class.</summary>
+      <returns>An enumeration of attributes. </returns>
+      <param name="type">The type to get attributes for.</param>
+      <param name="attributeType">The type of attribute to enumerate. Can not be null.</param>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.AttributeCallback">
+      <summary>Called when attributes are needed for a type.</summary>
+      <param name="builder">An <see cref="T:Microsoft.Windows.Design.Metadata.AttributeCallbackBuilder" /> that can be used to add attributes. <see cref="T:Microsoft.Windows.Design.Metadata.AttributeCallbackBuilder" /> delegates can build attributes only for the type that is requesting metadata. </param>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.AttributeCallbackBuilder">
+      <summary>An instance of this class is passed to callback delegates to lazily populate the attributes for a type.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeCallbackBuilder.AddCustomAttributes(System.Attribute[])">
+      <summary>Adds the contents of the specified attributes to this builder. </summary>
+      <param name="attributes">An array of new attributes to add.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="attributes" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeCallbackBuilder.AddCustomAttributes(System.String,System.Attribute[])">
+      <summary>Adds attributes to the member with the specified name. </summary>
+      <param name="memberName">The member to add attributes for. Only property and event members are supported; all others will be ignored.</param>
+      <param name="attributes">An array of new attributes to add.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="memberName" /> or <paramref name="attributes" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.AttributeCallbackBuilder.CallbackType">
+      <summary>Gets the type this callback is being invoked for.</summary>
+      <returns>The type this callback is being invoked for.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.AttributeTable">
+      <summary>A table of metadata attributes for defining design-time appearance and behavior. </summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.AttributeTable.AttributedTypes">
+      <summary>Gets an enumeration of all types which have attribute overrides of some kind, for example, on a property or on the type itself. </summary>
+      <returns>An enumeration of types which have attribute overrides.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTable.ContainsAttributes(System.Type)">
+      <summary>Returns a value indicating whether this table contains any metadata for the specified type. </summary>
+      <returns>true if the table contains attributes for the specified type; otherwise, false.</returns>
+      <param name="type">The type to check for metadata attributes.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTable.GetCustomAttributes(System.Reflection.Assembly)">
+      <summary>Returns an enumeration of all attributes provided for the specified assembly.</summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="assembly">The assembly to get assembly-level attributes for.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="assembly" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTable.GetCustomAttributes(System.Type)">
+      <summary>Returns an enumeration of all attributes provided for the specified type. </summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="type">The type to get class-level attributes for.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTable.GetCustomAttributes(System.Type,System.String)">
+      <summary>Returns an enumeration of all attributes provided for the specified type and member name. </summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="ownerType">The owning type of the dependency property.</param>
+      <param name="memberName">The name of the member to provide attributes for.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="ownerType" /> or <paramref name="memberName" /> is null.</exception>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.AttributeTableBuilder">
+      <summary>Creates an attribute table that defines design-time metadata. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableBuilder" /> class. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.AddCallback(System.Type,Microsoft.Windows.Design.Metadata.AttributeCallback)">
+      <summary>Adds a callback that is invoked when metadata for the specified type is needed. </summary>
+      <param name="type">The type to add metadata attributes to. </param>
+      <param name="callback">An <see cref="T:Microsoft.Windows.Design.Metadata.AttributeCallback" /> which adds metadata to <paramref name="Type" />.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.AddCustomAttributes(System.Reflection.Assembly,System.Attribute[])">
+      <summary>Adds the contents of the provided attributes array to the table builder. </summary>
+      <param name="assembly">The assembly to add assembly-level attributes to.</param>
+      <param name="attributes">The new attributes to add to <paramref name="assembly" />.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="assembly" /> or <paramref name="attributes" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.AddCustomAttributes(System.Type,System.Attribute[])">
+      <summary>Adds the contents of the provided attributes to the table builder. </summary>
+      <param name="type">The type to add class-level attributes to.</param>
+      <param name="attributes">The new attributes to add to <paramref name="type" />.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="type" /> or <paramref name="attributes" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.AddCustomAttributes(System.Type,System.String,System.Attribute[])">
+      <summary>Adds attributes to the member with the specified name. </summary>
+      <param name="ownerType">The owning type of the member.</param>
+      <param name="memberName">The member to add attributes for. </param>
+      <param name="attributes">The attributes to add.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="ownerType" />, <paramref name="memberName" />, or <paramref name="attributes" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.AddTable(Microsoft.Windows.Design.Metadata.AttributeTable)">
+      <summary>Adds the contents of the provided attribute table to the table builder. </summary>
+      <param name="table">An existing attribute table.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="table" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.CreateTable">
+      <summary>Creates an attribute table that contains all the attribute definitions provided through <see cref="M:Microsoft.Windows.Design.Metadata.AttributeCallbackBuilder.AddCustomAttributes(System.Attribute[])" /> calls. </summary>
+      <returns>An attribute table that can be used to define design-time metadata.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableBuilder.ValidateTable">
+      <summary>This method is used to verify the attribute table which is being built contains valid attribute information. </summary>
+      <exception cref="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException">The state of the table is invalid.</exception>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.AttributeTableContainer">
+      <summary>Provides a collection of <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTable" /> instances. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableContainer" /> class. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.AddAttributeTable(Microsoft.Windows.Design.Metadata.AttributeTable)">
+      <summary>Adds the specified table to the set of attribute tables in the current container.</summary>
+      <param name="table">The attribute table to add.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="table" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.AttributeTableContainer.AttributeTables">
+      <summary>Gets an enumeration of added attribute tables.</summary>
+      <returns>An enumeration of added attribute tables.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.GetAttributes(System.Reflection.Assembly,System.Type)">
+      <summary>Enumerates the attributes of the specified assembly. </summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="assembly">The assembly to enumerate attributes.</param>
+      <param name="attributeType">The attribute type to enumerate, or null to enumerate all attributes.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="assembly" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.GetAttributes(System.Reflection.Assembly,System.Type,System.Func{System.Object,System.Object})">
+      <summary>Enumerates the attributes of the specified assembly.</summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="assembly">The assembly to enumerate attributes.</param>
+      <param name="attributeType">The attribute type to enumerate or null to enumerate all attributes.</param>
+      <param name="reflectionMapper">An optional mapping function to map the incoming reflection metadata to runtime metadata.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="assembly" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.GetAttributes(System.Reflection.MemberInfo,System.Type)">
+      <summary>Enumerates custom attributes for the specified member, including inherited attributes from base members. </summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="member">The member to get attributes for.</param>
+      <param name="attributeType">The attribute type to retrieve, or null for all attributes.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="member" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.GetAttributes(System.Reflection.MemberInfo,System.Type,System.Func{System.Object,System.Object})">
+      <summary>Enumerates custom attributes for the specified member, including inherited attributes from base members.</summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="member">The member to get attributes for.</param>
+      <param name="attributeType">The attribute type to retrieve, or null for all attributes.</param>
+      <param name="reflectionMapper">An optional mapping function to map the incoming reflection metadata to runtime metadata.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="member" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.GetLocalAttributes(System.Reflection.MemberInfo,System.Type)">
+      <summary>Enumerates custom attributes for the specified member, including inherited attributes from base members.</summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="member">The member to get attributes for.</param>
+      <param name="attributeType">The attribute type to retrieve, or null for all attributes.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="member" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableContainer.GetLocalAttributes(System.Reflection.MemberInfo,System.Type,System.Func{System.Object,System.Object})">
+      <summary>Enumerates custom attributes for the specified member, including inherited attributes from base members.</summary>
+      <returns>An enumeration of attributes.</returns>
+      <param name="member">The member to get attributes for.</param>
+      <param name="attributeType">The attribute type to retrieve, or null for all attributes.</param>
+      <param name="reflectionMapper">An optional mapping function to map the incoming reflection metadata to runtime metadata.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="member" /> is null.</exception>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException">
+      <summary>Raised when the metadata provided in an <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTable" /> does not match properties, methods and events on existing types.  </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.#ctor">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException" /> class. </summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException" /> class with serialization information. </summary>
+      <param name="info">The serialization store.</param>
+      <param name="context">The serialization context.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException" /> class with a message. </summary>
+      <param name="message">A string describing the exception.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException" /> class with a collection of validation errors. </summary>
+      <param name="message">The message provided to the user.</param>
+      <param name="validationErrors">A collection of errors which occurred during validation.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.#ctor(System.String,System.Exception)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException" /> class with an inner exception. </summary>
+      <param name="message">The message provided to the user.</param>
+      <param name="inner">An optional inner exception.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.#ctor(System.String,System.Exception,System.Collections.Generic.IEnumerable{System.String})">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTableValidationException" /> class with a message, a collection of error strings, and an inner exception. </summary>
+      <param name="message">The message provided to the user.</param>
+      <param name="inner">An optional inner exception.</param>
+      <param name="validationErrors">A collection of errors which occurred during validation.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>Override of the Exception type's <see cref="M:System.Exception.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)" /> method that is used to perform serialization.</summary>
+      <param name="info">The serialization store.</param>
+      <param name="context">The serialization context.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.AttributeTableValidationException.ValidationErrors">
+      <summary>Gets a collection of validation errors.</summary>
+      <returns>An enumerable collection of error strings.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.EventIdentifier">
+      <summary>Represents an event, which is independent of the platform.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.#ctor(Microsoft.Windows.Design.Metadata.TypeIdentifier,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> class with the specified existing type identifier and event name.</summary>
+      <param name="declaringTypeId">The <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> of the type on which the event is declared.</param>
+      <param name="name">The name of the event.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="declaringTypeId" /> was created by using an empty constructor.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.#ctor(System.Type,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> class with the specified existing type and event name.</summary>
+      <param name="declaringType">The type on which the event is declared.</param>
+      <param name="name">The name of the event.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="declaringType" /> or <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.EventIdentifier.DeclaringType">
+      <summary>Gets the type that declares this event, if it was set in the constructor.</summary>
+      <returns>A type that declares the event, or null if the event identifier was created by using a <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.EventIdentifier.DeclaringTypeIdentifier">
+      <summary>Gets the type identifier for the type that declares the event.</summary>
+      <returns>A type identifier for the type that declares the event.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.Equals(Microsoft.Windows.Design.Metadata.EventIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" />.</summary>
+      <returns>true if the specified <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" />; otherwise, false.</returns>
+      <param name="other">The <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> to compare with the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" />.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.Equals(System.Object)">
+      <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" />. </summary>
+      <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" />; otherwise, false.</returns>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" />.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.EventIdentifier.FullName">
+      <summary>Gets the type-qualified name of the event.</summary>
+      <returns>The type-qualified name of the event.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.GetHashCode">
+      <summary>Returns the hash code for the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> instance.</summary>
+      <returns>The hash code for the current <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> instance.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.EventIdentifier.IsEmpty">
+      <summary>Gets a value that indicates whether the current identifier was created by using an empty constructor. </summary>
+      <returns>true if this identifier was created by using an empty constructor; otherwise, false. </returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.EventIdentifier.Name">
+      <summary>Gets the name of the event.</summary>
+      <returns>The name of the event.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.op_Equality(Microsoft.Windows.Design.Metadata.EventIdentifier,Microsoft.Windows.Design.Metadata.EventIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> instances are considered equal.</summary>
+      <returns>true if <paramref name="first" /> is equal to <paramref name="second" />; otherwise, false.</returns>
+      <param name="first">The first <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> to compare.</param>
+      <param name="second">The second <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> to compare.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.op_Inequality(Microsoft.Windows.Design.Metadata.EventIdentifier,Microsoft.Windows.Design.Metadata.EventIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> instances are considered not equal.</summary>
+      <returns>true if <paramref name="first" /> is not equal to <paramref name="second" />; otherwise, false.</returns>
+      <param name="first">The first <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> to compare.</param>
+      <param name="second">The second <see cref="T:Microsoft.Windows.Design.Metadata.EventIdentifier" /> to compare.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.EventIdentifier.ToString">
+      <summary>Gets the <see cref="P:Microsoft.Windows.Design.Metadata.EventIdentifier.FullName" /> property as a string. </summary>
+      <returns>The <see cref="P:Microsoft.Windows.Design.Metadata.EventIdentifier.FullName" /> property as a string.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.IProvideAttributeTable">
+      <summary>Defines a class that provides an attribute table.</summary>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.IProvideAttributeTable.AttributeTable">
+      <summary>Gets the attribute table provided by the class.</summary>
+      <returns>The <see cref="T:Microsoft.Windows.Design.Metadata.AttributeTable" /> provided by the class.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier">
+      <summary>Represents a property, which is independent of the platform.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.#ctor(Microsoft.Windows.Design.Metadata.TypeIdentifier,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> class with the specified existing type identifier and property name.</summary>
+      <param name="declaringTypeId">The <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> of the type on which the property is declared.</param>
+      <param name="name">The name of the property.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="name" /> is null.</exception>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="declaringTypeId" /> was created by using an empty constructor.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.#ctor(System.Type,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> class with the specified existing type and property name. </summary>
+      <param name="declaringType">The type on which the property is declared.</param>
+      <param name="name">The name of the property.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="declaringType" /> or <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.PropertyIdentifier.DeclaringType">
+      <summary>Gets the type that declares this property, if it was set in the constructor.</summary>
+      <returns>A type that declares the property, or null if the property identifier was created by using a <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.PropertyIdentifier.DeclaringTypeIdentifier">
+      <summary>Gets the type identifier for the type that declares the property.</summary>
+      <returns>A type identifier for the type that declares the property.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.Equals(Microsoft.Windows.Design.Metadata.PropertyIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" />.</summary>
+      <returns>true if the specified <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" />; otherwise, false.</returns>
+      <param name="other">The <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> to compare with the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" />.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.Equals(System.Object)">
+      <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" />. </summary>
+      <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" />; otherwise, false.</returns>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" />.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.PropertyIdentifier.FullName">
+      <summary>Gets the type-qualified name of the property.</summary>
+      <returns>The type-qualified name of the property.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.GetHashCode">
+      <summary>Returns the hash code for the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> instance.</summary>
+      <returns>The hash code for the current <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> instance.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.PropertyIdentifier.IsEmpty">
+      <summary>Gets a value that indicates whether the current identifier was created by using an empty constructor. </summary>
+      <returns>true if this identifier was created by using an empty constructor; otherwise, false. </returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.PropertyIdentifier.Name">
+      <summary>Gets the name of the property.</summary>
+      <returns>The name of the property.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.op_Equality(Microsoft.Windows.Design.Metadata.PropertyIdentifier,Microsoft.Windows.Design.Metadata.PropertyIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> instances are considered equal.</summary>
+      <returns>true if <paramref name="first" /> is equal to <paramref name="second" />; otherwise, false.</returns>
+      <param name="first">The first <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> to compare.</param>
+      <param name="second">The second <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> to compare.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.op_Inequality(Microsoft.Windows.Design.Metadata.PropertyIdentifier,Microsoft.Windows.Design.Metadata.PropertyIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> instances are considered not equal.</summary>
+      <returns>true if <paramref name="first" /> is not equal to <paramref name="second" />; otherwise, false.</returns>
+      <param name="first">The first <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> to compare.</param>
+      <param name="second">The second <see cref="T:Microsoft.Windows.Design.Metadata.PropertyIdentifier" /> to compare.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.PropertyIdentifier.ToString">
+      <summary>Gets the <see cref="P:Microsoft.Windows.Design.Metadata.PropertyIdentifier.FullName" /> property as a string.</summary>
+      <returns>The <see cref="P:Microsoft.Windows.Design.Metadata.PropertyIdentifier.FullName" /> property a string.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.ProvideMetadataAttribute">
+      <summary>Represents a class that provides metadata.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.ProvideMetadataAttribute.#ctor(System.Type)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.ProvideMetadataAttribute" /> class. </summary>
+      <param name="metadataProviderType">The <see cref="T:System.Type" /> of the class that implements the <see cref="T:Microsoft.Windows.Design.Metadata.IProvideAttributeTable" /> interface.</param>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.ProvideMetadataAttribute.MetadataProviderType">
+      <summary>Gets the type that implements the <see cref="T:Microsoft.Windows.Design.Metadata.IProvideAttributeTable" /> interface.</summary>
+      <returns>A type that implements the <see cref="T:Microsoft.Windows.Design.Metadata.IProvideAttributeTable" /> interface.</returns>
+    </member>
+    <member name="T:Microsoft.Windows.Design.Metadata.TypeIdentifier">
+      <summary>Identifies a type, which is independent of the platform.</summary>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.#ctor(System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> class. </summary>
+      <param name="fullyQualifiedName">The fully-qualified name of the type. </param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="fullyQualifiedName" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.#ctor(System.String,System.String)">
+      <summary>Initializes a new instance of the <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> class with the specified XML namespace and type name. </summary>
+      <param name="xmlNamespace">The XML namespace in which the type is declared.</param>
+      <param name="name">The name of the type.</param>
+      <exception cref="T:System.ArgumentNullException">
+        <paramref name="xmlNamespace" /> or <paramref name="name" /> is null.</exception>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.Equals(Microsoft.Windows.Design.Metadata.TypeIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />.</summary>
+      <returns>true if the specified <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />; otherwise, false.</returns>
+      <param name="other">The <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> to compare with the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.Equals(System.Object)">
+      <summary>Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />.  </summary>
+      <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />; otherwise, false.</returns>
+      <param name="obj">The <see cref="T:System.Object" /> to compare with the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" />.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.GetHashCode">
+      <summary>Returns the hash code for the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> instance.</summary>
+      <returns>The hash code for the current <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> instance.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.TypeIdentifier.IsEmpty">
+      <summary>Gets a value that indicates whether the current identifier was created by using an empty constructor.</summary>
+      <returns>true if this identifier was created by using an empty constructor; otherwise, false. </returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.TypeIdentifier.Name">
+      <summary>Gets the name of the type. </summary>
+      <returns>The name of the type. If <see cref="P:Microsoft.Windows.Design.Metadata.TypeIdentifier.XmlNamespace" /> is null, this is a fully-qualified CLR type name.</returns>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.op_Equality(Microsoft.Windows.Design.Metadata.TypeIdentifier,Microsoft.Windows.Design.Metadata.TypeIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> instances are considered equal.</summary>
+      <returns>true if <paramref name="first" /> is equal to <paramref name="second" />; otherwise, false.</returns>
+      <param name="first">The first <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> to compare.</param>
+      <param name="second">The second <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> to compare.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.op_Inequality(Microsoft.Windows.Design.Metadata.TypeIdentifier,Microsoft.Windows.Design.Metadata.TypeIdentifier)">
+      <summary>Determines whether the specified <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> instances are considered not equal.</summary>
+      <returns>true if <paramref name="first" /> is not equal to <paramref name="second" />; otherwise, false.</returns>
+      <param name="first">The first <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> to compare.</param>
+      <param name="second">The second <see cref="T:Microsoft.Windows.Design.Metadata.TypeIdentifier" /> to compare.</param>
+    </member>
+    <member name="M:Microsoft.Windows.Design.Metadata.TypeIdentifier.ToString">
+      <summary>Gets the <see cref="P:Microsoft.Windows.Design.Metadata.TypeIdentifier.Name" /> property as a string.</summary>
+      <returns>The <see cref="P:Microsoft.Windows.Design.Metadata.TypeIdentifier.Name" /> property as a string.</returns>
+    </member>
+    <member name="P:Microsoft.Windows.Design.Metadata.TypeIdentifier.XmlNamespace">
+      <summary>Gets the XML namespace of this type. </summary>
+      <returns>The XML namespace of this type. If this property is set, the type name is a simple name in the namespace.</returns>
+    </member>
+  </members>
+</doc>

@@ -1,0 +1,8 @@
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\OmronPlcDriver.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\OmronPlcDriver.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\DataService.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\DataService.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\obj\Debug\OmronPlcDriver.csproj.CoreCompileInputs.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\obj\Debug\OmronPlcDriver.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\obj\Debug\OmronPlcDriver.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\obj\Debug\OmronPlcDriver.csprojResolveAssemblyReference.cache

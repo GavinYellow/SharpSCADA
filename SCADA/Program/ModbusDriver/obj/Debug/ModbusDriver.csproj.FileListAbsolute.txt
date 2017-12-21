@@ -1,0 +1,8 @@
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.pdb
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.csprojResolveAssemblyReference.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.csproj.CoreCompileInputs.cache
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.dll
+C:\Users\IMG\Documents\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.pdb
