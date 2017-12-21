@@ -202,10 +202,14 @@ namespace FileDriver
                                 dataItem = new ByteTag(meta.ID, addr, this);
                                 break;
                             case DataType.WORD:
+                                dataItem = new UShortTag(meta.ID, addr, this);
+                                break;
                             case DataType.SHORT:
                                 dataItem = new ShortTag(meta.ID, addr, this);
                                 break;
-                            case DataType.TIME:
+                            case DataType.DWORD:
+                                dataItem = new UIntTag(meta.ID, addr, this);
+                                break;
                             case DataType.INT:
                                 dataItem = new IntTag(meta.ID, addr, this);
                                 break;
@@ -418,10 +422,14 @@ namespace FileDriver
                                         value.Byte = Convert.ToByte(d.Right(ind));
                                         break;
                                     case DataType.WORD:
+                                        value.Word = Convert.ToUInt16(d.Right(ind));
+                                        break;
                                     case DataType.SHORT:
                                         value.Int16 = Convert.ToInt16(d.Right(ind));
                                         break;
-                                    case DataType.TIME:
+                                    case DataType.DWORD:
+                                        value.DWord = Convert.ToUInt32(d.Right(ind));
+                                        break;
                                     case DataType.INT:
                                         value.Int32 = Convert.ToInt32(d.Right(ind));
                                         break;
@@ -460,6 +468,26 @@ namespace FileDriver
             {
                 ITag tag = _items[address.Start];
                 return new ItemData<int>(tag.Value.Int32, 0, tag.Quality);
+            }
+        }
+
+        public ItemData<uint> ReadUInt32(DeviceAddress address, DataSource source = DataSource.Cache)
+        {
+            if (source == DataSource.Device) return _fileReader.ReadUInt32(address);
+            else
+            {
+                ITag tag = _items[address.Start];
+                return new ItemData<uint>(tag.Value.DWord, 0, tag.Quality);
+            }
+        }
+
+        public ItemData<ushort> ReadUInt16(DeviceAddress address, DataSource source = DataSource.Cache)
+        {
+            if (source == DataSource.Device) return _fileReader.ReadUInt16(address);
+            else
+            {
+                ITag tag = _items[address.Start];
+                return new ItemData<ushort>(tag.Value.Word, 0, tag.Quality);
             }
         }
 
@@ -520,6 +548,42 @@ namespace FileDriver
             if (rs >= 0)
             {
                 Storage stor = new Storage { Int32 = value };
+                _items[address.Start].Update(stor, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                if (DataChange != null)
+                {
+                    DataChange(this, new DataChangeEventArgs(1, new HistoryData[1]
+                {
+                    new HistoryData( (short)address.CacheIndex,QUALITIES.QUALITY_GOOD,stor, DateTime.Now)
+                }));
+                }
+            }
+            return rs;
+        }
+
+        public int WriteUInt32(DeviceAddress address, uint value)
+        {
+            int rs = _fileReader.WriteUInt32(address, value);
+            if (rs >= 0)
+            {
+                Storage stor = new Storage { DWord = value };
+                _items[address.Start].Update(stor, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                if (DataChange != null)
+                {
+                    DataChange(this, new DataChangeEventArgs(1, new HistoryData[1]
+                {
+                    new HistoryData( (short)address.CacheIndex,QUALITIES.QUALITY_GOOD,stor, DateTime.Now)
+                }));
+                }
+            }
+            return rs;
+        }
+
+        public int WriteUInt16(DeviceAddress address, ushort value)
+        {
+            int rs = _fileReader.WriteUInt16(address, value);
+            if (rs >= 0)
+            {
+                Storage stor = new Storage { Word = value };
                 _items[address.Start].Update(stor, DateTime.Now, QUALITIES.QUALITY_GOOD);
                 if (DataChange != null)
                 {
@@ -633,5 +697,4 @@ namespace FileDriver
 
         public event DataChangeEventHandler DataChange;
     }
-
 }

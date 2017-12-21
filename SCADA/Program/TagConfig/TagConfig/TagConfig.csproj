@@ -64,7 +64,7 @@
       <DependentUpon>AlarmParam.cs</DependentUpon>
     </Compile>
     <Compile Include="Condition.cs" />
-    <Compile Include="DataHelper.cs" />
+    <Compile Include="DataConvert.cs" />
     <Compile Include="ExMethos.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

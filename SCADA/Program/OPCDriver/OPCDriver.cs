@@ -177,12 +177,16 @@ namespace OPCDriver
                                     dataItem = new ByteTag((short)itemDef.hClient, new DeviceAddress(-0x100, 0, 0, Marshal.ReadInt32(pAddResults), 1, 0, DataType.BYTE), this);
                                     break;
                                 case DataType.WORD:
+                                    dataItem = new UShortTag((short)itemDef.hClient, new DeviceAddress(-0x100, 0, 0, Marshal.ReadInt32(pAddResults), 2, 0, DataType.WORD), this);
+                                    break;
                                 case DataType.SHORT:
                                     dataItem = new ShortTag((short)itemDef.hClient, new DeviceAddress(-0x100, 0, 0, Marshal.ReadInt32(pAddResults), 2, 0, DataType.SHORT), this);
                                     break;
                                 case DataType.INT:
-                                case DataType.TIME:
                                     dataItem = new IntTag((short)itemDef.hClient, new DeviceAddress(-0x100, 0, 0, Marshal.ReadInt32(pAddResults), 4, 0, DataType.INT), this);
+                                    break;
+                                case DataType.DWORD:
+                                    dataItem = new UIntTag((short)itemDef.hClient, new DeviceAddress(-0x100, 0, 0, Marshal.ReadInt32(pAddResults), 4, 0, DataType.DWORD), this);
                                     break;
                                 case DataType.FLOAT:
                                     dataItem = new FloatTag((short)itemDef.hClient, new DeviceAddress(-0x100, 0, 0, Marshal.ReadInt32(pAddResults), 4, 0, DataType.FLOAT), this);
@@ -321,8 +325,13 @@ namespace OPCDriver
                                     values[i].Value.Byte = Marshal.ReadByte(pItemValues + 16);
                                     break;
                                 case DataType.WORD:
+                                    values[i].Value.Word = (ushort)Marshal.ReadInt16(pItemValues + 16);
+                                    break;
                                 case DataType.SHORT:
                                     values[i].Value.Int16 = Marshal.ReadInt16(pItemValues + 16);
+                                    break;
+                                case DataType.DWORD:
+                                    values[i].Value.DWord = (uint)Marshal.ReadInt32(pItemValues + 16);
                                     break;
                                 case DataType.INT:
                                     values[i].Value.Int32 = Marshal.ReadInt32(pItemValues + 16);
@@ -408,6 +417,18 @@ namespace OPCDriver
             Marshal.FreeCoTaskMem(pItemValues);
             Marshal.FreeCoTaskMem(pErrors);
             return rt;
+        }
+
+        public ItemData<uint> ReadUInt32(DeviceAddress address, DataSource source = DataSource.Cache)
+        {
+            var rt = ReadInt32(address, source);
+            return new ItemData<uint>((uint)rt.Value, rt.TimeStamp, rt.Quality);
+        }
+
+        public ItemData<ushort> ReadUInt16(DeviceAddress address, DataSource source = DataSource.Cache)
+        {
+            var rt = ReadInt16(address, source);
+            return new ItemData<ushort>((ushort)rt.Value, rt.TimeStamp, rt.Quality);
         }
 
         public ItemData<short> ReadInt16(DeviceAddress address, DataSource source = DataSource.Cache)
@@ -540,6 +561,22 @@ namespace OPCDriver
             return rt;
         }
 
+        public int WriteUInt32(DeviceAddress address, uint value)
+        {
+            IntPtr pErrors;
+            int rt = _sync.Write(1, new int[1] { address.Start }, new object[] { value }, out pErrors);
+            Marshal.FreeCoTaskMem(pErrors);
+            return rt;
+        }
+
+        public int WriteUInt16(DeviceAddress address, ushort value)
+        {
+            IntPtr pErrors;
+            int rt = _sync.Write(1, new int[1] { address.Start }, new object[] { value }, out pErrors);
+            Marshal.FreeCoTaskMem(pErrors);
+            return rt;
+        }
+
         public int WriteInt16(DeviceAddress address, short value)
         {
             IntPtr pErrors;
@@ -656,8 +693,13 @@ namespace OPCDriver
                                 value.Byte = Marshal.ReadByte(pvValues + 8);
                                 break;
                             case DataType.WORD:
+                                value.Word = (ushort)Marshal.ReadInt16(pvValues + 8);
+                                break;
                             case DataType.SHORT:
                                 value.Int16 = Marshal.ReadInt16(pvValues + 8);
+                                break;
+                            case DataType.DWORD:
+                                value.DWord = (uint)Marshal.ReadInt32(pvValues + 8);
                                 break;
                             case DataType.INT:
                                 value.Int32 = Marshal.ReadInt32(pvValues + 8);
@@ -726,8 +768,13 @@ namespace OPCDriver
                             value.Byte = Marshal.ReadByte(pvValues + 8);
                             break;
                         case DataType.WORD:
+                            value.Word = (ushort)Marshal.ReadInt16(pvValues + 8);
+                            break;
                         case DataType.SHORT:
                             value.Int16 = Marshal.ReadInt16(pvValues + 8);
+                            break;
+                        case DataType.DWORD:
+                            value.DWord = (uint)Marshal.ReadInt32(pvValues + 8);
                             break;
                         case DataType.INT:
                             value.Int32 = Marshal.ReadInt32(pvValues + 8);
