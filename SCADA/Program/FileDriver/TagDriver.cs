@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using DataService;
+using System;
 
 namespace FileDriver
 {
@@ -184,37 +185,93 @@ namespace FileDriver
 
         public int WriteBit(DeviceAddress address, bool bit)
         {
-            return 0;
+            var tag = _parent[(short)address.CacheIndex];
+            if (tag != null)
+            {
+                Storage v = tag.Value;
+                v.Boolean = bit;
+                tag.Update(v, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                return 0;
+            }
+            return -1;
         }
 
         public int WriteBits(DeviceAddress address, byte bits)
         {
-            return 0;
+            var tag = _parent[(short)address.CacheIndex];
+            if (tag != null)
+            {
+                Storage v = tag.Value;
+                v.Byte = bits;
+                tag.Update(v, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                return 0;
+            }
+            return -1;
         }
 
         public int WriteInt16(DeviceAddress address, short value)
         {
-            return 0;
+            var tag = _parent[(short)address.CacheIndex];
+            if (tag != null)
+            {
+                Storage v = tag.Value;
+                v.Int16 = value;
+                tag.Update(v, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                return 0;
+            }
+            return -1;
         }
 
         public int WriteUInt16(DeviceAddress address, ushort value)
         {
-            return 0;
+            var tag = _parent[(short)address.CacheIndex];
+            if (tag != null)
+            {
+                Storage v = tag.Value;
+                v.Word = value;
+                tag.Update(v, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                return 0;
+            }
+            return -1;
         }
 
         public int WriteUInt32(DeviceAddress address, uint value)
         {
-            return 0;
+            var tag = _parent[(short)address.CacheIndex];
+            if (tag != null)
+            {
+                Storage v = tag.Value;
+                v.DWord = value;
+                tag.Update(v, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                return 0;
+            }
+            return -1;
         }
 
         public int WriteInt32(DeviceAddress address, int value)
         {
-            return 0;
+            var tag = _parent[(short)address.CacheIndex];
+            if (tag != null)
+            {
+                Storage v = tag.Value;
+                v.Int32 = value;
+                tag.Update(v, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                return 0;
+            }
+            return -1;
         }
 
         public int WriteFloat(DeviceAddress address, float value)
         {
-            return 0;
+            var tag = _parent[(short)address.CacheIndex];
+            if (tag != null)
+            {
+                Storage v = tag.Value;
+                v.Single = value;
+                tag.Update(v, DateTime.Now, QUALITIES.QUALITY_GOOD);
+                return 0;
+            }
+            return -1;
         }
 
         public int WriteString(DeviceAddress address, string str)
