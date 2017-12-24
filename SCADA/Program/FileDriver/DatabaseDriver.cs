@@ -46,7 +46,7 @@ namespace FileDriver
             }
         }
 
-        string _serverIP;
+        string _serverIP = ".";
         public string ServerName
         {
             get
@@ -97,28 +97,22 @@ namespace FileDriver
             get { return _server; }
         }
 
-        public DataBaseReader(IDataServer parent, short id, string name, string server = ".", int timeOut = 2, string databaseName = "SharpSCADA", string ins = null)
+        public DataBaseReader(IDataServer parent, short id, string name)
         {
             _id = id;
             _name = name;
             _server = parent;
-            _database = databaseName;
-            _serverIP = server;
-            _ins = ins;
-            _timeOut = timeOut / 1000;
-            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
-            builder.DataSource = (ins == null ? server : string.Format(@"{0}\{1}", _serverIP, _ins));
-            builder.InitialCatalog = _database;
-            builder.ConnectTimeout = _timeOut;
-            builder.IntegratedSecurity = true;
-            m_ConnStr = builder.ConnectionString;
         }
 
-        string m_ConnStr;
         SqlConnection m_Conn;
         public bool Connect()
         {
-            m_Conn = new SqlConnection(m_ConnStr);
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = (_ins == null ? _serverIP : string.Format(@"{0}\{1}", _serverIP, _ins));
+            builder.InitialCatalog = _database;
+            builder.ConnectTimeout = _timeOut;
+            builder.IntegratedSecurity = true;
+            m_Conn = new SqlConnection(builder.ConnectionString);
             //mySqlConnection.ConnectionTimeout = 1;//设置连接超时的时间,写在连接字符串内
             try
             {

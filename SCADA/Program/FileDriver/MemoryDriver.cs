@@ -100,17 +100,13 @@ namespace FileDriver
         int _count = 0;
         MemoryMappedFile mapp = null;
         MemoryMappedViewAccessor accessor = null;
-        SortedList<short, int> psList;
+        SortedList<short, int> psList = new SortedList<short, int>();
 
-        public MemoryReader(IDataServer parent, short id, string name, string server, int timeOut, string fileName = null, string spare2 = null)
+        public MemoryReader(IDataServer parent, short id, string name)
         {
             _parent = parent;
             _id = id;
             _name = name;
-            _fileName = fileName;
-            _server = server;
-            _timeOut = timeOut;
-            psList = new SortedList<short, int>();
         }
 
         public bool Connect()

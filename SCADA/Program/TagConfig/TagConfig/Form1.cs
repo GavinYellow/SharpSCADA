@@ -30,6 +30,8 @@ namespace TagConfig
         List<Condition> conditions = new List<Condition>();
         List<SubCondition> subConds = new List<SubCondition>();
         List<TagData> selectedTags = new List<TagData>();
+        List<DataTypeSource1> typeList = new List<DataTypeSource1>();
+        List<DriverArgumet> arguments = new List<DriverArgumet>();
 
         SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
 
@@ -63,13 +65,12 @@ namespace TagConfig
             list.Clear();
             //subConds.Clear();
             majorTop.Nodes.Clear();
-            string sql = "SELECT DriverID,DriverType,DriverName,Server,TimeOut,Spare1,Spare2 FROM META_DRIVER;";
+            string sql = "SELECT DriverID,DriverType,DriverName FROM META_DRIVER;";
             using (var reader = DataHelper.Instance.ExecuteReader(sql))
             {
                 while (reader.Read())
                 {
-                    Driver device = new Driver(reader.GetInt16(0), reader.GetInt32(1), reader.GetString(2), reader.GetNullableString(3),
-                        reader.GetInt32(4), reader.GetNullableString(5), reader.GetNullableString(6));
+                    Driver device = new Driver(reader.GetInt16(0), reader.GetInt32(1), reader.GetString(2));
                     devices.Add(device);
                     majorTop.Nodes.Add(device.ID.ToString(), device.Name, 1, 1);
                 }
@@ -131,6 +132,22 @@ namespace TagConfig
                     scaleList.Add(scale);
                 }
             }
+            sql = "SELECT DRIVERID,ISNULL(Description,CLASSNAME),AssemblyName,ClassFullName FROM RegisterModule";
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
+            {
+                while (reader.Read())
+                {
+                    typeList.Add(new DataTypeSource1(reader.GetInt32(0), reader.GetString(1), reader.GetNullableString(2), reader.GetNullableString(3)));
+                }
+            }
+            sql = "SELECT DriverID,PropertyName,PropertyValue FROM Argument";
+            using (var reader = DataHelper.Instance.ExecuteReader(sql))
+            {
+                while (reader.Read())
+                {
+                    arguments.Add(new DriverArgumet(reader.GetInt16(0), reader.GetString(1), reader.GetNullableString(2)));
+                }
+            }
             list.Sort();
             //conditions.Sort();
             subConds.Sort();
@@ -161,7 +178,7 @@ namespace TagConfig
                 }
             }
             var obj = DataHelper.Instance.ExecuteScalar("SELECT MAX(TypeID) FROM Meta_Condition");
-            if (obj != DBNull.Value) Program.MAXCONDITIONID =Convert.ToInt32(obj);
+            if (obj != DBNull.Value) Program.MAXCONDITIONID = Convert.ToInt32(obj);
             start = true;
         }
 
@@ -170,27 +187,47 @@ namespace TagConfig
             //dataGridView1.CurrentCell = null;
             //bindingSource1.EndEdit();
             bool result = true;
-            TagDataReader reader = new TagDataReader(list);
-            ConditionReader condReader = new ConditionReader(conditions);
-            SubConditionReader subReader = new SubConditionReader(subConds);
-            ScaleReader scalereader = new ScaleReader(scaleList);
             string sql = "DELETE FROM Meta_Driver;DELETE FROM Meta_Group;";
             foreach (Driver device in devices)
             {
-                sql = string.Concat(sql, string.Format("INSERT INTO Meta_Driver(DriverID,DriverName,DriverType,Server,TimeOut,Spare1,Spare2)"
-                + " VALUES({0},'{1}',{2},'{3}',{4},'{5}','{6}');",
-                    device.ID, device.Name, device.DeviceDriver, device.ServerName, device.TimeOut, device.Spare1, device.Spare2));
+                sql = string.Concat(sql, string.Format("INSERT INTO Meta_Driver(DriverID,DriverName,DriverType)"
+                + " VALUES({0},'{1}',{2});",
+                    device.ID, device.Name, device.DeviceDriver));
+                if (device.Target != null)
+                {
+                    for (int i = arguments.Count - 1; i >= 0; i--)
+                    {
+                        if (arguments[i].DriverID == device.ID)
+                            arguments.RemoveAt(i);
+                    }
+                    var type = device.Target.GetType();
+                    foreach (var prop in type.GetProperties())
+                    {
+                        if (prop.CanWrite)
+                        {
+                            var value = prop.GetValue(device.Target, null);
+                            var item = new DriverArgumet(device.ID, prop.Name, value == null ? null : value.ToString());
+                            arguments.Add(item);
+                        }
+                    }
+                }
             }
             foreach (Group grp in groups)
             {
                 sql = string.Concat(sql, string.Format("INSERT INTO Meta_Group(GroupID,GroupName,DriverID,UpdateRate,DeadBand,IsActive) VALUES({0},'{1}',{2},{3},{4},'{5}');",
                     grp.ID, grp.Name, grp.DriverID, grp.UpdateRate, grp.DeadBand, grp.Active));
             }
+            TagDataReader reader = new TagDataReader(list);
+            ConditionReader condReader = new ConditionReader(conditions);
+            SubConditionReader subReader = new SubConditionReader(subConds);
+            ScaleReader scalereader = new ScaleReader(scaleList);
+            ArgumentReader argumentreader = new ArgumentReader(arguments);
             result &= DataHelper.Instance.ExecuteNonQuery(sql) >= 0;
             result &= DataHelper.Instance.BulkCopy(reader, "Meta_Tag", "DELETE FROM Meta_Tag", SqlBulkCopyOptions.KeepIdentity);
             result &= DataHelper.Instance.BulkCopy(condReader, "Meta_Condition", "DELETE FROM Meta_Condition", SqlBulkCopyOptions.KeepIdentity);
             result &= DataHelper.Instance.BulkCopy(subReader, "Meta_SubCondition", "DELETE FROM Meta_SubCondition", SqlBulkCopyOptions.KeepIdentity);
             result &= DataHelper.Instance.BulkCopy(scalereader, "Meta_Scale", "DELETE FROM Meta_Scale", SqlBulkCopyOptions.KeepIdentity);
+            result &= DataHelper.Instance.BulkCopy(argumentreader, "Argument", "DELETE FROM Argument");
             return result;
         }
 
@@ -224,14 +261,6 @@ namespace TagConfig
                                         if (reader.MoveToAttribute("name"))
                                         {
                                             device.Name = reader.Value;
-                                        }
-                                        if (reader.MoveToAttribute("server"))
-                                        {
-                                            device.ServerName = reader.Value;
-                                        }
-                                        if (reader.MoveToAttribute("timeout"))
-                                        {
-                                            device.TimeOut = int.Parse(reader.Value);
                                         }
                                         devices.Add(device);
                                         majorTop.Nodes.Add(device.ID.ToString(), device.Name, 1, 1);
@@ -337,9 +366,6 @@ namespace TagConfig
                     writer.WriteStartElement("Device");
                     writer.WriteAttributeString("id", device.ID.ToString());
                     writer.WriteAttributeString("name", device.Name);
-                    if (!string.IsNullOrEmpty(device.ServerName))
-                        writer.WriteAttributeString("server", device.ServerName);
-                    writer.WriteAttributeString("timeout", device.TimeOut.ToString());
                     foreach (Group grp in groups)
                     {
                         if (grp.DriverID != device.ID)
@@ -841,10 +867,10 @@ namespace TagConfig
                     }
                     break;
                 case "保存":
-                    if(Save())
+                    if (Save())
                         MessageBox.Show("保存成功!");
                     break;
-               
+
                 case "注册":
                     {
                         RegisterSet frm = new RegisterSet();
@@ -908,22 +934,22 @@ namespace TagConfig
             {
                 case "配方":
                     {
-             
+
                     }
                     break;
                 case "设备":
                     {
-             
+
                     }
                     break;
                 case "仓容":
                     {
-                  
+
                     }
                     break;
                 case "路径":
                     {
-                 
+
                     }
                     break;
                 case "导入变量":
@@ -984,7 +1010,7 @@ namespace TagConfig
                 case "前缀":
                     {
                         string front = txtFront.Text;
-                        if (treeView1.SelectedNode.Level ==0)
+                        if (treeView1.SelectedNode.Level == 0)
                         {
                             foreach (var item in list)
                             {
@@ -1084,7 +1110,7 @@ namespace TagConfig
                                 {
                                     if (device.ID == id)
                                     {
-                                        DriverSet frm = new DriverSet(device);
+                                        DriverSet frm = new DriverSet(device, typeList, arguments);
                                         frm.ShowDialog();
                                         node.Text = device.Name;
                                         return;
@@ -1360,12 +1386,33 @@ namespace TagConfig
         string _name;
         public string Name { get { return _name; } set { _name = value; } }
 
-        public DataTypeSource1(int type, string name)
+        string _path;
+        public string Path { get { return _path; } set { _path = value; } }
+
+        string _className;
+        public string ClassName { get { return _className; } set { _className = value; } }
+
+        public DataTypeSource1(int type, string name, string path, string className)
         {
             _type = type;
             _name = name;
+            _path = path;
+            _className = className;
+        }
+    }
+
+    public class DriverArgumet
+    {
+        public short DriverID;
+        public string PropertyName;
+        public string PropertyValue;
+
+        public DriverArgumet(short id, string name, string value)
+        {
+            DriverID = id;
+            PropertyName = name;
+            PropertyValue = value;
         }
     }
 
 }
-  

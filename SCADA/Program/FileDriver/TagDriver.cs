@@ -82,13 +82,11 @@ namespace FileDriver
             get { return _parent; }
         }
 
-        public TagDriver(IDataServer parent, short id, string name, string server, int timeOut, string spare1 = null, string spare2 = null)
+        public TagDriver(IDataServer parent, short id, string name)
         {
             _parent = parent;
             _id = id;
             _name = name;
-            _server = server;
-            _timeOut = timeOut;
         }
 
         public bool Connect()

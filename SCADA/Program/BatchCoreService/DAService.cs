@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,36 +20,8 @@ using System.Xml;
 
 namespace BatchCoreService
 {
-    [ServiceContract(Namespace = "http://BatchCoreService")]
-    public interface IDataExchangeService
-    {
-        [OperationContract]
-        string Read(string id);
-
-        [OperationContract]
-        bool ReadExpression(string expression);
-
-        [OperationContract]
-        int Write(string id, string value);
-
-        [OperationContract]
-        Dictionary<string, string> BatchRead(string[] tags);
-
-        [OperationContract]
-        int BatchWrite(Dictionary<string, string> tags);
-
-        [OperationContract]
-        Stream LoadMetaData();
-
-        [OperationContract]
-        Stream LoadHdaBatch(DateTime start, DateTime end);
-
-        [OperationContract]
-        Stream LoadHdaSingle(DateTime start, DateTime end, short id);
-    }
-
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, Namespace = "http://BatchCoreService")]
-    public class DAService : IDataExchangeService, IDataServer, IAlarmServer
+    public class DAService : IDataServer, IAlarmServer
     {
         const int PORT = 6543;
 
@@ -138,6 +111,7 @@ namespace BatchCoreService
 
         bool _hasHda = false;
         List<HistoryData> _hda;
+        List<DriverArgumet> _arguments = new List<DriverArgumet>();
         Dictionary<short, ArchiveTime> _archiveTimes = new Dictionary<short, ArchiveTime>();
 
         Socket tcpServer = null;
@@ -420,9 +394,12 @@ namespace BatchCoreService
                 if (dataReader == null) return;// Stopwatch sw = Stopwatch.StartNew();
                 while (dataReader.Read())
                 {
-                    AddDriver(dataReader.GetInt16(0), dataReader.GetNullableString(1),
-                       dataReader.GetNullableString(2), dataReader.GetInt32(3), dataReader.GetNullableString(4), dataReader.GetNullableString(5),
-                        dataReader.GetNullableString(6), dataReader.GetNullableString(7));
+                    _arguments.Add(new DriverArgumet(dataReader.GetInt16(0), dataReader.GetNullableString(1), dataReader.GetNullableString(2)));
+                }
+                dataReader.NextResult();
+                while (dataReader.Read())
+                {
+                    AddDriver(dataReader.GetInt16(0), dataReader.GetNullableString(1), dataReader.GetNullableString(2),  dataReader.GetNullableString(3));
                 }
 
                 dataReader.NextResult();
@@ -1493,8 +1470,7 @@ namespace BatchCoreService
             }
         }
 
-        public IDriver AddDriver(short id, string name, string server, int timeOut,
-            string assembly, string className, string spare1, string spare2)
+        public IDriver AddDriver(short id, string name, string assembly, string className)
         {
             if (_drivers.ContainsKey(id))
                 return _drivers[id];
@@ -1505,9 +1481,25 @@ namespace BatchCoreService
                 var dvType = ass.GetType(className);
                 if (dvType != null)
                 {
-                    dv = Activator.CreateInstance(dvType, new object[] { this, id, name, server, timeOut, spare1, spare2 }) as IDriver;
+                    dv = Activator.CreateInstance(dvType, new object[] { this, id, name }) as IDriver;
                     if (dv != null)
+                    {
+                        foreach (var arg in _arguments)
+                        {
+                            if (arg.DriverID == id)
+                            {
+                                var prop = dvType.GetProperty(arg.PropertyName);
+                                if (prop != null)
+                                {
+                                    if (prop.PropertyType.IsEnum)
+                                        prop.SetValue(dv, Enum.Parse(prop.PropertyType, arg.PropertyValue), null);
+                                    else
+                                        prop.SetValue(dv, Convert.ChangeType(arg.PropertyValue, prop.PropertyType, CultureInfo.CreateSpecificCulture("en-US")), null);
+                                }
+                            }
+                        }
                         _drivers.Add(id, dv);
+                    }
                 }
             }
             catch (Exception e)
@@ -1859,226 +1851,61 @@ namespace BatchCoreService
             }
             return 1;
         }
-        #endregion
-
-        #region DataExchange（数据交换服务器）
-        public Dictionary<string, string> BatchRead(string[] tags)
-        {
-            var itags = new List<ITag>(tags.Length);
-            for (int i = 0; i < tags.Length; i++)
-            {
-                var tag = this[tags[i]];
-                if (tag != null)
-                    itags.Add(tag);
-            }
-            var ds = new Dictionary<string, string>(tags.Length);
-            foreach (var tag in itags)
-            {
-                string obj;
-                if (tag.Address.VarType == DataType.FLOAT && Math.Abs(tag.Value.Single) < 5 * 10E-33)
-                {
-                    obj = "0";
-                }
-                else obj = tag.ToString();
-                ds.Add(tag.GetTagName(), obj ?? "");//此处大小写应注意与元数据表一致。
-            }
-            return ds;
-        }
-
-        public int BatchWrite(Dictionary<string, string> tags)
-        {
-            var dict = new Dictionary<string, object>();
-            foreach (var tag in tags)
-            {
-                dict.Add(tag.Key, tag.Value);
-            }
-            return BatchWrite(dict, true);
-        }
 
         public string Read(string id)
         {
-            var tag = this[id];
-            return tag == null ? string.Empty : tag.Address.VarType == DataType.BOOL ? tag.Value.Boolean ? "1" : "0" : tag.ToString();
+            throw new NotImplementedException();
+        }
+
+        public bool ReadExpression(string expression)
+        {
+            throw new NotImplementedException();
         }
 
         public int Write(string id, string value)
         {
-            var tag = this[id];
-            return tag == null ? -1 : tag.Write(value);
+            throw new NotImplementedException();
         }
 
-        Dictionary<string, Func<bool>> _exprdict = new Dictionary<string, Func<bool>>();
-
-        public bool ReadExpression(string expression)
+        public Dictionary<string, string> BatchRead(string[] tags)
         {
-            Func<bool> func;
-            if (_exprdict.TryGetValue(expression, out func))
-            {
-                return func();
-            }
-            else
-            {
-                func = Eval.Eval(expression) as Func<bool>;
-                if (func != null)
-                {
-                    _exprdict[expression] = func;
-                    return func();
-                }
-                else return false;
-            }
+            throw new NotImplementedException();
+        }
+
+        public int BatchWrite(Dictionary<string, string> tags)
+        {
+            throw new NotImplementedException();
         }
 
         public Stream LoadMetaData()
         {
-            var stream = new MemoryStream();   //    var sb = new StringBuilder();
-            using (var writer = XmlTextWriter.Create(stream))
-            {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("Sever");
-                foreach (var device in _drivers.Values)
-                {
-                    writer.WriteStartElement("Device");
-                    writer.WriteAttributeString("id", device.ID.ToString());
-                    writer.WriteAttributeString("name", device.Name);
-                    if (!string.IsNullOrEmpty(device.ServerName))
-                        writer.WriteAttributeString("server", device.ServerName);
-                    writer.WriteAttributeString("timeout", device.TimeOut.ToString());
-                    foreach (var grp in device.Groups)
-                    {
-                        writer.WriteStartElement("Group");
-                        writer.WriteAttributeString("id", grp.ID.ToString());
-                        writer.WriteAttributeString("name", grp.Name);
-                        writer.WriteAttributeString("deviceId", device.ID.ToString());
-                        writer.WriteAttributeString("updateRate", grp.UpdateRate.ToString());
-                        writer.WriteAttributeString("deadBand", grp.DeadBand.ToString());
-                        writer.WriteAttributeString("active", grp.IsActive.ToString());
-                        var list = _list.FindAll(x => x.GroupID == grp.ID);
-                        if (list != null && list.Count > 0)
-                        {
-                            foreach (var tag in list)
-                            {
-                                writer.WriteStartElement("Tag");
-                                writer.WriteAttributeString("id", tag.ID.ToString());
-                                writer.WriteAttributeString("groupid", tag.GroupID.ToString());
-                                writer.WriteAttributeString("name", tag.Name);
-                                writer.WriteAttributeString("address", tag.Address);
-                                writer.WriteAttributeString("datatype", ((byte)tag.DataType).ToString());
-                                writer.WriteAttributeString("size", tag.Size.ToString());
-                                writer.WriteAttributeString("archive", tag.Archive.ToString());
-                                writer.WriteAttributeString("min", tag.Minimum.ToString());
-                                writer.WriteAttributeString("max", tag.Maximum.ToString());
-                                writer.WriteAttributeString("cycle", tag.Cycle.ToString());
-                                writer.WriteEndElement();
-                            }
-
-                        }
-                        writer.WriteEndElement();
-                    }
-                    writer.WriteEndElement();
-                }
-                writer.WriteStartElement("Conditions");
-                foreach (var cond in _conditions)
-                {
-                    writer.WriteStartElement("Condition");
-                    writer.WriteAttributeString("id", cond.ID.ToString());
-                    writer.WriteAttributeString("alarmtype", ((int)cond.AlarmType).ToString());
-                    writer.WriteAttributeString("enabled", cond.IsEnabled.ToString());
-                    writer.WriteAttributeString("severity", ((int)cond.Severity).ToString());
-                    writer.WriteAttributeString("source", cond.Source);
-                    writer.WriteAttributeString("comment", cond.Comment);
-                    writer.WriteAttributeString("conditiontype", ((byte)cond.ConditionType).ToString());
-                    writer.WriteAttributeString("para", cond.Para.ToString());
-                    writer.WriteAttributeString("deadband", cond.DeadBand.ToString());
-                    writer.WriteAttributeString("delay", cond.Delay.ToString());
-                    foreach (var subcond in cond.SubConditions)
-                    {
-                        if (subcond.SubAlarmType != SubAlarmType.None)
-                        {
-                            writer.WriteStartElement("SubCondition");
-                            writer.WriteAttributeString("subalarmtype", ((int)subcond.SubAlarmType).ToString());
-                            writer.WriteAttributeString("enabled", subcond.IsEnabled.ToString());
-                            writer.WriteAttributeString("severity", ((int)subcond.Severity).ToString());
-                            writer.WriteAttributeString("threshold", subcond.Threshold.ToString());
-                            writer.WriteAttributeString("message", subcond.Message);
-                            writer.WriteEndElement();
-                        }
-                    }
-                    writer.WriteEndElement();
-                }
-                writer.WriteEndElement();
-                writer.WriteStartElement("Scales");
-                foreach (var scale in _scales)
-                {
-                    writer.WriteStartElement("Scale");
-                    writer.WriteAttributeString("id", scale.ID.ToString());
-                    writer.WriteAttributeString("scaletype", ((byte)scale.ScaleType).ToString());
-                    writer.WriteAttributeString("euhi", scale.EUHi.ToString());
-                    writer.WriteAttributeString("eulo", scale.EULo.ToString());
-                    writer.WriteAttributeString("rawhi", scale.RawHi.ToString());
-                    writer.WriteAttributeString("rawlo", scale.RawLo.ToString());
-                    writer.WriteEndElement();
-                }
-                writer.WriteEndElement();
-                if (ArchiveList != null)
-                {
-                    writer.WriteStartElement("ArchiveList");
-                    foreach (var archv in _archiveList)
-                    {
-                        writer.WriteStartElement("Archive");
-                        writer.WriteAttributeString("id", archv.Key.ToString());
-                        writer.WriteAttributeString("desp", archv.Value);
-                        writer.WriteEndElement();
-                    }
-                    writer.WriteEndElement();
-                }
-                writer.WriteEndElement();
-            }
-            stream.Position = 0L;
-            return stream;
+            throw new NotImplementedException();
         }
 
         public Stream LoadHdaBatch(DateTime start, DateTime end)
         {
-            List<byte> list = new List<byte>();
-            var result = GetHData(start, end);
-            short tempid = short.MinValue;
-            ITag tag = null;
-            byte[] idarray = new byte[2];
-            foreach (var data in result)
-            {
-                if (tempid != data.ID)
-                {
-                    tempid = data.ID;
-                    idarray = BitConverter.GetBytes(tempid);
-                    tag = this[tempid];
-                }
-                if (tag == null) continue;
-                list.AddRange(idarray);
-                list.AddRange(tag.ToByteArray(data.Value));
-                list.AddRange(BitConverter.GetBytes(data.TimeStamp.ToFileTime()));
-            }
-            list.AddRange(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF});
-            return new MemoryStream(list.ToArray());
+            throw new NotImplementedException();
         }
 
         public Stream LoadHdaSingle(DateTime start, DateTime end, short id)
         {
-            var tag = this[id];
-            if (tag == null) return new MemoryStream();
-            List<byte> list = new List<byte>();
-            var result = GetHData(start, end, id);
-            list.AddRange(BitConverter.GetBytes(id));
-            foreach (var data in result)
-            {
-                list.AddRange(tag.ToByteArray(data.Value));
-                list.AddRange(BitConverter.GetBytes(data.TimeStamp.ToFileTime()));
-            }
-            list.AddRange(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-                                    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF});
-            return new MemoryStream(list.ToArray());
+            throw new NotImplementedException();
         }
         #endregion
+    }
+
+    class DriverArgumet
+    {
+        public short DriverID;
+        public string PropertyName;
+        public string PropertyValue;
+
+        public DriverArgumet(short id, string name, string value)
+        {
+            DriverID = id;
+            PropertyName = name;
+            PropertyValue = value;
+        }
     }
 
     class TempCachedData

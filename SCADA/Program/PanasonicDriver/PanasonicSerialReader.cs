@@ -37,14 +37,14 @@ namespace PanasonicPLCriver
             return string.Empty;
         }
         #endregion
-        public PanasonicSerialReader(IDataServer server, short id, string name, string ip, int timeOut = 500, string spare1 = null, string spare2 = null)
+        public PanasonicSerialReader(IDataServer server, short id, string name)
         {
             _server = server;
             _id = id;
+            _name = name;
             //spare1 = {COM3,9600,Odd,8,One}
-            _serialPort = new SerialPort("COM2", 57600, Parity.Odd, 8, StopBits.One);
-            _devId = byte.Parse(spare2);
         }
+
         public bool IsClosed
         {
             get
@@ -58,11 +58,12 @@ namespace PanasonicPLCriver
             get { return 60; }//应该是读取最大数的上限吧
         }
 
+        string _name;
         public string Name
         {
             get
             {
-                throw new NotImplementedException();
+                return _name;
             }
         }
 
@@ -73,11 +74,11 @@ namespace PanasonicPLCriver
                 return 256;//每帧最大字节数
             }
         }
-        string _port;
+        string _com;
         public string ServerName
         {
-            get { return _port; }
-            set { _port = value; }
+            get { return _com; }
+            set { _com = value; }
         }
 
         private int _timeOut;
@@ -102,6 +103,8 @@ namespace PanasonicPLCriver
         {
             try
             {
+                if (_serialPort == null)
+                    _serialPort = new SerialPort(_com, 57600, Parity.Odd, 8, StopBits.One);
                 _serialPort.Open();
                 _serialPort.NewLine = "\r";
                 _serialPort.ReadTimeout = 10000;

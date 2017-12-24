@@ -1,11 +1,10 @@
-﻿using System;
+﻿using DataService;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Timers;
-using DataService;
 
 namespace ModbusDriver
 {
@@ -164,13 +163,11 @@ namespace ModbusDriver
             get { return _server; }
         }
 
-        public ModbusTCPReader(IDataServer server, short id, string name, string ip, int timeOut = 500, string spare1 = null, string spare2 = null)
+        public ModbusTCPReader(IDataServer server, short id, string name)
         {
             _id = id;
             _name = name;
             _server = server;
-            _ip = ip;
-            _timeout = timeOut;
         }
 
         public bool Connect()

@@ -354,8 +354,9 @@ namespace TagConfig
     public class Driver
     {
         short _id;
-        int _timeOut, _driver;
-        string _server, _name, _spare1, _spare2;
+        int _driver;
+        string _name;
+        object _target;
 
         public string Name
         {
@@ -366,18 +367,6 @@ namespace TagConfig
             set
             {
                 _name = value;
-            }
-        }
-
-        public string ServerName
-        {
-            get
-            {
-                return _server;
-            }
-            set
-            {
-                _server = value;
             }
         }
 
@@ -393,18 +382,6 @@ namespace TagConfig
             }
         }
 
-        public int TimeOut
-        {
-            get
-            {
-                return _timeOut;
-            }
-            set
-            {
-                _timeOut = value;
-            }
-        }
-
         public int DeviceDriver
         {
             get
@@ -417,40 +394,23 @@ namespace TagConfig
             }
         }
 
-
-        public string Spare1
+        public object Target
         {
             get
             {
-                return _spare1;
+                return _target;
             }
             set
             {
-                _spare1 = value;
+                _target = value;
             }
         }
 
-        public string Spare2
-        {
-            get
-            {
-                return _spare2;
-            }
-            set
-            {
-                _spare2 = value;
-            }
-        }
-
-        public Driver(short id, int driver, string name, string server, int timeOut, string spare1, string spare2)
+        public Driver(short id, int driver, string name)
         {
             _id = id;
             _driver = driver;
             _name = name;
-            _server = server;
-            _timeOut = timeOut;
-            _spare1 = spare1;
-            _spare2 = spare2;
         }
 
         public Driver()
@@ -1779,6 +1739,246 @@ namespace TagConfig
         public bool IsDBNull(int i)
         {
             return false;
+        }
+
+        public object this[string name]
+        {
+            get
+            {
+                return GetValue(GetOrdinal(name));
+            }
+        }
+
+        public object this[int i]
+        {
+            get
+            {
+                return GetValue(i);
+            }
+        }
+
+        #endregion
+    }
+
+    public class ArgumentReader : IDataReader
+    {
+        IEnumerator<DriverArgumet> _enumer;
+
+        public ArgumentReader(IEnumerable<DriverArgumet> list)
+        {
+            this._enumer = list.GetEnumerator();
+        }
+
+        #region IDataReader Members
+
+        public void Close()
+        {
+
+        }
+
+        public int Depth
+        {
+            get { return 0; }
+        }
+
+        public DataTable GetSchemaTable()
+        {
+            DataTable table = new DataTable("Argument");
+            table.Columns.Add("DriverID", typeof(short));
+            table.Columns.Add("PropertyName", typeof(string));
+            table.Columns.Add("PropertyValue", typeof(string));
+            return table;
+        }
+        public bool IsClosed
+        {
+            get { return false; }
+        }
+
+        public bool NextResult()
+        {
+            return false;
+        }
+
+        public bool Read()
+        {
+            return _enumer.MoveNext();
+        }
+
+        public int RecordsAffected
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+        }
+
+        #endregion
+
+        #region IDataRecord Members
+
+        public int FieldCount
+        {
+            get { return 3; }
+        }
+
+        public bool GetBoolean(int i)
+        {
+            return (bool)GetValue(i);
+        }
+
+        public byte GetByte(int i)
+        {
+            return (byte)GetValue(i);
+        }
+
+        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public char GetChar(int i)
+        {
+            return (char)GetValue(i);
+        }
+
+        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataReader GetData(int i)
+        {
+            return this;
+        }
+
+        public string GetDataTypeName(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime GetDateTime(int i)
+        {
+            return (DateTime)GetValue(i);
+        }
+
+        public decimal GetDecimal(int i)
+        {
+            return (decimal)GetValue(i);
+        }
+
+        public double GetDouble(int i)
+        {
+            return (double)GetValue(i);
+        }
+
+        public Type GetFieldType(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return typeof(short);
+                case 1:
+                    return typeof(string);
+                case 2:
+                    return typeof(string);
+                default:
+                    return typeof(string);
+            }
+        }
+
+        public float GetFloat(int i)
+        {
+            return Convert.ToSingle(GetValue(i));
+        }
+
+        public Guid GetGuid(int i)
+        {
+            return (Guid)GetValue(i);
+        }
+
+        public short GetInt16(int i)
+        {
+            return (short)GetValue(i);
+        }
+        public int GetInt32(int i)
+        {
+            return (int)GetValue(i);
+        }
+
+        public long GetInt64(int i)
+        {
+            return (long)GetValue(i);
+        }
+
+        public string GetName(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return "DriverID";
+                case 1:
+                    return "PropertyName";
+                case 2:
+                    return "PropertyValue";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public int GetOrdinal(string name)
+        {
+            switch (name)
+            {
+                case "DriverID":
+                    return 0;
+                case "PropertyName":
+                    return 1;
+                case "PropertyValue":
+                    return 2;
+                default:
+                    return -1;
+            }
+        }
+
+        public string GetString(int i)
+        {
+            return (string)GetValue(i);
+        }
+
+        public object GetValue(int i)
+        {
+            switch (i)
+            {
+                case 0:
+                    return _enumer.Current.DriverID;
+                case 1:
+                    return _enumer.Current.PropertyName;
+                case 2:
+                    return _enumer.Current.PropertyValue;
+                default:
+                    return null;
+            }
+        }
+
+        public int GetValues(object[] values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDBNull(int i)
+        {
+            switch (i)
+            {
+                case 2:
+                    return _enumer.Current.PropertyValue == null;
+                default:
+                    return false;
+            }
         }
 
         public object this[string name]

@@ -31,6 +31,7 @@ namespace OmronPlcDriver
         public int PDU
         {
             get { return _pdu; }
+            set { _pdu = value; }
         }
         /// <summary>
         /// 获取设备地址
@@ -147,20 +148,16 @@ namespace OmronPlcDriver
 
         string _ip;//服务ip
         int _port = 9600; //服务端口
+        public int Port
+        {
+            get { return _port; }
+            set { _port = value; }
+        }
+
         public string ServerName
         {
-            get { return _ip + ":" + _port; }
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    int index = value.IndexOf(':');
-                    _ip = value.Substring(0, index);//ip地址
-                    int index0 = value.Substring(index + 1).IndexOf(',');
-                    _port = int.Parse(value.Substring(index + 1, index0 - index - 1));//端口号
-                    _pdu = int.Parse(value.Substring(index0 + 1));//pdu
-                }
-            }
+            get { return _ip; }
+            set { _ip = value; }
         }
         /// <summary>
         /// 是否关闭
@@ -214,24 +211,11 @@ namespace OmronPlcDriver
             get { return _server; }
         }
 
-        public OmronCsCjUDPReader(IDataServer server, short id, string name, string servername, int timeOut = 500, string spare1 = null, string spare2 = null)
+        public OmronCsCjUDPReader(IDataServer server, short id, string name)
         {
-
             _id = id;
             _name = name;
             _server = server;
-            if (!string.IsNullOrEmpty(servername))
-            {
-                int index = servername.IndexOf(':');
-                _ip = servername.Substring(0, index);//ip地址
-                int index0 = servername.IndexOf(',');
-                _port = int.Parse(servername.Substring(index + 1, index0 - index - 1));//端口号
-                _pdu = int.Parse(servername.Substring(index0 + 1));//pdu
-            }
-            _timeout = timeOut;
-            byte.TryParse(spare1, out _plcNodeId);
-            byte.TryParse(spare2, out _pcNodeId);
-            //Console.WriteLine("id->" + _id.ToString() + " name->" + _name + " _server->" + _server + " _ip->" + _ip + " _port->" + _port + " _pdu->" + _pdu + " _timeout->" + _timeout + " plcNodeId->" + _plcNodeId + " pcNodeId->" + PcNodeId);
         }
 
         /// <summary>
@@ -253,11 +237,6 @@ namespace OmronPlcDriver
                 udpSynCl.SendTimeout = _timeout;
                 udpSynCl.ReceiveTimeout = _timeout;
                 udpSynCl.Connect(_ip, _port);
-
-                //if (OnConnect != null)
-                //{
-                //    OnConnect(this,new ConnectRequestEventArgs(Name + ServerName +"连接打开"));
-                //}
                 return true;
             }
             catch (SocketException error)

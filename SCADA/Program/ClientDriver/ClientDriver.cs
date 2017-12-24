@@ -68,14 +68,11 @@ namespace ClientDriver
             get { return _server; }
         }
 
-        public ClientReader(IDataServer server, short id, string name, string ip, int timeout)
+        public ClientReader(IDataServer server, short id, string name)
         {
             _id = id;
             _server = server;
-            _ip = ip;
             _name = name;
-            _timeout = timeout;
-            Connect();
         }
 
         public bool Connect()

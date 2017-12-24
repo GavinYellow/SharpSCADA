@@ -32,17 +32,18 @@ namespace ModbusDriver
             }
         }
 
-        string _port;
+        string _port = "COM1";
         public string ServerName
         {
             get { return _port; }
             set { _port = value; }
         }
+
         public bool IsClosed
         {
             get
             {
-                return _serialPort.IsOpen == false;
+                return _serialPort == null ? false : _serialPort.IsOpen == false;
             }
         }
 
@@ -51,6 +52,13 @@ namespace ModbusDriver
         {
             get { return _timeOut; }
             set { _timeOut = value; }
+        }
+
+        private int _baudRate = 9600;
+        public int BaudRate
+        {
+            get { return _baudRate; }
+            set { _baudRate = value; }
         }
 
         List<IGroup> _grps = new List<IGroup>();
@@ -64,10 +72,19 @@ namespace ModbusDriver
         {
             get { return _server; }
         }
+
         public bool Connect()
         {
             try
             {
+                if (_serialPort == null)
+                    _serialPort = new SerialPort(_port);
+                _serialPort.ReadTimeout = _timeOut;
+                _serialPort.WriteTimeout = _timeOut;
+                _serialPort.BaudRate = _baudRate;
+                _serialPort.DataBits = 8;
+                _serialPort.Parity = Parity.Even;
+                _serialPort.StopBits = StopBits.One;
                 _serialPort.Open();
                 return true;
             }
@@ -96,20 +113,11 @@ namespace ModbusDriver
         public event ShutdownRequestEventHandler OnClose;
         #endregion
         //自定义构造函数3
-        public ModbusRTUReader(IDataServer server, short id, string name, string port = "COM1", int timeOut = 10000, string spare1 = "0", string baudRate = "9600")
+        public ModbusRTUReader(IDataServer server, short id, string name)
         {
             _id = id;
             _name = name;
             _server = server;
-            _port = port;
-            _serialPort = new SerialPort(port);
-            _timeOut = timeOut;
-            _serialPort.ReadTimeout = _timeOut;
-            _serialPort.WriteTimeout = _timeOut;
-            _serialPort.BaudRate = int.Parse(baudRate);
-            _serialPort.DataBits = 8;
-            _serialPort.Parity = Parity.Even;
-            _serialPort.StopBits = StopBits.One;
         }
 
         private SerialPort _serialPort;
@@ -222,7 +230,7 @@ namespace ModbusDriver
             return data;
         }
         #endregion
-       
+
         #region  :IPLCDriver
         public int PDU
         {
@@ -510,7 +518,7 @@ namespace ModbusDriver
     }
 
 
-        public sealed class Modbus
+    public sealed class Modbus
     {
         public const byte fctReadCoil = 1;
         public const byte fctReadDiscreteInputs = 2;
@@ -547,5 +555,4 @@ namespace ModbusDriver
         /// <summary>Constant for exception send failt.</summary>
         public const byte excSendFailt = 100;
     }
-
 }

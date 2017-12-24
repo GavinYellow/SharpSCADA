@@ -79,13 +79,33 @@ namespace SiemensPLCDriver
             }
         }
 
-        public SiemensTCPReader(IDataServer server, short id, string name, string IP, int timeOut = 10000, string rack = "0", string slot = "0")
+        public int Rack
+        {
+            get
+            {
+                return _rack;
+            }
+            set
+            {
+                _rack = value;
+            }
+        }
+
+        public int Slot
+        {
+            get
+            {
+                return _slot;
+            }
+            set
+            {
+                _slot = value;
+            }
+        }
+
+        public SiemensTCPReader(IDataServer server, short id, string name)
         {
             _id = id;
-            int.TryParse(rack, out _rack);
-            int.TryParse(slot, out _slot);
-            _IP = IP;
-            _timeOut = timeOut;
             _server = server;
             _name = name;
         }

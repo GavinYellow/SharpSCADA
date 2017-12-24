@@ -1,13 +1,12 @@
-﻿using System;
+﻿using ClientDriver;
+using DatabaseLib;
+using DataService;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using ClientDriver;
-using DatabaseLib;
-using DataService;
 
 namespace CoreTest
 {
@@ -125,7 +124,10 @@ namespace CoreTest
         void InitClient()
         {
             string sLine = DataHelper.HostName;
-            AddDriver(1, "Client1", string.IsNullOrEmpty(sLine) ? Environment.MachineName : sLine, 20000, null, null, null, null);
+            var cdrv = AddDriver(1, "Client1", null, null);
+            cdrv.ServerName = string.IsNullOrEmpty(sLine) ? Environment.MachineName : sLine;
+            cdrv.TimeOut = 20000;
+            cdrv.Connect();
         }
 
         void InitConnection()
@@ -285,12 +287,11 @@ namespace CoreTest
             return group.BatchWrite(dict, sync);
         }
 
-        public IDriver AddDriver(short id, string name, string server, int timeOut,
-            string assembly, string className, string spare1, string spare2)
+        public IDriver AddDriver(short id, string name, string assembly, string className)
         {
             if (reader == null)
             {
-                reader = new ClientReader(this, id, name, server, timeOut);//server应为远程主机名/IP，从本地字符串解析获取
+                reader = new ClientReader(this, id, name);//server应为远程主机名/IP，从本地字符串解析获取
             }
             return reader;
         }

@@ -842,7 +842,7 @@ namespace OPCDriver
     [Description("OPC Client")]
     public class OPCReader : IOPCShutdown, IDriver
     {
-        private string _clsidOPCserver, _serverIP;
+        private string _clsidOPCserver = "{6E6170F0-FF2D-11D2-8087-00105AA8F840}", _serverIP;
         private object _opcServerObj;
         private IOPCServer _opcServer;
         private IOPCItemProperties _opcProp;
@@ -851,22 +851,24 @@ namespace OPCDriver
         private IConnectionPoint _shutDownPoint;
         private int _shutDownCookie;
 
-        public OPCReader(IDataServer dataServer, short id, string name, string serverIP = null,
-            int timeout = 0, string clsidOPCserver = "{6E6170F0-FF2D-11D2-8087-00105AA8F840}", string spare2 = null)
+        public string TypeID
+        {
+            get { return _clsidOPCserver; }
+            set { _clsidOPCserver = value; }
+        }
+
+        public OPCReader(IDataServer dataServer, short id, string name)
         {
             this._id = id;
             this._dataServer = dataServer;
-            this._clsidOPCserver = clsidOPCserver;
-            this._serverIP = serverIP;
-            if (string.IsNullOrEmpty(serverIP)) _serverIP = null;
             this._name = name;
-            Connect();
         }
 
         public bool Connect()
         {
             if (_opcServerObj != null)
                 Dispose();
+            if (string.IsNullOrEmpty(_serverIP)) _serverIP = null;
             Guid cid;
             Type svrComponenttype = Guid.TryParse(_clsidOPCserver, out cid) ? Type.GetTypeFromCLSID(cid, _serverIP, false)
                 : Type.GetTypeFromProgID(_clsidOPCserver, _serverIP, false);
@@ -1091,6 +1093,8 @@ namespace OPCDriver
         {
             if (!_metaGroups.Exists(x => x.ID == id))
                 _metaGroups.Add(new MetaGroup { ID = id, Name = name, UpdateRate = updateRate, DeadBand = deadBand, Active = active });
+            if (IsClosed)
+                Connect();
             if (_opcServer == null) return null;
             GCHandle hDeadband, hTimeBias;
             hDeadband = GCHandle.Alloc(deadBand, GCHandleType.Pinned);
