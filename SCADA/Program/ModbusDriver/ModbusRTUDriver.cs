@@ -43,7 +43,7 @@ namespace ModbusDriver
         {
             get
             {
-                return _serialPort == null ? false : _serialPort.IsOpen == false;
+                return _serialPort == null || _serialPort.IsOpen == false;
             }
         }
 
