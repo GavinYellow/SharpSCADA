@@ -1091,10 +1091,10 @@ namespace OPCDriver
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand, bool active)
         {
-            if (!_metaGroups.Exists(x => x.ID == id))
-                _metaGroups.Add(new MetaGroup { ID = id, Name = name, UpdateRate = updateRate, DeadBand = deadBand, Active = active });
             if (IsClosed)
                 Connect();
+            if (!_metaGroups.Exists(x => x.ID == id))
+                _metaGroups.Add(new MetaGroup { ID = id, Name = name, UpdateRate = updateRate, DeadBand = deadBand, Active = active }); 
             if (_opcServer == null) return null;
             GCHandle hDeadband, hTimeBias;
             hDeadband = GCHandle.Alloc(deadBand, GCHandleType.Pinned);
