@@ -47,18 +47,44 @@ namespace ModbusDriver
             }
         }
 
-        private int _timeOut = 1000;
+        private int _timeOut = 3000;
         public int TimeOut
         {
             get { return _timeOut; }
             set { _timeOut = value; }
         }
 
+
         private int _baudRate = 9600;
+        [Description("波特率")]
         public int BaudRate
         {
             get { return _baudRate; }
             set { _baudRate = value; }
+        }
+        //   private SerialPort _serialPort;
+
+        private int _dataBits = 8;
+        [Description("数据位")]
+        public int DataBits
+        {
+            get { return _dataBits; }
+            set { _dataBits = value; }
+        }
+        private StopBits _stopBits = StopBits.One;
+        [Description("停止位")]
+        public StopBits StopBits
+        {
+            get { return _stopBits; }
+            set { _stopBits = value; }
+        }
+
+        private Parity _parity = Parity.None;
+        [Description("奇偶校验")]
+        public Parity parity
+        {
+            get { return _parity; }
+            set { _parity = value; }
         }
 
         List<IGroup> _grps = new List<IGroup>();
@@ -77,15 +103,15 @@ namespace ModbusDriver
         {
             try
             {
+                if (_timeOut <= 0) _timeOut = 1000;
                 if (_serialPort == null)
                     _serialPort = new SerialPort(_port);
-                if (_timeOut <= 0) _timeOut = 1000;
                 _serialPort.ReadTimeout = _timeOut;
                 _serialPort.WriteTimeout = _timeOut;
                 _serialPort.BaudRate = _baudRate;
-                _serialPort.DataBits = 8;
-                _serialPort.Parity = Parity.Even;
-                _serialPort.StopBits = StopBits.One;
+                _serialPort.DataBits = _dataBits;
+                _serialPort.Parity = _parity;
+                _serialPort.StopBits = _stopBits;
                 _serialPort.Open();
                 return true;
             }
