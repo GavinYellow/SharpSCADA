@@ -788,13 +788,20 @@ namespace TagConfig
                 }
                 else
                 {
-                    foreach (Group grp in groups)
+                    if (!groups.Exists(x => x.Name == e.Label))
                     {
-                        if (grp.ID.ToString() == e.Node.Name)
+                        foreach (Group grp in groups)
                         {
-                            grp.Name = e.Label;
-                            break;
+                            if (grp.ID.ToString() == e.Node.Name)
+                            {
+                                grp.Name = e.Label;
+                                break;
+                            }
                         }
+                    }
+                    else
+                    {
+                        MessageBox.Show("组名不能重复!");
                     }
                 }
             }
@@ -932,26 +939,6 @@ namespace TagConfig
         {
             switch (e.ClickedItem.Text)
             {
-                case "配方":
-                    {
-
-                    }
-                    break;
-                case "设备":
-                    {
-
-                    }
-                    break;
-                case "仓容":
-                    {
-
-                    }
-                    break;
-                case "路径":
-                    {
-
-                    }
-                    break;
                 case "导入变量":
                     openFileDialog1.Filter = "xml文件 (*.xml)|*.xml|excel文件 (*.xlsx)|*.xlsx|kepserver文件 (*.csv)|*.csv|All files (*.*)|*.*";
                     openFileDialog1.DefaultExt = "xml";
@@ -1095,7 +1082,7 @@ namespace TagConfig
                 case "删除":
                     RemoveNode();
                     break;
-                case "修改":
+                case "重命名":
                     UpdateNode();
                     break;
                 case "参数设置":

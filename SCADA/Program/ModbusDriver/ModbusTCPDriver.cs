@@ -464,8 +464,7 @@ namespace ModbusDriver
                 return new ItemData<float>(0.0f, 0, QUALITIES.QUALITY_BAD);
             else
             {
-                int value = IPAddress.HostToNetworkOrder(BitConverter.ToInt32(data, 0));
-                return new ItemData<float>(*(((float*)&value)), 0, QUALITIES.QUALITY_GOOD);
+                return new ItemData<float>(IPAddress.HostToNetworkOrder(BitConverter.ToInt32(data, 0)), 0, QUALITIES.QUALITY_GOOD);
             }
         }
 
@@ -541,7 +540,7 @@ namespace ModbusDriver
 
         public int WriteFloat(DeviceAddress address, float value)
         {
-            var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes(value));
+            var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes((int)value));
             return data == null ? -1 : 0;
         }
 

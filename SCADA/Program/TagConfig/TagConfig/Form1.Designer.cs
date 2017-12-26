@@ -68,6 +68,7 @@
             this.tsppaste = new System.Windows.Forms.ToolStripMenuItem();
             this.批量删除ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.事件归档ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.粘贴CSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.tspImp = new System.Windows.Forms.ToolStripButton();
@@ -113,7 +114,6 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.粘贴CSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -174,31 +174,31 @@
             this.修改ToolStripMenuItem,
             this.参数设置ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(125, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 114);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             // 
             // 增加ToolStripMenuItem
             // 
             this.增加ToolStripMenuItem.Name = "增加ToolStripMenuItem";
-            this.增加ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.增加ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.增加ToolStripMenuItem.Text = "增加";
             // 
             // 删除ToolStripMenuItem
             // 
             this.删除ToolStripMenuItem.Name = "删除ToolStripMenuItem";
-            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.删除ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.删除ToolStripMenuItem.Text = "删除";
             // 
             // 修改ToolStripMenuItem
             // 
             this.修改ToolStripMenuItem.Name = "修改ToolStripMenuItem";
-            this.修改ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
-            this.修改ToolStripMenuItem.Text = "修改";
+            this.修改ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.修改ToolStripMenuItem.Text = "重命名";
             // 
             // 参数设置ToolStripMenuItem
             // 
             this.参数设置ToolStripMenuItem.Name = "参数设置ToolStripMenuItem";
-            this.参数设置ToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.参数设置ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.参数设置ToolStripMenuItem.Text = "参数设置";
             // 
             // imageList1
@@ -398,7 +398,7 @@
             this.事件归档ToolStripMenuItem,
             this.粘贴CSVToolStripMenuItem});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(195, 224);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(195, 202);
             this.contextMenuStrip2.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip2_Opening);
             this.contextMenuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip2_ItemClicked);
             // 
@@ -459,6 +459,13 @@
             this.事件归档ToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.事件归档ToolStripMenuItem.Text = "事件归档";
             this.事件归档ToolStripMenuItem.CheckedChanged += new System.EventHandler(this.事件归档ToolStripMenuItem_CheckedChanged);
+            // 
+            // 粘贴CSVToolStripMenuItem
+            // 
+            this.粘贴CSVToolStripMenuItem.Name = "粘贴CSVToolStripMenuItem";
+            this.粘贴CSVToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.粘贴CSVToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.粘贴CSVToolStripMenuItem.Text = "粘贴CSV";
             // 
             // toolStrip2
             // 
@@ -774,13 +781,6 @@
             this.tspCount.ForeColor = System.Drawing.Color.Green;
             this.tspCount.Name = "tspCount";
             this.tspCount.Size = new System.Drawing.Size(0, 17);
-            // 
-            // 粘贴CSVToolStripMenuItem
-            // 
-            this.粘贴CSVToolStripMenuItem.Name = "粘贴CSVToolStripMenuItem";
-            this.粘贴CSVToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.粘贴CSVToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.粘贴CSVToolStripMenuItem.Text = "粘贴CSV";
             // 
             // Form1
             // 
