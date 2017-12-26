@@ -107,7 +107,7 @@ namespace ModbusDriver
         }
 
         #endregion
-        private int _timeout;
+        private int _timeout = 1000;
 
         private Socket tcpSynCl;
         private byte[] tcpSynClBuffer = new byte[0xFF];
@@ -180,6 +180,7 @@ namespace ModbusDriver
                 //IPAddress ip = IPAddress.Parse(_ip);
                 // ----------------------------------------------------------------
                 // Connect synchronous client
+                if (_timeout <= 0) _timeout = 1000;
                 tcpSynCl = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 tcpSynCl.SendTimeout = _timeout;
                 tcpSynCl.ReceiveTimeout = _timeout;

@@ -45,7 +45,7 @@ namespace SiemensPLCDriver
             }
         }
 
-        int _timeOut;
+        int _timeOut = 1000;
         public int TimeOut
         {
             get

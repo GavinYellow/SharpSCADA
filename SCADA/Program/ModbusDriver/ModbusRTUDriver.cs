@@ -47,7 +47,7 @@ namespace ModbusDriver
             }
         }
 
-        private int _timeOut;
+        private int _timeOut = 1000;
         public int TimeOut
         {
             get { return _timeOut; }
@@ -79,6 +79,7 @@ namespace ModbusDriver
             {
                 if (_serialPort == null)
                     _serialPort = new SerialPort(_port);
+                if (_timeOut <= 0) _timeOut = 1000;
                 _serialPort.ReadTimeout = _timeOut;
                 _serialPort.WriteTimeout = _timeOut;
                 _serialPort.BaudRate = _baudRate;
