@@ -1358,9 +1358,8 @@ namespace BatchCoreService
             sendBuffer[0] = FCTCOMMAND.fctHead;
             sendBuffer[1] = FCTCOMMAND.fctReadMultiple;
             //bytes[2] = 0;
-            int len = data.Count;
             short j = 5;
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < data.Count; i++)
             {
                 short id = data[i].ID;
                 byte[] dt = BitConverter.GetBytes(id);
