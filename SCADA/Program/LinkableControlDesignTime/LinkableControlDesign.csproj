@@ -65,6 +65,7 @@
     <Compile Include="TagComplexEditor.Designer.cs">
       <DependentUpon>TagComplexEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="TagData.cs" />
     <Compile Include="TagList.cs">
       <SubType>Form</SubType>
     </Compile>
