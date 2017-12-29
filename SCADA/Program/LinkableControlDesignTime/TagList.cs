@@ -12,12 +12,13 @@ namespace HMIControl.VisualStudio.Design
     public partial class TagList : Form
     {
         static List<string> list;
-        static List<TagMetaData> metaList;
+        static List<TagMetaData> metaList = new List<TagMetaData>();
+        AutoCompleteStringCollection scAutoComplete = new AutoCompleteStringCollection();
 
         public static readonly List<DataTypeSource> DataDict = new List<DataTypeSource>
         {
            new DataTypeSource (DataType.BOOL,"数字量"),new DataTypeSource (DataType.BYTE,"字节"), new DataTypeSource (DataType.SHORT,"短整型"),
-           new DataTypeSource (DataType.WORD,"单字型"),new DataTypeSource (DataType.TIME,"时间型"),new DataTypeSource (DataType.INT,"双字型"),
+           new DataTypeSource (DataType.WORD,"单字型"),new DataTypeSource (DataType.DWORD,"双字型"),new DataTypeSource (DataType.INT,"长整型"),
            new DataTypeSource (DataType.FLOAT,"模拟量"),new DataTypeSource (DataType.SYS,"系统型"),new DataTypeSource (DataType.STR,"ASCII字符串"),
            new DataTypeSource (DataType.NONE,"UNICODE字符串")
         };
@@ -33,6 +34,8 @@ namespace HMIControl.VisualStudio.Design
                 int index = bindingSource1.Find("Name", txt);
                 bindingSource1.Position = index;
             }
+            scAutoComplete.AddRange(list.ToArray());
+            tspText.AutoCompleteCustomSource = scAutoComplete;
         }
 
         string currenText;
@@ -46,7 +49,7 @@ namespace HMIControl.VisualStudio.Design
             if (list == null)
             {
                 list = new List<string> { "@Time", "@Date", "@DateTime", "@User", "@AppName", "@LocName", "@Region", "@Path" };
-                metaList = new List<TagMetaData>();
+                metaList.Clear();
                 using (var reader = DataHelper.Instance.ExecuteReader("SELECT ISNULL(TagName,''),ISNULL(ADDRESS,''),ISNULL(DESCRIPTION,''),DATATYPE,DATASIZE,TAGID,GROUPID,ISACTIVE,ARCHIVE,DEFAULTVALUE FROM Meta_Tag"))
                 {
                     if (reader == null) return list;
@@ -259,7 +262,7 @@ namespace HMIControl.VisualStudio.Design
         BYTE = 3,
         SHORT = 4,
         WORD = 5,
-        TIME = 6,
+        DWORD = 6,
         INT = 7,
         FLOAT = 8,
         SYS = 9,

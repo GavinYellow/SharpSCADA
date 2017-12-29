@@ -77,7 +77,7 @@
             // txtAddr
             // 
             this.txtAddr.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAddr.Location = new System.Drawing.Point(78, 67);
+            this.txtAddr.Location = new System.Drawing.Point(78, 62);
             this.txtAddr.Name = "txtAddr";
             this.txtAddr.Size = new System.Drawing.Size(210, 22);
             this.txtAddr.TabIndex = 12;
@@ -85,42 +85,42 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 67);
+            this.label2.Location = new System.Drawing.Point(30, 62);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.Size = new System.Drawing.Size(41, 12);
             this.label2.TabIndex = 11;
             this.label2.Text = "地址：";
             // 
             // cboType
             // 
             this.cboType.FormattingEnabled = true;
-            this.cboType.Location = new System.Drawing.Point(323, 32);
+            this.cboType.Location = new System.Drawing.Point(323, 30);
             this.cboType.Name = "cboType";
-            this.cboType.Size = new System.Drawing.Size(112, 21);
+            this.cboType.Size = new System.Drawing.Size(112, 20);
             this.cboType.TabIndex = 10;
             // 
             // txtDesp
             // 
             this.txtDesp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDesp.Location = new System.Drawing.Point(78, 139);
+            this.txtDesp.Location = new System.Drawing.Point(78, 128);
             this.txtDesp.Multiline = true;
             this.txtDesp.Name = "txtDesp";
-            this.txtDesp.Size = new System.Drawing.Size(357, 37);
+            this.txtDesp.Size = new System.Drawing.Size(357, 34);
             this.txtDesp.TabIndex = 9;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(30, 148);
+            this.label5.Location = new System.Drawing.Point(30, 137);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(43, 13);
+            this.label5.Size = new System.Drawing.Size(41, 12);
             this.label5.TabIndex = 8;
             this.label5.Text = "描述：";
             // 
             // txtSize
             // 
             this.txtSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSize.Location = new System.Drawing.Point(343, 67);
+            this.txtSize.Location = new System.Drawing.Point(343, 62);
             this.txtSize.Name = "txtSize";
             this.txtSize.Size = new System.Drawing.Size(92, 22);
             this.txtSize.TabIndex = 7;
@@ -128,18 +128,18 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(294, 72);
+            this.label4.Location = new System.Drawing.Point(294, 66);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(43, 13);
+            this.label4.Size = new System.Drawing.Size(41, 12);
             this.label4.TabIndex = 6;
             this.label4.Text = "长度：";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(250, 35);
+            this.label3.Location = new System.Drawing.Point(250, 32);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.Size = new System.Drawing.Size(65, 12);
             this.label3.TabIndex = 4;
             this.label3.Text = "数据类型：";
             // 
@@ -154,9 +154,9 @@
             // chkAchive
             // 
             this.chkAchive.AutoSize = true;
-            this.chkAchive.Location = new System.Drawing.Point(355, 107);
+            this.chkAchive.Location = new System.Drawing.Point(355, 99);
             this.chkAchive.Name = "chkAchive";
-            this.chkAchive.Size = new System.Drawing.Size(74, 17);
+            this.chkAchive.Size = new System.Drawing.Size(72, 16);
             this.chkAchive.TabIndex = 16;
             this.chkAchive.Text = "是否归档";
             this.chkAchive.UseVisualStyleBackColor = true;
@@ -164,9 +164,9 @@
             // chkActive
             // 
             this.chkActive.AutoSize = true;
-            this.chkActive.Location = new System.Drawing.Point(208, 107);
+            this.chkActive.Location = new System.Drawing.Point(208, 99);
             this.chkActive.Name = "chkActive";
-            this.chkActive.Size = new System.Drawing.Size(74, 17);
+            this.chkActive.Size = new System.Drawing.Size(72, 16);
             this.chkActive.TabIndex = 15;
             this.chkActive.Text = "是否激活";
             this.chkActive.UseVisualStyleBackColor = true;
@@ -174,7 +174,7 @@
             // txtValue
             // 
             this.txtValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtValue.Location = new System.Drawing.Point(78, 103);
+            this.txtValue.Location = new System.Drawing.Point(78, 95);
             this.txtValue.Name = "txtValue";
             this.txtValue.Size = new System.Drawing.Size(94, 22);
             this.txtValue.TabIndex = 14;
@@ -182,9 +182,9 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(21, 106);
+            this.label6.Location = new System.Drawing.Point(21, 98);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.Size = new System.Drawing.Size(53, 12);
             this.label6.TabIndex = 13;
             this.label6.Text = "默认值：";
             // 
@@ -199,7 +199,7 @@
             // txtName
             // 
             this.txtName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtName.Location = new System.Drawing.Point(78, 30);
+            this.txtName.Location = new System.Drawing.Point(78, 28);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(166, 22);
             this.txtName.TabIndex = 1;
@@ -207,9 +207,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 30);
+            this.label1.Location = new System.Drawing.Point(18, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
+            this.label1.Size = new System.Drawing.Size(53, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "变量名：";
             // 
@@ -230,9 +230,9 @@
             this.grp1.Controls.Add(this.txtName);
             this.grp1.Controls.Add(this.label1);
             this.grp1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grp1.Location = new System.Drawing.Point(0, 285);
+            this.grp1.Location = new System.Drawing.Point(0, 265);
             this.grp1.Name = "grp1";
-            this.grp1.Size = new System.Drawing.Size(449, 186);
+            this.grp1.Size = new System.Drawing.Size(456, 170);
             this.grp1.TabIndex = 16;
             this.grp1.TabStop = false;
             this.grp1.Text = "属性";
@@ -276,14 +276,14 @@
             this.toolStripButton1,
             this.tspText,
             this.toolStripButton2});
-            this.bindingNavigator1.Location = new System.Drawing.Point(0, 260);
+            this.bindingNavigator1.Location = new System.Drawing.Point(0, 240);
             this.bindingNavigator1.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
             this.bindingNavigator1.MoveLastItem = this.bindingNavigatorMoveLastItem;
             this.bindingNavigator1.MoveNextItem = this.bindingNavigatorMoveNextItem;
             this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.bindingNavigator1.Name = "bindingNavigator1";
             this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator1.Size = new System.Drawing.Size(449, 25);
+            this.bindingNavigator1.Size = new System.Drawing.Size(456, 25);
             this.bindingNavigator1.TabIndex = 15;
             this.bindingNavigator1.Text = "bindingNavigator1";
             // 
@@ -299,7 +299,7 @@
             // bindingNavigatorCountItem
             // 
             this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 22);
+            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(39, 22);
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
             // 
@@ -383,8 +383,10 @@
             // 
             // tspText
             // 
+            this.tspText.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.tspText.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tspText.Name = "tspText";
-            this.tspText.Size = new System.Drawing.Size(100, 25);
+            this.tspText.Size = new System.Drawing.Size(120, 25);
             // 
             // toolStripButton2
             // 
@@ -392,7 +394,7 @@
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(35, 22);
+            this.toolStripButton2.Size = new System.Drawing.Size(36, 22);
             this.toolStripButton2.Text = "搜索";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
@@ -424,15 +426,15 @@
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(449, 260);
+            this.dataGridView1.Size = new System.Drawing.Size(456, 240);
             this.dataGridView1.TabIndex = 14;
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
             // 
             // TagList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 471);
+            this.ClientSize = new System.Drawing.Size(456, 435);
             this.Controls.Add(this.grp1);
             this.Controls.Add(this.bindingNavigator1);
             this.Controls.Add(this.dataGridView1);
