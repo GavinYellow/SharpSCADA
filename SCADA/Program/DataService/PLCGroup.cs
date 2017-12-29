@@ -978,6 +978,7 @@ namespace DataService
                             }
                             else
                             {
+                                if (addr.ByteOrder.HasFlag(ByteOrder.BigEndian)) prcv[iShort1] = IPAddress.HostToNetworkOrder(prcv[iShort1]);
                                 if (addr.DataSize <= 2)
                                 {
                                     if (prcv[iShort1] != cache[iShort]) _changedList.Add(index);

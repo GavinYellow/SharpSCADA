@@ -33,7 +33,8 @@ namespace ModbusDriver
         }
 
         string _port = "COM1";
-        public string ServerName
+        [Category("串口设置"), Description("串口号")]
+        public string PortName
         {
             get { return _port; }
             set { _port = value; }
@@ -48,6 +49,7 @@ namespace ModbusDriver
         }
 
         private int _timeOut = 3000;
+        [Category("串口设置"), Description("通迅超时时间")]
         public int TimeOut
         {
             get { return _timeOut; }
@@ -56,7 +58,7 @@ namespace ModbusDriver
 
 
         private int _baudRate = 9600;
-        [Description("波特率")]
+        [Category("串口设置"), Description("波特率")]
         public int BaudRate
         {
             get { return _baudRate; }
@@ -65,14 +67,14 @@ namespace ModbusDriver
         //   private SerialPort _serialPort;
 
         private int _dataBits = 8;
-        [Description("数据位")]
+        [Category("串口设置"), Description("数据位")]
         public int DataBits
         {
             get { return _dataBits; }
             set { _dataBits = value; }
         }
         private StopBits _stopBits = StopBits.One;
-        [Description("停止位")]
+        [Category("串口设置"), Description("停止位")]
         public StopBits StopBits
         {
             get { return _stopBits; }
@@ -80,8 +82,8 @@ namespace ModbusDriver
         }
 
         private Parity _parity = Parity.None;
-        [Description("奇偶校验")]
-        public Parity parity
+        [Category("串口设置"), Description("奇偶校验")]
+        public Parity Parity
         {
             get { return _parity; }
             set { _parity = value; }
@@ -270,6 +272,12 @@ namespace ModbusDriver
                         所以PDU应为： 253字节 */
             get { return 0xFD; } //0xFD 十进制为253
         }
+        private string _serverName = "unknown";
+        public string ServerName
+        {
+            get { return _serverName; }
+            set { _serverName = value; }
+        }
 
         public DeviceAddress GetDeviceAddress(string address)
         {
@@ -321,7 +329,7 @@ namespace ModbusDriver
                             dv.Start = int.Parse(address.Substring(1));
                         dv.Start--;
                         dv.Bit--;
-                        dv.ByteOrder = ByteOrder.Network;
+                        dv.ByteOrder = ByteOrder.BigEndian;
                     }
                     break;
                 case '3':
@@ -337,7 +345,7 @@ namespace ModbusDriver
                             dv.Start = int.Parse(address.Substring(1));
                         dv.Start--;
                         dv.Bit--;
-                        dv.ByteOrder = ByteOrder.Network;
+                        dv.ByteOrder = ByteOrder.BigEndian;
                     }
                     break;
             }
@@ -543,7 +551,6 @@ namespace ModbusDriver
         }
         #endregion
     }
-
 
     public sealed class Modbus
     {
