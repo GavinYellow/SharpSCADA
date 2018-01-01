@@ -1362,80 +1362,84 @@ namespace BatchCoreService
             for (int i = 0; i < data.Count; i++)
             {
                 short id = data[i].ID;
-                byte[] dt = BitConverter.GetBytes(id);
-                sendBuffer[j++] = dt[0];
-                sendBuffer[j++] = dt[1];
-                switch (_list[GetItemProperties(id)].DataType)
+                var propid = GetItemProperties(id);
+                if (propid >= 0 && propid < _list.Count)
                 {
-                    case DataType.BOOL:
-                        sendBuffer[j++] = 1;
-                        sendBuffer[j++] = data[i].Value.Boolean ? (byte)1 : (byte)0;
-                        break;
-                    case DataType.BYTE:
-                        sendBuffer[j++] = 1;
-                        sendBuffer[j++] = data[i].Value.Byte;
-                        break;
-                    case DataType.WORD:
-                        {
-                            sendBuffer[j++] = 2;
-                            byte[] bt = BitConverter.GetBytes(data[i].Value.Word);
-                            sendBuffer[j++] = bt[0];
-                            sendBuffer[j++] = bt[1];
-                        }
-                        break;
-                    case DataType.SHORT:
-                        {
-                            sendBuffer[j++] = 2;
-                            byte[] bt = BitConverter.GetBytes(data[i].Value.Int16);
-                            sendBuffer[j++] = bt[0];
-                            sendBuffer[j++] = bt[1];
-                        }
-                        break;
-                    case DataType.DWORD:
-                        {
-                            sendBuffer[j++] = 4;
-                            byte[] bt = BitConverter.GetBytes(data[i].Value.DWord);
-                            sendBuffer[j++] = bt[0];
-                            sendBuffer[j++] = bt[1];
-                            sendBuffer[j++] = bt[2];
-                            sendBuffer[j++] = bt[3];
-                        }
-                        break;
-                    case DataType.INT:
-                        {
-                            sendBuffer[j++] = 4;
-                            byte[] bt = BitConverter.GetBytes(data[i].Value.Int32);
-                            sendBuffer[j++] = bt[0];
-                            sendBuffer[j++] = bt[1];
-                            sendBuffer[j++] = bt[2];
-                            sendBuffer[j++] = bt[3];
-                        }
-                        break;
-                    case DataType.FLOAT:
-                        {
-                            sendBuffer[j++] = 4;
-                            byte[] bt = BitConverter.GetBytes(data[i].Value.Single);
-                            sendBuffer[j++] = bt[0];
-                            sendBuffer[j++] = bt[1];
-                            sendBuffer[j++] = bt[2];
-                            sendBuffer[j++] = bt[3];
-                        }
-                        break;
-                    case DataType.STR:
-                        {
-                            byte[] bt = Encoding.ASCII.GetBytes(this[data[i].ID].ToString());
-                            sendBuffer[j++] = (byte)bt.Length;
-                            for (int k = 0; k < bt.Length; k++)
+                    byte[] dt = BitConverter.GetBytes(id);
+                    sendBuffer[j++] = dt[0];
+                    sendBuffer[j++] = dt[1];
+                    switch (_list[propid].DataType)
+                    {
+                        case DataType.BOOL:
+                            sendBuffer[j++] = 1;
+                            sendBuffer[j++] = data[i].Value.Boolean ? (byte)1 : (byte)0;
+                            break;
+                        case DataType.BYTE:
+                            sendBuffer[j++] = 1;
+                            sendBuffer[j++] = data[i].Value.Byte;
+                            break;
+                        case DataType.WORD:
                             {
-                                sendBuffer[j++] = bt[k];
+                                sendBuffer[j++] = 2;
+                                byte[] bt = BitConverter.GetBytes(data[i].Value.Word);
+                                sendBuffer[j++] = bt[0];
+                                sendBuffer[j++] = bt[1];
                             }
-                        }
-                        break;
-                    default:
-                        break;
+                            break;
+                        case DataType.SHORT:
+                            {
+                                sendBuffer[j++] = 2;
+                                byte[] bt = BitConverter.GetBytes(data[i].Value.Int16);
+                                sendBuffer[j++] = bt[0];
+                                sendBuffer[j++] = bt[1];
+                            }
+                            break;
+                        case DataType.DWORD:
+                            {
+                                sendBuffer[j++] = 4;
+                                byte[] bt = BitConverter.GetBytes(data[i].Value.DWord);
+                                sendBuffer[j++] = bt[0];
+                                sendBuffer[j++] = bt[1];
+                                sendBuffer[j++] = bt[2];
+                                sendBuffer[j++] = bt[3];
+                            }
+                            break;
+                        case DataType.INT:
+                            {
+                                sendBuffer[j++] = 4;
+                                byte[] bt = BitConverter.GetBytes(data[i].Value.Int32);
+                                sendBuffer[j++] = bt[0];
+                                sendBuffer[j++] = bt[1];
+                                sendBuffer[j++] = bt[2];
+                                sendBuffer[j++] = bt[3];
+                            }
+                            break;
+                        case DataType.FLOAT:
+                            {
+                                sendBuffer[j++] = 4;
+                                byte[] bt = BitConverter.GetBytes(data[i].Value.Single);
+                                sendBuffer[j++] = bt[0];
+                                sendBuffer[j++] = bt[1];
+                                sendBuffer[j++] = bt[2];
+                                sendBuffer[j++] = bt[3];
+                            }
+                            break;
+                        case DataType.STR:
+                            {
+                                byte[] bt = Encoding.ASCII.GetBytes(this[data[i].ID].ToString());
+                                sendBuffer[j++] = (byte)bt.Length;
+                                for (int k = 0; k < bt.Length; k++)
+                                {
+                                    sendBuffer[j++] = bt[k];
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    Array.Copy(BitConverter.GetBytes((data[i].TimeStamp == DateTime.MinValue ? DateTime.Now : data[i].TimeStamp).ToFileTime()), 0, sendBuffer, j, 8);
+                    j += 8;
                 }
-                Array.Copy(BitConverter.GetBytes((data[i].TimeStamp == DateTime.MinValue ? DateTime.Now : data[i].TimeStamp).ToFileTime()), 0, sendBuffer, j, 8);
-                j += 8;
             }
             byte[] dt1 = BitConverter.GetBytes(j);
             sendBuffer[3] = dt1[0];
