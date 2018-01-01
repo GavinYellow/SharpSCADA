@@ -938,6 +938,7 @@ namespace DataService
                 byte[] rcvBytes = _plcReader.ReadBytes(area.Start, (ushort)area.Len);//从PLC读取数据  
                 if (rcvBytes == null)
                 {
+                    k += (area.Len + 1) / 2;
                     continue;
                 }
                 else
