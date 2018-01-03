@@ -330,7 +330,8 @@ namespace BatchCoreService
                         if (endTime >= today) endTime = today;
                         while (startTime <= endTime)
                         {
-                            HDAIOHelper.BackUpFile(startTime);
+                            // 测试取消文件转储至二进制文件
+                            // HDAIOHelper.BackUpFile(startTime);
                             startTime = startTime.AddDays(1);
                         }
                     }
@@ -352,7 +353,9 @@ namespace BatchCoreService
                 if (archiveTime != null && (now - archiveTime.LastTime).TotalMilliseconds > archiveTime.Cycle)
                 {
                     var tag = this[archive.Key];
-                    if (tag != null && tag.TimeStamp > archiveTime.LastTime)
+                    //if (tag != null && tag.TimeStamp > archiveTime.LastTime)
+                    // 测试使用归档周期功能
+                    if (tag != null && tag.Quality == QUALITIES.QUALITY_GOOD)
                     {
                         tempData.Add(new HistoryData(tag.ID, tag.Quality, tag.Value, now));
                         archive.Value.LastTime = now;
@@ -399,7 +402,7 @@ namespace BatchCoreService
                 dataReader.NextResult();
                 while (dataReader.Read())
                 {
-                    AddDriver(dataReader.GetInt16(0), dataReader.GetNullableString(1), dataReader.GetNullableString(2),  dataReader.GetNullableString(3));
+                    AddDriver(dataReader.GetInt16(0), dataReader.GetNullableString(1), dataReader.GetNullableString(2), dataReader.GetNullableString(3));
                 }
 
                 dataReader.NextResult();
