@@ -1,0 +1,8 @@
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\bin\Debug\SiemensPLCDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\bin\Debug\SiemensPLCDriver.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\bin\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\bin\Debug\libnodave.net.dll
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\bin\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\obj\Debug\SiemensPLCDriver.csprojResolveAssemblyReference.cache
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\obj\Debug\SiemensPLCDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\SiemensPLCDriver\obj\Debug\SiemensPLCDriver.pdb

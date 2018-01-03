@@ -1,0 +1,6 @@
+D:\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\ModbusDriver.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\bin\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\ModbusDriver\obj\Debug\ModbusDriver.pdb

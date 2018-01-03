@@ -1,0 +1,6 @@
+D:\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\OmronPlcDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\OmronPlcDriver.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\bin\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\obj\Debug\OmronPlcDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\OmronPlcDriver\obj\Debug\OmronPlcDriver.pdb

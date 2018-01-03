@@ -1,0 +1,6 @@
+D:\GitHub\SharpSCADA\SCADA\Program\OPCLib\bin\x86\Debug\OPCLib.dll
+D:\GitHub\SharpSCADA\SCADA\Program\OPCLib\bin\x86\Debug\OPCLib.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\OPCLib\bin\x86\Debug\OPCLib.tlb
+D:\GitHub\SharpSCADA\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.csprojResolveAssemblyReference.cache
+D:\GitHub\SharpSCADA\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.dll
+D:\GitHub\SharpSCADA\SCADA\Program\OPCLib\obj\x86\Debug\OPCLib.pdb

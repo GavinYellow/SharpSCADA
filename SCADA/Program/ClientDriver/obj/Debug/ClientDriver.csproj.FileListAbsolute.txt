@@ -1,0 +1,7 @@
+D:\GitHub\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\ClientDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\ClientDriver.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\ClientDriver\bin\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.csprojResolveAssemblyReference.cache
+D:\GitHub\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\ClientDriver\obj\Debug\ClientDriver.pdb

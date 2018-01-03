@@ -186,10 +186,12 @@ namespace ModbusDriver
                 tcpSynCl.ReceiveTimeout = _timeout;
                 tcpSynCl.NoDelay = true;
                 tcpSynCl.Connect(_ip, port);
+                Console.WriteLine(DateTime.Now + ": " + "connect success 【" + _ip + ":502】 ");
                 return true;
             }
             catch (SocketException error)
             {
+                Console.WriteLine(DateTime.Now + ": "+ "connect fail 【"+_ip+":502】 ");
                 if (OnClose != null)
                     OnClose(this, new ShutdownRequestEventArgs(error.Message));
                 return false;

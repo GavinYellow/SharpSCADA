@@ -1,0 +1,16 @@
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\BatchCoreService.exe.config
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\BatchCoreService.exe
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\BatchCoreService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\ClientDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\DataHelper.dll
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\MySql.Data.dll
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\ClientDriver.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\DataHelper.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\bin\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\obj\x86\Debug\BatchCoreService.csprojResolveAssemblyReference.cache
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\obj\x86\Debug\BatchCoreService.BatchCoreService.resources
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\obj\x86\Debug\BatchCoreService.ProjectInstaller.resources
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\obj\x86\Debug\BatchCoreService.csproj.GenerateResource.Cache
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\obj\x86\Debug\BatchCoreService.exe
+D:\GitHub\SharpSCADA\SCADA\Program\BatchCoreService\obj\x86\Debug\BatchCoreService.pdb

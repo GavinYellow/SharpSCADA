@@ -1,0 +1,5 @@
+D:\GitHub\SharpSCADA\SCADA\Program\DataService\bin\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\DataService\bin\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\DataService\obj\x86\Debug\DataService.csprojResolveAssemblyReference.cache
+D:\GitHub\SharpSCADA\SCADA\Program\DataService\obj\x86\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\DataService\obj\x86\Debug\DataService.pdb

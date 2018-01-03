@@ -1,0 +1,7 @@
+D:\GitHub\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\FileDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\FileDriver.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\FileDriver\bin\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.csprojResolveAssemblyReference.cache
+D:\GitHub\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.dll
+D:\GitHub\SharpSCADA\SCADA\Program\FileDriver\obj\Debug\FileDriver.pdb

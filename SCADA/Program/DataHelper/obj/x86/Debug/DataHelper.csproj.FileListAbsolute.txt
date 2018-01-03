@@ -1,0 +1,9 @@
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.dll.config
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.dll
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataHelper.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataService.dll
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\MySql.Data.dll
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\bin\x86\Debug\DataService.pdb
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.csprojResolveAssemblyReference.cache
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.dll
+D:\GitHub\SharpSCADA\SCADA\Program\DataHelper\obj\x86\Debug\DataHelper.pdb
