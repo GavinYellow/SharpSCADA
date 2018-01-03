@@ -272,6 +272,10 @@ namespace SiemensPLCDriver
                         return true;
                     }
                 }
+                else
+                { 
+                    Console.WriteLine(DateTime.Now + ": " + "connect fail 【" + _IP + ":502】 ");
+                }
                 if (dc != null) dc.disconnectPLC();
                 libnodave.closeSocket(fds.rfd);
             }
