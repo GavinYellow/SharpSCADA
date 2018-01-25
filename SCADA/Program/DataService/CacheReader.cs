@@ -933,7 +933,7 @@ namespace DataService
 
         public int GetOffset(DeviceAddress start, DeviceAddress end)
         {
-            return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : ushort.MaxValue;
+            return start.Area == end.Area && start.DBNumber == end.DBNumber ? start.Start - end.Start : int.MaxValue;
         }
 
         public unsafe ItemData<bool> ReadBit(DeviceAddress address)
