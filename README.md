@@ -67,10 +67,10 @@ Modbus TCP/RTU、
 OPC DA、
 Siemens S300/200/1200/1500、
 Panasonic 、
+AB EtherNetIP、
 Omron UDP
 * 后续发布：
 DDE、
-AB EtherNetIP、
 Mitsubishi 
 
 文件目录
