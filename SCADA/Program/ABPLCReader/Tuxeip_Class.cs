@@ -44,7 +44,7 @@ namespace Tuxeip
         private const byte _Transport = 0xa3;
         private const sbyte _TimeOutMultiplier = 0x01;
 
-        const string PATH = @"tuxeipAB.dll";
+        const string PATH = @"tuxeip.dll";
         [DllImport(PATH, CallingConvention = CallingConvention.Cdecl)]
         private static extern Eip_Session* _OpenSession(string serveur, int port, int buffer_len, int timeout);
         public static Eip_Session* OpenSession(string serveur)
