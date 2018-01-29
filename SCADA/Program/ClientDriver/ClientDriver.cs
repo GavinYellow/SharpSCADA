@@ -103,8 +103,8 @@ namespace ClientDriver
                 }
                 catch (SocketException error)
                 {
-                    if (OnClose != null)
-                        OnClose(this, new ShutdownRequestEventArgs(error.Message));
+                    if (OnError != null)
+                        OnError(this, new IOErrorEventArgs(error.Message));
                     return false;
                 }
             }
@@ -123,7 +123,7 @@ namespace ClientDriver
             return _grps.Remove(grp);
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public void Dispose()
         {
@@ -149,8 +149,8 @@ namespace ClientDriver
             }
             catch (SocketException err)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(err.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(err.Message));
             }
         }
     }

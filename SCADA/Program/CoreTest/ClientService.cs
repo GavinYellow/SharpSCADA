@@ -132,7 +132,7 @@ namespace CoreTest
 
         void InitConnection()
         {
-            reader.OnClose += new ShutdownRequestEventHandler(reader_OnClose);
+            reader.OnError += new IOErrorEventHandler(reader_OnClose);
             if (reader.IsClosed)
             {
                 reader.Connect();
@@ -310,9 +310,9 @@ namespace CoreTest
             }
         }
 
-        void reader_OnClose(object sender, ShutdownRequestEventArgs e)
+        void reader_OnClose(object sender, IOErrorEventArgs e)
         {
-            App.AddErrorLog(new Exception((e.shutdownReason)));
+            App.AddErrorLog(new Exception((e.Reason)));
             //AddErrorLog(new Exception(e.shutdownReason));
         }
 
@@ -585,7 +585,7 @@ namespace CoreTest
                 if (timer != null)
                     timer.Dispose();
                 group.SendResetRequest();
-                reader.OnClose -= this.reader_OnClose;
+                reader.OnError -= this.reader_OnClose;
                 reader.Dispose();
                 if (_conditionList != null)
                 {

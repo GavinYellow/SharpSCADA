@@ -244,7 +244,7 @@ namespace BatchCoreService
                     {
                         foreach (var driver in Drivers)
                         {
-                            driver.OnClose -= this.reader_OnClose;
+                            driver.OnError -= this.reader_OnClose;
                             driver.Dispose();
                         }
                         foreach (var condition in _conditionList)
@@ -371,7 +371,7 @@ namespace BatchCoreService
         {
             foreach (IDriver reader in _drivers.Values)
             {
-                reader.OnClose += new ShutdownRequestEventHandler(reader_OnClose);
+                reader.OnError += new IOErrorEventHandler(reader_OnClose);
                 if (reader.IsClosed)
                 {
                     //if (reader is IFileDriver)
@@ -1526,9 +1526,9 @@ namespace BatchCoreService
             }
         }
 
-        void reader_OnClose(object sender, ShutdownRequestEventArgs e)
+        void reader_OnClose(object sender, IOErrorEventArgs e)
         {
-            Log.WriteEntry(e.shutdownReason, EventLogEntryType.Error);
+            Log.WriteEntry(e.Reason, EventLogEntryType.Error);
             //AddErrorLog(new Exception(e.shutdownReason));
         }
 

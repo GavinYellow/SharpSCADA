@@ -56,7 +56,7 @@ namespace DataService
         bool Connect();
         IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0f, bool active = false);
         bool RemoveGroup(IGroup group);
-        event ShutdownRequestEventHandler OnClose;
+        event IOErrorEventHandler OnError;
     }
 
     public interface IPLCDriver : IDriver, IReaderWriter
@@ -73,14 +73,14 @@ namespace DataService
         //bool RecieveData(string data);
     }
 
-    public class ShutdownRequestEventArgs : EventArgs
+    public class IOErrorEventArgs : EventArgs
     {
-        public ShutdownRequestEventArgs(string reson)
+        public IOErrorEventArgs(string reson)
         {
-            shutdownReason = reson;
+            Reason = reson;
         }
-        public string shutdownReason;
+        public string Reason;
     }
 
-    public delegate void ShutdownRequestEventHandler(object sender, ShutdownRequestEventArgs e);
+    public delegate void IOErrorEventHandler(object sender, IOErrorEventArgs e);
 }

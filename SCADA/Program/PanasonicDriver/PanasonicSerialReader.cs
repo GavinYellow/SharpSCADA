@@ -90,7 +90,7 @@ namespace PanasonicPLCriver
             set { _timeOut = value; }
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public IGroup AddGroup(string name, short id, int updateRate, float deadBand = 0, bool active = false)
         {
@@ -112,9 +112,9 @@ namespace PanasonicPLCriver
             }
             catch (IOException error)
             {
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(error.Message));
+                    OnError(this, new IOErrorEventArgs(error.Message));
                 }
                 return false;
             }
@@ -342,8 +342,8 @@ namespace PanasonicPLCriver
             }
             catch (Exception e)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(e.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(e.Message));
                 return null;
             }
         }
@@ -362,16 +362,16 @@ namespace PanasonicPLCriver
                 }
                 catch (Exception)
                 {
-                    if (OnClose != null)
-                        OnClose(this, new ShutdownRequestEventArgs("读取超时"));
+                    if (OnError != null)
+                        OnError(this, new IOErrorEventArgs("读取超时"));
                     return null;
                 }
             }
             if (recv.Substring(3, 1) == "!")//返回为错误代码
             {
                 string err = recv.Substring(4, 2);
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(err)));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(daveStrerror(err)));
                 return null;
             }
             string needXorStr = recv.Substring(0, recv.Length - 2);//需要进行xor校验的字符串
@@ -379,8 +379,8 @@ namespace PanasonicPLCriver
             string checkStr = Utility.XorCheck(needXorStr);
             if (checkStr != recvCheck)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs("校验失败"));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs("校验失败"));
                 return null;
             }
             else

@@ -195,8 +195,8 @@ namespace FileDriver
             }
             catch (Exception err)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(err.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(err.Message));
                 return false;
             }
         }
@@ -232,12 +232,12 @@ namespace FileDriver
                 accessor.Dispose();
                 mapp.Dispose();
                 mapp = null;
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs("mapp file closed"));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs("mapp file closed"));
             }
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public byte[] ReadBytes(DeviceAddress address, ushort size)
         {

@@ -971,13 +971,13 @@ namespace OPCDriver
         #endregion
 
         #region IOPCShutdown Members
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public void ShutdownRequest(string szReason)
         {
             this.Close();
-            if (OnClose != null)
-                OnClose(this, new ShutdownRequestEventArgs(szReason));
+            if (OnError != null)
+                OnError(this, new IOErrorEventArgs(szReason));
         }
 
         #endregion

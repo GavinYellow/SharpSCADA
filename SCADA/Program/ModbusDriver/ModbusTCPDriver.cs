@@ -190,8 +190,8 @@ namespace ModbusDriver
             }
             catch (SocketException error)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(error.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(error.Message));
                 return false;
             }
         }
@@ -393,8 +393,8 @@ namespace ModbusDriver
         internal void CallException(int id, byte function, byte exception)
         {
             if (tcpSynCl == null) return;
-            if (OnClose != null)
-                OnClose(this, new ShutdownRequestEventArgs(GetErrorString(exception)));
+            if (OnError != null)
+                OnError(this, new IOErrorEventArgs(GetErrorString(exception)));
         }
 
         public byte[] ReadBytes(DeviceAddress address, ushort size)
@@ -556,7 +556,7 @@ namespace ModbusDriver
             return this.WriteValueEx(address, value);
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public int Limit
         {

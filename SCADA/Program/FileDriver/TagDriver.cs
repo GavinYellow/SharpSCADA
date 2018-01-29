@@ -106,7 +106,7 @@ namespace FileDriver
             return _groups.Remove(group);
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public void Dispose()
         {

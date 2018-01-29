@@ -241,8 +241,8 @@ namespace OmronPlcDriver
             }
             catch (SocketException error)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(error.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(error.Message));
                 return false;
             }
         }
@@ -479,8 +479,8 @@ namespace OmronPlcDriver
             //Console.WriteLine("OmronReader错误->" + GetErrorString(exception));
             if (exception == OmronCSCJ.excExceptionConnectionLost && IsClosed == false)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(GetErrorString(exception)));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(GetErrorString(exception)));
             }
 
         }
@@ -685,7 +685,7 @@ namespace OmronPlcDriver
             return this.WriteValueEx(address, value);
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public int Limit
         {

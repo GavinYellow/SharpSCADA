@@ -125,9 +125,9 @@ namespace ABPLCDriver
             }
             catch (Exception error)
             {
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(error.Message));
+                    OnError(this, new IOErrorEventArgs(error.Message));
                 }
                 return false;
             }
@@ -158,7 +158,7 @@ namespace ABPLCDriver
             return _groups.Remove(grp);
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
         public void Dispose()
         {

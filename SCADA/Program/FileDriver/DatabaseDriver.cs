@@ -123,8 +123,8 @@ namespace FileDriver
             }
             catch (Exception e)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(e.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(e.Message));
                 return false;
             }
         }
@@ -168,8 +168,8 @@ namespace FileDriver
             }
             catch (Exception e)
             {
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(e.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(e.Message));
                 return null;
             }
         }
@@ -196,8 +196,8 @@ namespace FileDriver
             catch (Exception e)
             {
                 m_Conn.Close();
-                if (OnClose != null)
-                    OnClose(this, new ShutdownRequestEventArgs(e.Message));
+                if (OnError != null)
+                    OnError(this, new IOErrorEventArgs(e.Message));
                 return -1;
             }
         }
@@ -563,7 +563,7 @@ namespace FileDriver
             get { return 0x100; }
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
 
     }
 }

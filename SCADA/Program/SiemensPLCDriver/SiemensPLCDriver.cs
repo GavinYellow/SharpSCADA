@@ -371,9 +371,9 @@ namespace SiemensPLCDriver
                 if (res == 0)
                     return buffer;
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res))); _closeTime = DateTime.Now;
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res))); _closeTime = DateTime.Now;
                 }
             }
             return null;
@@ -392,9 +392,9 @@ namespace SiemensPLCDriver
                 if (res == 0)
                     return new ItemData<string>(Utility.ConvertToString(buffer), 0, QUALITIES.QUALITY_GOOD);
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res)));
                 }
             }
             return new ItemData<string>(string.Empty, 0, QUALITIES.QUALITY_NOT_CONNECTED);
@@ -411,9 +411,9 @@ namespace SiemensPLCDriver
                     if (res == 0) return new ItemData<int>(dc.getS32(), 0, QUALITIES.QUALITY_GOOD);
                 }
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res)));
                 }
             }
             return new ItemData<int>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
@@ -430,9 +430,9 @@ namespace SiemensPLCDriver
                     if (res == 0) return new ItemData<uint>((uint)dc.getS32(), 0, QUALITIES.QUALITY_GOOD);
                 }
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res)));
                 }
             }
             return new ItemData<uint>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
@@ -449,9 +449,9 @@ namespace SiemensPLCDriver
                     if (res == 0) return new ItemData<ushort>((ushort)dc.getS16(), 0, QUALITIES.QUALITY_GOOD);
                 }
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res)));
                 }
             }
             return new ItemData<ushort>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
@@ -468,9 +468,9 @@ namespace SiemensPLCDriver
                     if (res == 0) return new ItemData<short>((short)dc.getS16(), 0, QUALITIES.QUALITY_GOOD);
                 }
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res)));
                 }
             }
             return new ItemData<short>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
@@ -488,9 +488,9 @@ namespace SiemensPLCDriver
                         return new ItemData<byte>((byte)dc.getS8(), 0, QUALITIES.QUALITY_GOOD);
                 }
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res)));
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res)));
                 }
             }
             return new ItemData<byte>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
@@ -507,7 +507,7 @@ namespace SiemensPLCDriver
                     if (res == 0) return new ItemData<bool>(dc.getS8() != 0, 0, QUALITIES.QUALITY_GOOD);
                 }
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null) { OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res))); }
+                if (OnError != null) { OnError(this, new IOErrorEventArgs(daveStrerror(res))); }
             }
             return new ItemData<bool>(false, 0, QUALITIES.QUALITY_NOT_CONNECTED);
         }
@@ -523,9 +523,9 @@ namespace SiemensPLCDriver
                     if (res == 0) return new ItemData<float>(dc.getFloat(), 0, QUALITIES.QUALITY_GOOD);
                 }
                 _closed = true; dc = null; _closeTime = DateTime.Now;
-                if (OnClose != null)
+                if (OnError != null)
                 {
-                    OnClose(this, new ShutdownRequestEventArgs(daveStrerror(res))); _closeTime = DateTime.Now;
+                    OnError(this, new IOErrorEventArgs(daveStrerror(res))); _closeTime = DateTime.Now;
                 }
             }
             return new ItemData<float>(0, 0, QUALITIES.QUALITY_NOT_CONNECTED); ;
@@ -789,7 +789,7 @@ namespace SiemensPLCDriver
                     }
                     catch (Exception err)
                     {
-                        if (OnClose != null) OnClose(this, new ShutdownRequestEventArgs(err.Message));//可考虑把相应地址和数值加入
+                        if (OnError != null) OnError(this, new IOErrorEventArgs(err.Message));//可考虑把相应地址和数值加入
                     }
                 }
                 libnodave.resultSet rs = new libnodave.resultSet();
@@ -802,7 +802,7 @@ namespace SiemensPLCDriver
             get { return 10; }
         }
 
-        public event ShutdownRequestEventHandler OnClose;
+        public event IOErrorEventHandler OnError;
     }
 
 }
