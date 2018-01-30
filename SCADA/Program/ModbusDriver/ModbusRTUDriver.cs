@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
 using System.Text;
+using System.Threading;
 
 namespace ModbusDriver
 {
@@ -209,6 +210,7 @@ namespace ModbusDriver
                     {
                         OnError(this, new IOErrorEventArgs(Modbus.GetErrorString(errorcode)));
                     }
+                    Thread.Sleep(10);
                     return -1;
                 }
                 else//正确需8字节
@@ -216,6 +218,7 @@ namespace ModbusDriver
                     numBytesRead = 0;
                     while (numBytesRead < 3)
                         numBytesRead += _serialPort.Read(frameBytes, numBytesRead, 3 - numBytesRead);
+                    Thread.Sleep(10);
                     return 0;
                 }
             }
@@ -256,6 +259,7 @@ namespace ModbusDriver
                     {
                         OnError(this, new IOErrorEventArgs(Modbus.GetErrorString(errorcode)));
                     }
+                    Thread.Sleep(10);
                     return -1;
                 }
                 else//正确需9字节
@@ -263,6 +267,7 @@ namespace ModbusDriver
                     numBytesRead = 0;
                     while (numBytesRead < 4)
                         numBytesRead += _serialPort.Read(frameBytes, numBytesRead, 3 - numBytesRead);
+                    Thread.Sleep(10);
                     return 0;
                 }
             }
@@ -299,6 +304,7 @@ namespace ModbusDriver
                     {
                         OnError(this, new IOErrorEventArgs(Modbus.GetErrorString(errorcode)));
                     }
+                    Thread.Sleep(10);
                     return -1;
                 }
                 else//正确需8字节
@@ -306,6 +312,7 @@ namespace ModbusDriver
                     numBytesRead = 0;
                     while (numBytesRead < 3)
                         numBytesRead += _serialPort.Read(frameBytes, numBytesRead, 3 - numBytesRead);
+                    Thread.Sleep(10);
                     return 0;
                 }
             }
@@ -347,6 +354,7 @@ namespace ModbusDriver
                     {
                         OnError(this, new IOErrorEventArgs(Modbus.GetErrorString(errorcode)));
                     }
+                    Thread.Sleep(10);
                     return -1;
                 }
                 else//正确需8字节
@@ -354,6 +362,7 @@ namespace ModbusDriver
                     numBytesRead = 0;
                     while (numBytesRead < 3)
                         numBytesRead += _serialPort.Read(frameBytes, numBytesRead, 3 - numBytesRead);
+                    Thread.Sleep(10);
                     return 0;
                 }
             }
@@ -467,19 +476,31 @@ namespace ModbusDriver
             {
                 byte[] header = func < 3 ? CreateReadHeader(address.Area, address.Start * 16, (ushort)(16 * size), func) :
                  CreateReadHeader(address.Area, address.Start, size, func);
-                _serialPort.Write(header, 0, header.Length);
-                byte[] frameBytes = new byte[size * 2 + 5];
-                byte[] data = new byte[size * 2];
-                int numBytesRead = 0;
                 lock (_async)
                 {
-                    while (numBytesRead != frameBytes.Length)
-                        numBytesRead += _serialPort.Read(frameBytes, numBytesRead, frameBytes.Length - numBytesRead);
-                    if (frameBytes[0] == address.Area && Utility.CheckSumCRC(frameBytes))
+                    byte[] frameBytes = new byte[size * 2 + 3];//size * 2 +
+                    byte[] data = new byte[size * 2];
+                    _serialPort.Write(header, 0, header.Length);
+                    int numBytesRead = 0;
+                    while (numBytesRead < 2)
+                        numBytesRead += _serialPort.Read(frameBytes, numBytesRead, 2 - numBytesRead);
+                    if (frameBytes[1] == address.DBNumber)
                     {
-                        Array.Copy(frameBytes, 3, data, 0, data.Length);
+                        numBytesRead = 0;
+                        while (numBytesRead != frameBytes.Length)
+                            numBytesRead += _serialPort.Read(frameBytes, numBytesRead, frameBytes.Length - numBytesRead);
+                        Array.Copy(frameBytes, 1, data, 0, data.Length);
+                        Thread.Sleep(10);
                         return data;
                     }
+                    else
+                    {
+                        numBytesRead = 0;
+                        while (numBytesRead < 3)
+                            numBytesRead += _serialPort.Read(frameBytes, numBytesRead, 3 - numBytesRead);
+                        Thread.Sleep(10);
+                    }
+
                 }
                 return null;
             }
