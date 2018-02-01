@@ -358,43 +358,13 @@ namespace ModbusDriver
             _grps.Clear();
         }
 
-        internal string GetErrorString(byte exception)
-        {
-            switch (exception)
-            {
-                case Modbus.excIllegalFunction:
-                    return "Constant for ModbusModbus.exception illegal function.";
-                case Modbus.excIllegalDataAdr:
-                    return "Constant for ModbusModbus.exception illegal data address.";
-                case Modbus.excIllegalDataVal:
-                    return "Constant for ModbusModbus.exception illegal data value.";
-                case Modbus.excSlaveDeviceFailure:
-                    return "Constant for ModbusModbus.exception slave device failure.";
-                case Modbus.excAck:
-                    return "Constant for ModbusModbus.exception acknowledge.";
-                case Modbus.excSlaveIsBusy:
-                    return "Constant for ModbusModbus.exception slave is busy/booting up.";
-                case Modbus.excGatePathUnavailable:
-                    return "Constant for ModbusModbus.exception gate path unavailable.";
-                case Modbus.excExceptionNotConnected:
-                    return "Constant for ModbusModbus.exception not connected.";
-                case Modbus.excExceptionConnectionLost:
-                    return "Constant for ModbusModbus.exception connection lost.";
-                case Modbus.excExceptionTimeout:
-                    return "Constant for ModbusModbus.exception response timeout.";
-                case Modbus.excExceptionOffset:
-                    return "Constant for ModbusModbus.exception wrong offset.";
-                case Modbus.excSendFailt:
-                    return "Constant for ModbusModbus.exception send failt.";
-            }
-            return string.Empty;
-        }
+
 
         internal void CallException(int id, byte function, byte exception)
         {
             if (tcpSynCl == null) return;
             if (OnError != null)
-                OnError(this, new IOErrorEventArgs(GetErrorString(exception)));
+                OnError(this, new IOErrorEventArgs(Modbus.GetErrorString(exception)));
         }
 
         public byte[] ReadBytes(DeviceAddress address, ushort size)
@@ -511,42 +481,49 @@ namespace ModbusDriver
 
         public int WriteBits(DeviceAddress address, byte bits)
         {
+            if (address.DBNumber != 3) return -1;
             var data = WriteSingleRegister(address.Area, address.Start, new byte[] { bits });
             return data == null ? -1 : 0;
         }
 
         public int WriteInt16(DeviceAddress address, short value)
         {
+            if (address.DBNumber != 3) return -1;
             var data = WriteSingleRegister(address.Area, address.Start, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)));
             return data == null ? -1 : 0;
         }
 
         public int WriteUInt16(DeviceAddress address, ushort value)
         {
+            if (address.DBNumber != 3) return -1;
             var data = WriteSingleRegister(address.Area, address.Start, BitConverter.GetBytes((ushort)IPAddress.HostToNetworkOrder((short)value)));
             return data == null ? -1 : 0;
         }
 
         public int WriteUInt32(DeviceAddress address, uint value)
         {
+            if (address.DBNumber != 3) return -1;
             var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder((int)value)));
             return data == null ? -1 : 0;
         }
 
         public int WriteInt32(DeviceAddress address, int value)
         {
+            if (address.DBNumber != 3) return -1;
             var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes(IPAddress.HostToNetworkOrder(value)));
             return data == null ? -1 : 0;
         }
 
         public int WriteFloat(DeviceAddress address, float value)
         {
+            if (address.DBNumber != 3) return -1;
             var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes((int)value));
             return data == null ? -1 : 0;
         }
 
         public int WriteString(DeviceAddress address, string str)
         {
+            if (address.DBNumber != 3) return -1;
             var data = WriteMultipleRegister(address.Area, address.Start, Encoding.ASCII.GetBytes(str));
             return data == null ? -1 : 0;
         }

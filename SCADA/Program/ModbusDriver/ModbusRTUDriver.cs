@@ -490,7 +490,7 @@ namespace ModbusDriver
                         while (numBytesRead != frameBytes.Length)
                             numBytesRead += _serialPort.Read(frameBytes, numBytesRead, frameBytes.Length - numBytesRead);
                         Array.Copy(frameBytes, 1, data, 0, data.Length);
-                        Thread.Sleep(10);
+                        Thread.Sleep(20);
                         return data;
                     }
                     else
