@@ -478,7 +478,7 @@ namespace ModbusDriver
                  CreateReadHeader(address.Area, address.Start, size, func);
                 lock (_async)
                 {
-                    byte[] frameBytes = new byte[size * 2 + 3];//size * 2 +
+                    byte[] frameBytes = new byte[size * 2 + 5];//size * 2 +
                     byte[] data = new byte[size * 2];
                     _serialPort.Write(header, 0, header.Length);
                     int numBytesRead = 0;
@@ -486,12 +486,15 @@ namespace ModbusDriver
                         numBytesRead += _serialPort.Read(frameBytes, numBytesRead, 2 - numBytesRead);
                     if (frameBytes[1] == address.DBNumber)
                     {
-                        numBytesRead = 0;
-                        while (numBytesRead != frameBytes.Length)
+                        while (numBytesRead < frameBytes.Length)
                             numBytesRead += _serialPort.Read(frameBytes, numBytesRead, frameBytes.Length - numBytesRead);
-                        Array.Copy(frameBytes, 1, data, 0, data.Length);
-                        Thread.Sleep(20);
-                        return data;
+                        if (Utility.CheckSumCRC(frameBytes))
+                        {
+                            Array.Copy(frameBytes, 3, data, 0, data.Length);
+                            Thread.Sleep(20);
+                            return data;
+                        }
+                        else Thread.Sleep(10);
                     }
                     else
                     {

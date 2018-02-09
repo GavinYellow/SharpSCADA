@@ -983,7 +983,7 @@ namespace DataService
                                 {
                                     for (int i = 0; i < addr.DataSize / 2; i++)
                                     {
-                                        prcv[iShort1] = IPAddress.HostToNetworkOrder(prcv[iShort1]);
+                                        prcv[iShort1 + i] = IPAddress.HostToNetworkOrder(prcv[iShort1 + i]);
                                     }
                                 }
                                 if (addr.DataSize <= 2)
