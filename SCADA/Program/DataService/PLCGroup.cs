@@ -979,7 +979,13 @@ namespace DataService
                             }
                             else
                             {
-                                if (addr.ByteOrder.HasFlag(ByteOrder.BigEndian)) prcv[iShort1] = IPAddress.HostToNetworkOrder(prcv[iShort1]);
+                                if (addr.ByteOrder.HasFlag(ByteOrder.BigEndian))
+                                {
+                                    for (int i = 0; i < addr.DataSize / 2; i++)
+                                    {
+                                        prcv[iShort1] = IPAddress.HostToNetworkOrder(prcv[iShort1]);
+                                    }
+                                }
                                 if (addr.DataSize <= 2)
                                 {
                                     if (prcv[iShort1] != cache[iShort]) _changedList.Add(index);
