@@ -424,7 +424,7 @@ namespace TagConfig
                 {
                     using (var mysr = new StreamReader(stream))
                     {
-                        string strline = mysr.ReadLine();
+                        string strline = "";
                         while ((strline = mysr.ReadLine()) != null)
                         {
                             string[] aryline = strline.Split('\t');
