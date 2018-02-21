@@ -54,7 +54,7 @@ namespace DatabaseLib
         /// <summary>  
         /// 数据库工厂构造函数  
         /// </summary>  
-        /// #
+        /// #dwddqwdqwqwfqqgqgqgqg
         /// dddddd
         /// 
         /// ddddddddd
