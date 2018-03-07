@@ -27,6 +27,14 @@
         <GradientStop Color="#FF787878" Offset="1"/>
         <GradientStop Color="White" Offset="0.5"/>
     </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BS_LightBackgroundHighlight" StartPoint="0,0" EndPoint="0,1">
+        <LinearGradientBrush.GradientStops>
+            <GradientStopCollection>
+                <GradientStop Color="#D0D0D0" Offset="0.0" />
+                <GradientStop Color="#A5A5A5" Offset="1.0" />
+            </GradientStopCollection>
+        </LinearGradientBrush.GradientStops>
+    </LinearGradientBrush>
     
     <ContextMenu x:Key="BinContextMenu" >
         <MenuItem Header="换至当前仓" Command="{x:Static local:DeviceCommand.ManualChangeStore}"/>
@@ -13440,6 +13448,53 @@
                             <local:HMIText x:Name="Discharge" Margin="0.384,35.741,28.156,56" FontSize="21.333"/>
                         </Grid>
                     </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="{x:Type local:ZoomSlideControl}" TargetType="{x:Type local:ZoomSlideControl}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="BorderBrush" Value="#FF7D7D7D" />
+        <Setter Property="Background" Value="#FF333333" />
+        <Setter Property="Foreground" Value="#FFCCCCCC" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="MinHeight" Value="120" />
+        <Setter Property="MinHeight" Value="120" />
+        <Setter Property="MinWidth" Value="40" />
+        <Setter Property="ContOpacity" Value="1.0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ZoomSlideControl}">
+                    <Border Grid.Column="1" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="13" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="20" />
+                            </Grid.RowDefinitions>
+                            <Grid Name="PART_outerGrid" Background="{TemplateBinding Background}" RowSpan="5" Opacity="{Binding Path=ContOpacity, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <TextBlock Name="PART_DisplayText" TextAlignment="Center" FontSize="9" VerticalAlignment="Center" Text="{Binding Path=Zoom, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource zoomSlideDisplayConverter}}" 
+                                       Opacity="{Binding Path=ContOpacity, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Slider Name="PART_Slider" Grid.Row="2" TickPlacement="Both" Orientation="Vertical" LargeChange="10" SmallChange="1" TickFrequency="10" MinHeight="100" HorizontalAlignment="Center" Maximum="{Binding Path=MaxZoomTick, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Minimum="{Binding Path=MinZoomTick, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Value="{Binding Path=ZoomTick, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Opacity="{Binding Path=ContOpacity, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Button Name="PART_FitPageButton" Grid.Row="4" Command="Zoom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Opacity="{Binding Path=ContOpacity, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Grid>
+                                    <Canvas Height="12" Width="18">
+                                        <Rectangle Canvas.Left="3" Canvas.Top="3" Height="6" Width="12" Stroke="{StaticResource BS_LightBackgroundHighlight}" Fill="{StaticResource BS_LightBackgroundHighlight}" />
+                                        <Rectangle Canvas.Left="1" Canvas.Top="1" Height="2" Width="2" Stroke="{StaticResource BS_LightBackgroundHighlight}" Fill="{StaticResource BS_LightBackgroundHighlight}" />
+                                        <Rectangle Canvas.Left="1" Canvas.Top="9" Height="2" Width="2" Stroke="{StaticResource BS_LightBackgroundHighlight}" Fill="{StaticResource BS_LightBackgroundHighlight}" />
+                                        <Rectangle Canvas.Left="15" Canvas.Top="9" Height="2" Width="2" Stroke="{StaticResource BS_LightBackgroundHighlight}" Fill="{StaticResource BS_LightBackgroundHighlight}" />
+                                        <Rectangle Canvas.Left="15" Canvas.Top="1" Height="2" Width="2" Stroke="{StaticResource BS_LightBackgroundHighlight}" Fill="{StaticResource BS_LightBackgroundHighlight}" />
+                                    </Canvas>
+                                </Grid>
+                            </Button>
+                            <Button Name="PART_ZoomInButton" Grid.Row="1" Command="IncreaseZoom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Opacity="{Binding Path=ContOpacity, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Button Name="PART_ZoomOutButton" Grid.Row="3" Command="DecreaseZoom" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Opacity="{Binding Path=ContOpacity, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
