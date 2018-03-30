@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OPCDriver", "OPCDriver\OPCDriver.csproj", "{054DB7AC-EB2C-439F-80D4-63E823B279C8}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmronPlcDriver", "OmronPlcDriver\OmronPlcDriver.csproj", "{BAF8082B-8DD8-4E7C-9C5B-D9213E08C3B1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABPLCDriver", "ABPLCReader\ABPLCDriver.csproj", "{02EA8F3A-29F0-4E11-B4F6-3BF87242D99F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDEDriver", "DDEDriver\DDEDriver.csproj", "{14938033-7870-477D-925C-A447933A44E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -343,6 +345,20 @@ Global
 		{02EA8F3A-29F0-4E11-B4F6-3BF87242D99F}.Release|x64.Build.0 = Release|x64
 		{02EA8F3A-29F0-4E11-B4F6-3BF87242D99F}.Release|x86.ActiveCfg = Release|Any CPU
 		{02EA8F3A-29F0-4E11-B4F6-3BF87242D99F}.Release|x86.Build.0 = Release|Any CPU
+		{14938033-7870-477D-925C-A447933A44E7}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Debug|Itanium.ActiveCfg = Debug|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Debug|x64.ActiveCfg = Debug|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Debug|x86.ActiveCfg = Debug|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Debug|x86.Build.0 = Debug|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Release|Any CPU.ActiveCfg = Release|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Release|Itanium.ActiveCfg = Release|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Release|Mixed Platforms.Build.0 = Release|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Release|x64.ActiveCfg = Release|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Release|x86.ActiveCfg = Release|x86
+		{14938033-7870-477D-925C-A447933A44E7}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
