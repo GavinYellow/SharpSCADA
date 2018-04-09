@@ -40,7 +40,7 @@ namespace TagConfig
            new DataTypeSource (1,"开关型"),new DataTypeSource (3,"字节"), new DataTypeSource (4,"短整型"),
            new DataTypeSource (5,"单字型"),new DataTypeSource (6,"双字型"),new DataTypeSource (7,"长整型"),
            new DataTypeSource (8,"浮点型"),new DataTypeSource (9,"系统型"),new DataTypeSource (10,"ASCII字符串"),
-           new DataTypeSource (11,"UNICODE字符串"),new DataTypeSource(0,"")
+           new DataTypeSource(0,"")
         };
 
 

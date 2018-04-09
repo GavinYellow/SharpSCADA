@@ -48,7 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="C:\Users\ADOLF\Documents\GitHub\SharpSCADA\SCADA\SourceCode\DataService\DataService.csproj">
+    <ProjectReference Include="..\DataService\DataService.csproj">
       <Project>{8965e389-6466-4b30-bd43-83c909044637}</Project>
       <Name>DataService</Name>
     </ProjectReference>
