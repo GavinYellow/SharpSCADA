@@ -89,7 +89,9 @@ namespace HMIControl.VisualStudio.Design
         {
             dataGridView1.CurrentCell = null;
             bindingSource1.EndEdit();
-            DataHelper.Instance.BulkCopy(new TagDataReader(metaList), "Meta_Tag", "DELETE FROM Meta_Tag;", SqlBulkCopyOptions.KeepIdentity);
+            if (DataHelper.Instance.BulkCopy(new TagDataReader(metaList), "Meta_Tag", "DELETE FROM Meta_Tag;", SqlBulkCopyOptions.KeepIdentity))
+                MessageBox.Show("保存成功");
+            else MessageBox.Show("保存失败");
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)

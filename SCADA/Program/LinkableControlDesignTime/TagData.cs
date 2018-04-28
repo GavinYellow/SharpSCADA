@@ -651,7 +651,7 @@ namespace HMIControl.VisualStudio.Design
                 case 3:
                     return _enumer.Current.Size;
                 case 4:
-                    return _enumer.Current.Address;
+                    return _enumer.Current.Address ?? "";
                 case 5:
                     return _enumer.Current.GroupID;
                 case 6:
@@ -713,5 +713,4 @@ namespace HMIControl.VisualStudio.Design
 
         #endregion
     }
-
 }
