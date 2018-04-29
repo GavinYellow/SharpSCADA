@@ -1164,7 +1164,7 @@ namespace BatchCoreService
             {
                 if (_hda.Count == 0) return;
                 if (DataHelper.Instance.BulkCopy(new HDASqlReader(_hda, this), "Log_HData",
-                      string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'", _hda[0].TimeStamp.ToString())))
+                      string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'", _hda[0].TimeStamp.ToString("yyyy/MM/dd HH:mm:ss"))))
                 {
                     _hda.Clear();
                     _hdastart = DateTime.Now;
@@ -1177,7 +1177,7 @@ namespace BatchCoreService
             var tempdata = _hda.ToArray();
             if (tempdata.Length == 0) return true;
             return DataHelper.Instance.BulkCopy(new HDASqlReader(GetData(tempdata, startTime, endTime), this), "Log_HData",
-                     string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP] BETWEEN '{0}' AND '{1}'", startTime, endTime));
+                     string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP] BETWEEN '{0}' AND '{1}'", startTime.ToString("yyyy/MM/dd HH:mm:ss"), endTime.ToString("yyyy/MM/dd HH:mm:ss")));
         }
 
         public void OnUpdate(object stateInfo)
@@ -1192,7 +1192,7 @@ namespace BatchCoreService
                     DateTime start = _hda[0].TimeStamp;
                     //_array.CopyTo(data, 0);
                     if (DataHelper.Instance.BulkCopy(new HDASqlReader(_hda, this), "Log_HData",
-                    string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'", start.ToString())))
+                    string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP]>'{0}'", start.ToString("yyyy/MM/dd HH:mm:ss"))))
                         _hdastart = DateTime.Now;
                     else ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(this.SaveCachedData), _hda.ToArray());
                     _hda.Clear();
@@ -1213,7 +1213,7 @@ namespace BatchCoreService
                 if (count >= 5) return;
                 if (DataHelper.Instance.BulkCopy(new HDASqlReader(tempData, this), "Log_HData",
                    string.Format("DELETE FROM Log_HData WHERE [TIMESTAMP] BETWEEN '{0}' AND '{1}'",
-                    startTime, endTime)))
+                    startTime.ToString("yyyy/MM/dd HH:mm:ss"), endTime.ToString("yyyy/MM/dd HH:mm:ss"))))
                 {
                     stateInfo = null;
                     _hdastart = DateTime.Now;
