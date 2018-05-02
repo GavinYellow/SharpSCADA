@@ -1446,7 +1446,7 @@ namespace BatchCoreService
             sendBuffer[4] = dt1[1];
             SocketError err;
             //bytes.CopyTo(bytes2, 0);
-            List<Socket> sockets = new List<Socket>(_socketThreadList.Count);
+            List<Socket> sockets = new List<Socket>();
             foreach (var socket in _socketThreadList)
             {
                 if (!socket.Key.Equals(tempdata.Address))
