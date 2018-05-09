@@ -137,6 +137,13 @@ namespace ModbusDriver
             set { _ip = value; }
         }
 
+        int _port = 502;
+        public int Port
+        {
+            get { return _port; }
+            set { _port = value; }
+        }
+
         public bool IsClosed
         {
             get
@@ -172,7 +179,7 @@ namespace ModbusDriver
 
         public bool Connect()
         {
-            int port = 502;
+            //int port = 502;
             try
             {
                 if (tcpSynCl != null)
@@ -185,7 +192,7 @@ namespace ModbusDriver
                 tcpSynCl.SendTimeout = _timeout;
                 tcpSynCl.ReceiveTimeout = _timeout;
                 tcpSynCl.NoDelay = true;
-                tcpSynCl.Connect(_ip, port);
+                tcpSynCl.Connect(_ip, _port);
                 return true;
             }
             catch (SocketException error)
