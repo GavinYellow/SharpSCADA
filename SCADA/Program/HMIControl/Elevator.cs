@@ -113,6 +113,11 @@ namespace HMIControl
                     {
                         return delegate { RPM = _funcRPM(); };
                     }
+                    var _funcRPMf = tagChanged as Func<float>;
+                    if (_funcRPMf != null)
+                    {
+                        return delegate { RPM = _funcRPMf(); };
+                    }
                     else return null;
             }
             return base.SetTagReader(key, tagChanged);
