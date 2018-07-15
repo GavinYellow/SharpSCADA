@@ -317,7 +317,7 @@ namespace DataService
                 int endIndex = 0;
                 while (endIndex < addrArr.Length)
                 {
-                    if (start.Area != addrArr[endIndex].Area || start.DBNumber != addrArr[endIndex].DBNumber || endIndex - startIndex >= limit)
+                    if (start.Area != addrArr[endIndex].Area || start.DBNumber != addrArr[endIndex].DBNumber || endIndex - startIndex >= limit || endIndex == addrArr.Length - 1)
                     {
                         for (int i = startIndex; i < endIndex; i++)
                         {
