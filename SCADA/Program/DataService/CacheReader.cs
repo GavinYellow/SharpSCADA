@@ -140,7 +140,7 @@ namespace DataService
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
             int index = address.CacheIndex;
-            Array.Copy(_cache, index, b, 0, b.Length);
+            Array.Copy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -302,7 +302,7 @@ namespace DataService
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
             int index = address.CacheIndex;
-            Array.Copy(_cache, index, b, 0, b.Length);
+            Array.Copy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -496,7 +496,7 @@ namespace DataService
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
             int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -695,7 +695,7 @@ namespace DataService
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
             int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -864,7 +864,7 @@ namespace DataService
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
             int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -1030,7 +1030,7 @@ namespace DataService
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
             int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
