@@ -582,7 +582,7 @@ namespace DataService
             }
             else
             {
-                result = (IPAddress.HostToNetworkOrder(_cache[startIndex]) << 16) | ((ushort)IPAddress.HostToNetworkOrder(_cache[startIndex + 1]));
+                result = (_cache[startIndex + 1] << 16) | ((ushort)_cache[startIndex]);
             }
             return new ItemData<int>(result, 0, QUALITIES.QUALITY_GOOD);
         }
