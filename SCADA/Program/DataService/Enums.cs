@@ -20,7 +20,7 @@ namespace DataService
         INT = 7,
         FLOAT = 8,
         SYS = 9,
-        STR = 11
+        STR = 10
     }
 
     [Flags]
