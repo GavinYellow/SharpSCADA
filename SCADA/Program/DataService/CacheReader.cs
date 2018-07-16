@@ -139,8 +139,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Array.Copy(b, 0, _cache, index, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -301,8 +301,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Array.Copy(b, 0, _cache, index, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -495,7 +495,7 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
+            int index = address.CacheIndex * 2;
             Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
@@ -694,7 +694,7 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
+            int index = address.CacheIndex * 2;
             Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
@@ -863,7 +863,7 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
+            int index = address.CacheIndex * 2;
             Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
@@ -1029,7 +1029,7 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
+            int index = address.CacheIndex * 2;
             Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
