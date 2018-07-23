@@ -305,7 +305,7 @@ namespace DataService
         object sync = new object();
         protected void timer_Timer(object sender, EventArgs e)
         {
-            if (_isActive)
+            if (_isActive && !_plcReader.IsClosed)
             {
                 lock (sync)
                 {
