@@ -510,7 +510,15 @@ namespace ModbusDriver
         public int WriteUInt32(DeviceAddress address, uint value)
         {
             if (address.DBNumber != 3) return -1;
-            var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder((int)value)));
+            byte[] b = BitConverter.GetBytes((int)value);
+            for (int j = 0; j < b.Length / 2; j++)
+            {
+                byte a = b[j * 2];
+                b[j * 2] = b[j * 2 + 1];
+                b[j * 2 + 1] = a;
+            }
+            //b = BitConverter.GetBytes((uint) IPAddress.HostToNetworkOrder((int) value));
+            var data = WriteMultipleRegister(address.Area, address.Start, b);
             return data == null ? -1 : 0;
         }
 
@@ -531,7 +539,14 @@ namespace ModbusDriver
         public int WriteString(DeviceAddress address, string str)
         {
             if (address.DBNumber != 3) return -1;
-            var data = WriteMultipleRegister(address.Area, address.Start, Encoding.ASCII.GetBytes(str));
+            byte[] b = Encoding.ASCII.GetBytes(str);
+            for (int j = 0; j < b.Length / 2; j++)
+            {
+                byte a = b[j * 2];
+                b[j * 2] = b[j * 2 + 1];
+                b[j * 2 + 1] = a;
+            }
+            var data = WriteMultipleRegister(address.Area, address.Start, b);
             return data == null ? -1 : 0;
         }
 
