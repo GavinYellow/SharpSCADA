@@ -480,7 +480,7 @@ namespace ModbusDriver
         {
             if (address.DBNumber < 3)
             {
-                var data = WriteSingleCoils(address.Area, address.Start * 16 + address.Bit + 1, bit);
+                var data = WriteSingleCoils(address.Area, address.Start * 16 + address.Bit, bit);
                 return data == null ? -1 : 0;
             }
             return -1;
