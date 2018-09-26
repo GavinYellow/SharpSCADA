@@ -191,7 +191,7 @@ namespace DataService
                 }
             }
             _items.TrimExcess();
-            _items.Sort();
+            _items.Sort((x, y) => x.Address.CompareTo(y.Address));
             UpdatePDUArea();
             return true;
         }
@@ -210,7 +210,7 @@ namespace DataService
                 }
             }
             _items.TrimExcess();
-            _items.Sort();
+            _items.Sort((x, y) => x.Address.CompareTo(y.Address));
             UpdatePDUArea();
             return true;
         }

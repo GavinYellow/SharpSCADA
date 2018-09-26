@@ -42,7 +42,7 @@
             this.serviceInstaller1.Description = "数据服务";
             this.serviceInstaller1.ServiceName = "BatchCoreService";
             this.serviceInstaller1.ServicesDependedOn = new string[] {
-        "MSSQL$SQLEXPRESS"};
+        "HaoSQL2008"};
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
