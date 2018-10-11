@@ -8,3 +8,4 @@ Desktop.ini
 !*.dll
 !*.bak
 /.vs
+/SCADA/Program/packages/Newtonsoft.Json.11.0.2
