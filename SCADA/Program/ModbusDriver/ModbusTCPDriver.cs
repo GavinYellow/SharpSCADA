@@ -267,11 +267,6 @@ namespace ModbusDriver
                         if (function > Modbus.excExceptionOffset)
                         {
                             function -= Modbus.excExceptionOffset;
-                            //如果是connection lost 主动断开tcp连接准备重连
-                            if (tcpSynClBuffer[8] == Modbus.excExceptionConnectionLost)
-                            {
-                                tcpSynCl.Close();
-                            }
                             CallException(id, function, tcpSynClBuffer[8]);
                             return null;
                         }
@@ -375,6 +370,11 @@ namespace ModbusDriver
         internal void CallException(int id, byte function, byte exception)
         {
             if (tcpSynCl == null) return;
+            //主动断开连接准备重连
+            if (exception == Modbus.excExceptionConnectionLost)
+            {
+                tcpSynCl.Close();
+            }
             if (OnError != null)
                 OnError(this, new IOErrorEventArgs(Modbus.GetErrorString(exception)));
         }
