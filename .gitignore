@@ -8,3 +8,4 @@ Desktop.ini
 !*.dll
 !*.bak
 /SCADA/Program/.vs/DataExchange/v15/Server/sqlite3
+/SCADA/Program/.vs/DataExchange/v15
