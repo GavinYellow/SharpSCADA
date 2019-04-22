@@ -21,7 +21,7 @@ namespace CoreTest
             set;
         }
 
-        public bool IsActived
+        public bool IsActivated
         {
             get;
             set;

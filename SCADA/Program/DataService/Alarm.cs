@@ -1,121 +1,66 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace DataService
-{
-   
-    public class AlarmItem : IComparable<AlarmItem>, INotifyPropertyChanged
-    {
+namespace DataService {
+    public class AlarmItem : IComparable<AlarmItem>, INotifyPropertyChanged {
         int _condiId;
-       
+
         Severity _severity;
         SubAlarmType _alarmType;
         DateTime _startTime;
-        TimeSpan _duration;       
+        TimeSpan _duration;
         object _alarmValue;
         string _alarmText;
         string _source;
 
-        public SubAlarmType SubAlarmType
-        {
-            get
-            {
-                return _alarmType;
-            }
-            set
-            {
-                _alarmType = value;
-            }
+        public SubAlarmType SubAlarmType {
+            get { return _alarmType; }
+            set { _alarmType = value; }
         }
 
-        public Severity Severity
-        {
-            get
-            {
-                return _severity;
-            }
-            set
-            {
-                _severity = value;
-            }
+        public Severity Severity {
+            get { return _severity; }
+            set { _severity = value; }
         }
 
-        public DateTime StartTime
-        {
-            get
-            {
-                return _startTime;
-            }
-            set
-            {
-                _startTime = value;
-            }
+        public DateTime StartTime {
+            get { return _startTime; }
+            set { _startTime = value; }
         }
 
-        public int ConditionId
-        {
-            get
-            {
-                return _condiId;
-            }
-            set
-            {
-                _condiId = value;
-            }
+        public int ConditionId {
+            get { return _condiId; }
+            set { _condiId = value; }
         }
 
-        public TimeSpan Duration
-        {
-            get
-            {
+        public TimeSpan Duration {
+            get {
                 //return _endTime-_startTime;
                 return _duration;
             }
-            set
-            {
+            set {
                 _duration = value;
                 OnPropertyChanged("Duration");
             }
         }
 
-        public object AlarmValue
-        {
-            get
-            {
-                return _alarmValue;
-            }
-            set
-            {
-                _alarmValue = value;
-            }
+        public object AlarmValue {
+            get { return _alarmValue; }
+            set { _alarmValue = value; }
         }
 
-        public string AlarmText
-        {
-            get
-            {
-                return _alarmText;
-            }
-            set
-            {
-                _alarmText = value;
-            }
+        public string AlarmText {
+            get { return _alarmText; }
+            set { _alarmText = value; }
         }
 
-        public string Source
-        {
-            get
-            {
-                return _source;
-            }
-            set
-            {
-                _source = value;
-            }
+        public string Source {
+            get { return _source; }
+            set { _source = value; }
         }
 
-        public AlarmItem(DateTime time, string alarmText, object alarmValue, SubAlarmType type, Severity severity, int condId, string source)
-        {
+        public AlarmItem(DateTime time, string alarmText, object alarmValue, SubAlarmType type, Severity severity,
+            int condId, string source) {
             this._startTime = time;
             this._alarmType = type;
             this._alarmText = alarmText;
@@ -125,8 +70,7 @@ namespace DataService
             this._source = source;
         }
 
-        public AlarmItem()
-        {
+        public AlarmItem() {
             this._startTime = DateTime.Now;
             this._alarmType = SubAlarmType.None;
             this._alarmText = string.Empty;
@@ -137,8 +81,7 @@ namespace DataService
 
         #region IComparable<AlarmItem> Members
 
-        public int CompareTo(AlarmItem other)
-        {
+        public int CompareTo(AlarmItem other) {
             return this._startTime.CompareTo(other._startTime);
         }
 
@@ -146,20 +89,15 @@ namespace DataService
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (this.PropertyChanged != null)
-            {
-
+        private void OnPropertyChanged(string propertyName) {
+            if (this.PropertyChanged != null) {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
     }
 
     [Flags]
-    public enum AlarmType
-    {
+    public enum AlarmType {
         None = 0,
         Level = 1,
         Dev = 2,
@@ -171,8 +109,7 @@ namespace DataService
     }
 
     [Flags]
-    public enum SubAlarmType
-    {
+    public enum SubAlarmType {
         None = 0,
         LoLo = 1,
         Low = 2,
@@ -187,8 +124,7 @@ namespace DataService
         MinROC = 512
     }
 
-    public enum Severity 
-    {
+    public enum Severity {
         Error = 7,
         High = 6,
         MediumHigh = 5,
@@ -200,24 +136,20 @@ namespace DataService
     }
 
     [Flags]
-    public enum ConditionState : byte
-    {
+    public enum ConditionState : byte {
         Acked = 4,
         Actived = 2,
         Enabled = 1
     }
 
-    public enum EventType : byte
-    {
+    public enum EventType : byte {
         Simple = 1,
         TraceEvent = 2,
         ConditionEvent = 4,
     }
 
-    public enum ConditionType : byte
-    {
+    public enum ConditionType : byte {
         Absolute = 0,
         Percent = 1
     }
-
 }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DataService
-{
+namespace DataService {
     [StructLayout(LayoutKind.Sequential)]
-    public struct TagMetaData : IComparable<TagMetaData>
-    {
+    public struct TagMetaData : IComparable<TagMetaData> {
         public bool Archive;
 
         public DataType DataType;
@@ -27,8 +25,7 @@ namespace DataService
         public string Name;
 
         public TagMetaData(short id, short grpId, string name, string address,
-            DataType type, ushort size, bool archive = false, float max = 0, float min = 0, int cycle = 0)
-        {
+            DataType type, ushort size, bool archive = false, float max = 0, float min = 0, int cycle = 0) {
             ID = id;
             GroupID = grpId;
             Name = name;
@@ -41,20 +38,17 @@ namespace DataService
             Cycle = cycle;
         }
 
-        public int CompareTo(TagMetaData other)
-        {
-            return this.ID.CompareTo(other.ID);
+        public int CompareTo(TagMetaData other) {
+            return ID.CompareTo(other.ID);
         }
 
-        public override string ToString()
-        {
+        public override string ToString() {
             return Name;
         }
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct Scaling : IComparable<Scaling>
-    {
+    public struct Scaling : IComparable<Scaling> {
         public short ID;
 
         public ScaleType ScaleType;
@@ -67,8 +61,7 @@ namespace DataService
 
         public float RawLo;
 
-        public Scaling(short id, ScaleType type, float euHi, float euLo, float rawHi, float rawLo)
-        {
+        public Scaling(short id, ScaleType type, float euHi, float euLo, float rawHi, float rawLo) {
             ID = id;
             ScaleType = type;
             EUHi = euHi;
@@ -77,30 +70,26 @@ namespace DataService
             RawLo = rawLo;
         }
 
-        public int CompareTo(Scaling other)
-        {
+        public int CompareTo(Scaling other) {
             return ID.CompareTo(other.ID);
         }
 
-        public static readonly Scaling Empty = new Scaling { ScaleType = ScaleType.None };
+        public static readonly Scaling Empty = new Scaling {ScaleType = ScaleType.None};
     }
 
-    public struct ItemData<T>
-    {
+    public struct ItemData<T> {
         public T Value;
         public long TimeStamp;
         public QUALITIES Quality;
 
-        public ItemData(T value, long timeStamp, QUALITIES quality)
-        {
+        public ItemData(T value, long timeStamp, QUALITIES quality) {
             Value = value;
             TimeStamp = timeStamp;
             Quality = quality;
         }
     }
 
-    public enum ScaleType : byte
-    {
+    public enum ScaleType : byte {
         None = 0,
         Linear = 1,
         SquareRoot = 2

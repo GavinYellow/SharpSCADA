@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataService
-{
-    public interface IGroup : IDisposable
-    {
+namespace DataService {
+    public interface IGroup : IDisposable {
         bool IsActive { get; set; }
         short ID { get; }
         int UpdateRate { get; set; }
@@ -35,10 +33,8 @@ namespace DataService
         event DataChangeEventHandler DataChange;
     }
 
-    public class DataChangeEventArgs : EventArgs
-    {
-        public DataChangeEventArgs(int transactionID, IList<HistoryData> pValues)
-        {
+    public class DataChangeEventArgs : EventArgs {
+        public DataChangeEventArgs(int transactionID, IList<HistoryData> pValues) {
             this.TransactionID = transactionID;
             this.Values = pValues;
         }
@@ -47,10 +43,8 @@ namespace DataService
         public IList<HistoryData> Values;
     }
 
-    public class WriteCompleteEventArgs : EventArgs
-    {
-        public WriteCompleteEventArgs(int transactionID, short[] pIds, int[] errors)
-        {
+    public class WriteCompleteEventArgs : EventArgs {
+        public WriteCompleteEventArgs(int transactionID, short[] pIds, int[] errors) {
             this.TransactionID = transactionID;
             this.Values = pIds;
             this.Errors = errors;
@@ -66,5 +60,4 @@ namespace DataService
     public delegate void ReadCompleteEventHandler(object sender, DataChangeEventArgs e);
 
     public delegate void WriteCompleteEventHandler(object sender, WriteCompleteEventArgs e);
-
 }
