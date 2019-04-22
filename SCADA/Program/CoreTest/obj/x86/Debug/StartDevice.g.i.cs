@@ -9,7 +9,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using HMIControl;
 using System;
 using System.Diagnostics;
 using System.Windows;

@@ -1,0 +1,14 @@
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.dll
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.pdb
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csprojAssemblyReference.cache
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl_MarkupCompile.cache
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl_MarkupCompile.lref
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\Themes\Generic.baml
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.g.resources
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.Properties.Resources.resources
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.GenerateResource.cache
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.CoreCompileInputs.cache
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.csproj.CopyComplete
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.dll
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\obj\Debug\HMIControl.pdb

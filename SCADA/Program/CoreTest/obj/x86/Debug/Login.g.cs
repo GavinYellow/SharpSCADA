@@ -9,8 +9,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using CoreTest;
-using HMIControl;
 using System;
 using System.Diagnostics;
 using System.Windows;

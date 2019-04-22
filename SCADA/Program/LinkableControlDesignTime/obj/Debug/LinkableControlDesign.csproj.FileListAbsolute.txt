@@ -1,0 +1,13 @@
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.VisualStudio.Design.dll
+D:\Codes\SharpSCADA\SCADA\Program\HMIControl\bin\Debug\HMIControl.VisualStudio.Design.pdb
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\LinkableControlDesign.csprojAssemblyReference.cache
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.Properties.Resources.resources
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagComplexEditor.resources
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagList.resources
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagWindowEditor.resources
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.TagWriteEditor.resources
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\LinkableControlDesign.csproj.GenerateResource.cache
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\LinkableControlDesign.csproj.CoreCompileInputs.cache
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\LinkableControlDesign.csproj.CopyComplete
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.dll
+D:\Codes\SharpSCADA\SCADA\Program\LinkableControlDesignTime\obj\Debug\HMIControl.VisualStudio.Design.pdb
