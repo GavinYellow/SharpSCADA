@@ -97,7 +97,7 @@ libnodave：西门子驱动开源库(https://github.com/netdata/libnodave)
 
 * Program目录[存放源代码]：
 BatchCoreTest工程为网关服务器测试代码（控制台显示）。
-BatchCoreService工程同BatchCoreTest，但可编译为Windos服务。
+BatchCoreService工程同BatchCoreTest，但可编译为Windows服务。
 DataService工程为框架及主要接口组件。
 CoreTest工程为样例文件。包含一系列界面元素。
 HMIControl工程为图元组件。可支持工具栏拖放。
