@@ -211,7 +211,7 @@ namespace DataService
                 temp = Convert.ToBoolean(value);
             else if (!Boolean.TryParse(str, out temp))
                 return -1;
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteBit(_plcAddress, temp);
         }
 
@@ -280,7 +280,7 @@ namespace DataService
                 temp = Convert.ToByte(value);
             else if (!Byte.TryParse(str, out temp))
                 return -1;
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteBits(_plcAddress, temp);
         }
 
@@ -349,7 +349,7 @@ namespace DataService
                 temp = Convert.ToInt16(value);
             else if (!short.TryParse(str, out temp))
                 return -1;
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteInt16(_plcAddress, temp);
         }
 
@@ -418,7 +418,7 @@ namespace DataService
                 temp = Convert.ToUInt16(value);
             else if (!ushort.TryParse(str, out temp))
                 return -1;
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteUInt16(_plcAddress, temp);
         }
 
@@ -486,7 +486,7 @@ namespace DataService
                 temp = Convert.ToInt32(value);
             else if (!int.TryParse(str, out temp))
                 return -1;
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteInt32(_plcAddress, temp);
         }
 
@@ -554,7 +554,7 @@ namespace DataService
                 temp = Convert.ToUInt32(value);
             else if (!uint.TryParse(str, out temp))
                 return -1;
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteUInt32(_plcAddress, temp);
         }
 
@@ -623,7 +623,7 @@ namespace DataService
                 temp = Convert.ToSingle(value);
             else if (!float.TryParse(str, out temp))
                 return -1;
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteFloat(_plcAddress, temp);
         }
 
@@ -699,7 +699,7 @@ namespace DataService
         {
             if (value == null) return -1;
             var str = (value is String) ? (String)value : value.ToString();
-            _timeStamp = DateTime.Now;
+            //_timeStamp = DateTime.Now;
             return _group.WriteString(_plcAddress, str);
         }
 
