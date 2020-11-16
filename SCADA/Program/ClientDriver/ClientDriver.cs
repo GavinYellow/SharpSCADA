@@ -365,7 +365,6 @@ namespace ClientDriver
         private void ReciveData()
         {
             if (!_active || _plcReader.tcpRecive == null) return;
-            List<HistoryData> historys = new List<HistoryData>(); ;
             byte[] bytes = new byte[ushort.MaxValue];
             byte[] temp = new byte[ushort.MaxValue];
             Storage value = Storage.Empty;
@@ -380,6 +379,7 @@ namespace ClientDriver
                     result = _tcpRecive.Receive(bytes, 0, bytes.Length, SocketFlags.None, out error);
                     if (error == SocketError.Success)
                     {
+                        List<HistoryData> historys = new List<HistoryData>(); ;
                         if (start != 0 && temp[0] == FCTCOMMAND.fctHead)
                         {
                             int j = 3;
