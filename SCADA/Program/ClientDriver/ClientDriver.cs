@@ -365,175 +365,216 @@ namespace ClientDriver
         private void ReciveData()
         {
             if (!_active || _plcReader.tcpRecive == null) return;
-            List<HistoryData> historys = null;
+            List<HistoryData> historys = new List<HistoryData>(); ;
             byte[] bytes = new byte[ushort.MaxValue];
-            byte[] temp = new byte[_tcpRecive.ReceiveBufferSize];
+            byte[] temp = new byte[ushort.MaxValue];
             Storage value = Storage.Empty;
-            int result = 0;
             int start = 0;
             SocketError error;
+            int result = 0;
             do
             {
-                if (!_tcpRecive.Connected) return;
-                result = _tcpRecive.Receive(bytes, 0, bytes.Length, SocketFlags.None, out error);
-                if (error == SocketError.Success)
+                if (!_tcpRecive.Connected || !_active) return;
+                try
                 {
-                    if (DataChange != null)
-                        historys = new List<HistoryData>();
-                    //DateTime time = DateTime.Now;//当前时间戳
-                    if (start != 0 && temp[0] == FCTCOMMAND.fctHead)
+                    result = _tcpRecive.Receive(bytes, 0, bytes.Length, SocketFlags.None, out error);
+                    if (error == SocketError.Success)
                     {
-                        int j = 3;
-                        if (start < 0)
+                        if (start != 0 && temp[0] == FCTCOMMAND.fctHead)
                         {
-                            Array.Copy(bytes, 0, temp, -start, 5 + start);
-                        }
-                        short tc = BitConverter.ToInt16(temp, j);//总字节数
-                        if (start < 0)
-                            start += tc;
-                        Array.Copy(bytes, 0, temp, tc - start, start);
-                        j += 2;
-                        while (j < tc)
-                        {
-                            short id = BitConverter.ToInt16(temp, j);//标签ID、数据长度、数据值（T,L,V)
-                            j += 2;
-                            byte length = temp[j++];
-                            ITag tag;
-                            if (_items.TryGetValue(id, out tag))
+                            int j = 3;
+                            if (start < 0)
                             {
-                                //数据类型
-                                switch (tag.Address.VarType)
-                                {
-                                    case DataType.BOOL:
-                                        value.Boolean = BitConverter.ToBoolean(temp, j);
-                                        break;
-                                    case DataType.BYTE:
-                                        value.Byte = temp[j];
-                                        break;
-                                    case DataType.WORD:
-                                        value.Word = BitConverter.ToUInt16(temp, j);//需测试
-                                        break;
-                                    case DataType.SHORT:
-                                        value.Int16 = BitConverter.ToInt16(temp, j);//需测试
-                                        break;
-                                    case DataType.DWORD:
-                                        value.DWord = BitConverter.ToUInt32(temp, j);//需测试
-                                        break;
-                                    case DataType.INT:
-                                        value.Int32 = BitConverter.ToInt32(temp, j);//需测试
-                                        break;
-                                    case DataType.FLOAT:
-                                        value.Single = BitConverter.ToSingle(temp, j);
-                                        break;
-                                    case DataType.STR:
-                                        StringTag strTag = tag as StringTag;
-                                        if (strTag != null)
-                                        {
-                                            strTag.String = Encoding.ASCII.GetString(temp, j, length).Trim((char)0);
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                j += length;
-                                DateTime time = DateTime.FromFileTime(BitConverter.ToInt64(temp, j));
-                                j += 8;
-                                tag.Update(value, time, QUALITIES.QUALITY_GOOD);
-                                if (historys != null)
-                                    historys.Add(new HistoryData(id, QUALITIES.QUALITY_GOOD, value, time));
+                                Array.Copy(bytes, 0, temp, -start, 5 + start);
                             }
-                            else
-                                j += length + 8;
-                        }
-                    }
-                    byte head = bytes[start];
-                    int count = start;
-                    while (head == FCTCOMMAND.fctHead && result > count)
-                    {
-                        if (count + 5 > bytes.Length)
-                        {
-                            start = count - bytes.Length;
-                            Array.Copy(bytes, count, temp, 0, -start);
-                            break;
-                        }
-                        int j = count + 3;
-                        short tc = BitConverter.ToInt16(bytes, j);//总标签数
-                        count += tc;
-                        if (count >= bytes.Length)
-                        {
-                            start = count - bytes.Length;
-                            Array.Copy(bytes, count - tc, temp, 0, tc - start);
-                            break;
-                        }
-                        else start = 0;
-                        j += 2;
-                        while (j < count)
-                        {
-                            short id = BitConverter.ToInt16(bytes, j);//标签ID、数据长度、数据值（T,L,V)
+                            short tc = BitConverter.ToInt16(temp, j);//总字节数
+                            if (start < 0)
+                                start += tc;
+                            Array.Copy(bytes, 0, temp, tc - start, start);
                             j += 2;
-                            byte length = bytes[j++];
-                            ITag tag;
-                            if (_items.TryGetValue(id, out tag))
+                            while (j < tc)
                             {
-                                //数据类型
-                                switch (tag.Address.VarType)
+                                short id = BitConverter.ToInt16(temp, j);//标签ID、数据长度、数据值（T,L,V)
+                                j += 2;
+                                byte length = temp[j++];
+                                ITag tag;
+                                if (_items.TryGetValue(id, out tag))
                                 {
-                                    case DataType.BOOL:
-                                        value.Boolean = BitConverter.ToBoolean(bytes, j);
-                                        break;
-                                    case DataType.BYTE:
-                                        value.Byte = bytes[j];
-                                        break;
-                                    case DataType.WORD:
-                                        value.Word = BitConverter.ToUInt16(bytes, j);//需测试
-                                        break;
-                                    case DataType.SHORT:
-                                        value.Int16 = BitConverter.ToInt16(bytes, j);//需测试
-                                        break;
-                                    case DataType.DWORD:
-                                        value.DWord = BitConverter.ToUInt32(bytes, j);//需测试
-                                        break;
-                                    case DataType.INT:
-                                        value.Int32 = BitConverter.ToInt32(bytes, j);//需测试
-                                        break;
-                                    case DataType.FLOAT:
-                                        value.Single = BitConverter.ToSingle(bytes, j);
-                                        break;
-                                    case DataType.STR:
-                                        StringTag strTag = tag as StringTag;
-                                        if (strTag != null)
-                                        {
-                                            strTag.String = Encoding.ASCII.GetString(bytes, j, length).Trim((char)0);
-                                        }
-                                        break;
-                                    default:
-                                        break;
+                                    //数据类型
+                                    switch (tag.Address.VarType)
+                                    {
+                                        case DataType.BOOL:
+                                            value.Boolean = BitConverter.ToBoolean(temp, j);
+                                            break;
+                                        case DataType.BYTE:
+                                            value.Byte = temp[j];
+                                            break;
+                                        case DataType.WORD:
+                                            value.Word = BitConverter.ToUInt16(temp, j);//需测试
+                                            break;
+                                        case DataType.SHORT:
+                                            value.Int16 = BitConverter.ToInt16(temp, j);//需测试
+                                            break;
+                                        case DataType.DWORD:
+                                            value.DWord = BitConverter.ToUInt32(temp, j);//需测试
+                                            break;
+                                        case DataType.INT:
+                                            value.Int32 = BitConverter.ToInt32(temp, j);//需测试
+                                            break;
+                                        case DataType.FLOAT:
+                                            value.Single = BitConverter.ToSingle(temp, j);
+                                            break;
+                                        case DataType.STR:
+                                            StringTag strTag = tag as StringTag;
+                                            if (strTag != null)
+                                            {
+                                                strTag.String = Encoding.ASCII.GetString(temp, j, length).Trim((char)0);
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    j += length;
+                                    try
+                                    {
+                                        DateTime time = DateTime.FromFileTime(BitConverter.ToInt64(temp, j));
+                                        //tag.Update(value, time, QUALITIES.QUALITY_GOOD);
+                                        //if (historys != null)
+                                        historys.Add(new HistoryData(id, QUALITIES.QUALITY_GOOD, value, time));
+                                    }
+                                    catch (Exception exp)
+                                    {
+                                    }
+                                    j += 8;
                                 }
-                                j += length;
-                                DateTime time = DateTime.FromFileTime(BitConverter.ToInt64(bytes, j));
-                                j += 8;
-                                tag.Update(value, time, QUALITIES.QUALITY_GOOD);
-                                if (historys != null)
-                                    historys.Add(new HistoryData(id, QUALITIES.QUALITY_GOOD, value, time));
+                                else
+                                    j += length + 8;
                             }
-                            else
-                                j += length + 8;
                         }
-                        head = bytes[count];
-                    }
-                    if (DataChange != null && historys.Count > 0)
-                        DataChange(this, new DataChangeEventArgs(1, historys));
+                        byte head = bytes[start];
+                        int count = start;
+                        while (head == FCTCOMMAND.fctHead && result > count)
+                        {
+                            if (count + 5 > bytes.Length)
+                            {
+                                start = count - bytes.Length;
+                                Array.Copy(bytes, count, temp, 0, -start);
+                                break;
+                            }
+                            int j = count + 3;
+                            short tc = BitConverter.ToInt16(bytes, j);//总标签数
+                            count += tc;
+                            if (count >= bytes.Length)
+                            {
+                                start = count - bytes.Length;
+                                Array.Copy(bytes, count - tc, temp, 0, tc - start);
+                                break;
+                            }
+                            else start = 0;
+                            j += 2;
+                            while (j < count)
+                            {
+                                short id = BitConverter.ToInt16(bytes, j);//标签ID、数据长度、数据值（T,L,V)
+                                j += 2;
+                                byte length = bytes[j++];
+                                ITag tag;
+                                if (_items.TryGetValue(id, out tag))
+                                {
+                                    //数据类型
+                                    switch (tag.Address.VarType)
+                                    {
+                                        case DataType.BOOL:
+                                            value.Boolean = BitConverter.ToBoolean(bytes, j);
+                                            break;
+                                        case DataType.BYTE:
+                                            value.Byte = bytes[j];
+                                            break;
+                                        case DataType.WORD:
+                                            value.Word = BitConverter.ToUInt16(bytes, j);//需测试
+                                            break;
+                                        case DataType.SHORT:
+                                            value.Int16 = BitConverter.ToInt16(bytes, j);//需测试
+                                            break;
+                                        case DataType.DWORD:
+                                            value.DWord = BitConverter.ToUInt32(bytes, j);//需测试
+                                            break;
+                                        case DataType.INT:
+                                            value.Int32 = BitConverter.ToInt32(bytes, j);//需测试
+                                            break;
+                                        case DataType.FLOAT:
+                                            value.Single = BitConverter.ToSingle(bytes, j);
+                                            break;
+                                        case DataType.STR:
+                                            StringTag strTag = tag as StringTag;
+                                            if (strTag != null)
+                                            {
+                                                strTag.String = Encoding.ASCII.GetString(bytes, j, length).Trim((char)0);
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    j += length;
+                                    try
+                                    {
+                                        DateTime time = DateTime.FromFileTime(BitConverter.ToInt64(bytes, j));
+                                        //tag.Update(value, time, QUALITIES.QUALITY_GOOD);
+                                        //if (historys != null)
+                                        historys.Add(new HistoryData(id, QUALITIES.QUALITY_GOOD, value, time));
+                                    }
+                                    catch (Exception exp)
+                                    {
+                                    }
+                                    j += 8;
+                                }
+                                else
+                                    j += length + 8;
+                            }
+                            head = bytes[count];
+                        }
+                        ThreadPool.UnsafeQueueUserWorkItem(new WaitCallback(this.OnRecieve), historys);
+                        //if (DataChange != null && historys.Count > 0)
+                        //    DataChange(this, new DataChangeEventArgs(1, historys));
 
+                    }
+                    else if (error == SocketError.ConnectionReset || error == SocketError.Interrupted
+                        || error == SocketError.HostDown || error == SocketError.NetworkDown || error == SocketError.Shutdown)
+                    {
+                        _tcpRecive.Dispose();
+                        return;
+                    }
                 }
-                else if (error == SocketError.ConnectionReset || error == SocketError.Interrupted
-                    || error == SocketError.HostDown || error == SocketError.NetworkDown || error == SocketError.Shutdown)
+                catch (Exception)
                 {
                     _tcpRecive.Dispose();
-                    _active = false;
                     return;
                 }
             }
             while (result > 0);
+            try
+            {
+                _tcpRecive.Dispose();
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void OnRecieve(object stateInfo)
+        {
+            var historys = stateInfo as List<HistoryData>;
+            if (historys == null) return;
+            if (DataChange != null && historys.Count > 0)
+                DataChange(this, new DataChangeEventArgs(1, historys));
+            for (int i = 0; i < historys.Count; i++)
+            {
+                var data = historys[i];
+                ITag tag;
+                if (_items.TryGetValue(data.ID, out tag))
+                {
+                    tag.Update(data.Value, data.TimeStamp, data.Quality);
+                }
+            }
         }
 
         public void OnUpdate(object stateInfo)
