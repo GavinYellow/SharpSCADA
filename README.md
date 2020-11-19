@@ -128,6 +128,10 @@ Showcase
 -------------
 http://www.cnblogs.com/evilcat/
 
+教程
+-------------
+https://edu.csdn.net/course/detail/30835
+
 联系方式
 -------------
 hijkl1999@yeah.net
