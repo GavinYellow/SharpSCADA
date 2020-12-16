@@ -389,7 +389,7 @@ namespace DataService
             }
             else
             {
-                result = (_cache[startIndex + 1] << 16) | ((ushort)_cache[startIndex]);
+                result = (_cache[startIndex] << 16) | ((ushort)_cache[startIndex + 1]);
             }
             return new ItemData<int>(result, 0, QUALITIES.QUALITY_GOOD);
         }
