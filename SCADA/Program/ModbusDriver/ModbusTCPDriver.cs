@@ -46,11 +46,11 @@ namespace ModbusDriver
                         dv.DBNumber = Modbus.fctReadCoil;
                         int st;
                         int.TryParse(address, out st);
+                        st--;
                         //dv.Start = (st / 16) * 16;//???????????????????
                         dv.Bit = (byte)(st % 16);
                         st /= 16;
                         dv.Start = st;
-                        dv.Bit--;
                     }
                     break;
                 case '1':
@@ -58,11 +58,11 @@ namespace ModbusDriver
                         dv.DBNumber = Modbus.fctReadDiscreteInputs;
                         int st;
                         int.TryParse(address.Substring(1), out st);
+                        st--;
                         //dv.Start = (st / 16) * 16;//???????????????????
                         dv.Bit = (byte)(st % 16);
                         st /= 16;
                         dv.Start = st;
-                        dv.Bit--;
                     }
                     break;
                 case '4':
@@ -370,6 +370,11 @@ namespace ModbusDriver
         internal void CallException(int id, byte function, byte exception)
         {
             if (tcpSynCl == null) return;
+            //主动断开连接准备重连
+            if (exception == Modbus.excExceptionConnectionLost)
+            {
+                tcpSynCl.Close();
+            }
             if (OnError != null)
                 OnError(this, new IOErrorEventArgs(Modbus.GetErrorString(exception)));
         }
@@ -480,7 +485,7 @@ namespace ModbusDriver
         {
             if (address.DBNumber < 3)
             {
-                var data = WriteSingleCoils(address.Area, address.Start + address.Bit, bit);
+                var data = WriteSingleCoils(address.Area, address.Start * 16 + address.Bit, bit);
                 return data == null ? -1 : 0;
             }
             return -1;
@@ -510,7 +515,15 @@ namespace ModbusDriver
         public int WriteUInt32(DeviceAddress address, uint value)
         {
             if (address.DBNumber != 3) return -1;
-            var data = WriteMultipleRegister(address.Area, address.Start, BitConverter.GetBytes((uint)IPAddress.HostToNetworkOrder((int)value)));
+            byte[] b = BitConverter.GetBytes((int)value);
+            for (int j = 0; j < b.Length / 2; j++)
+            {
+                byte a = b[j * 2];
+                b[j * 2] = b[j * 2 + 1];
+                b[j * 2 + 1] = a;
+            }
+            //b = BitConverter.GetBytes((uint) IPAddress.HostToNetworkOrder((int) value));
+            var data = WriteMultipleRegister(address.Area, address.Start, b);
             return data == null ? -1 : 0;
         }
 
@@ -531,7 +544,14 @@ namespace ModbusDriver
         public int WriteString(DeviceAddress address, string str)
         {
             if (address.DBNumber != 3) return -1;
-            var data = WriteMultipleRegister(address.Area, address.Start, Encoding.ASCII.GetBytes(str));
+            byte[] b = Encoding.ASCII.GetBytes(str);
+            for (int j = 0; j < b.Length / 2; j++)
+            {
+                byte a = b[j * 2];
+                b[j * 2] = b[j * 2 + 1];
+                b[j * 2 + 1] = a;
+            }
+            var data = WriteMultipleRegister(address.Area, address.Start, b);
             return data == null ? -1 : 0;
         }
 

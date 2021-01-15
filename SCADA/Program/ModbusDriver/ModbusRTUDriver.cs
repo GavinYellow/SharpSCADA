@@ -408,10 +408,10 @@ namespace ModbusDriver
                         dv.DBNumber = Modbus.fctReadCoil;
                         int st;
                         int.TryParse(address, out st);
+                        st--;
                         dv.Bit = (byte)(st % 16);
                         st /= 16;
                         dv.Start = st;
-                        dv.Bit--;
                     }
                     break;
                 case '1':
@@ -419,10 +419,10 @@ namespace ModbusDriver
                         dv.DBNumber = Modbus.fctReadDiscreteInputs;
                         int st;
                         int.TryParse(address.Substring(1), out st);
+                        st--;
                         dv.Bit = (byte)(st % 16);
                         st /= 16;
                         dv.Start = st;
-                        dv.Bit--;
                     }
                     break;
                 case '4':

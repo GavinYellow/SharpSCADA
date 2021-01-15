@@ -139,8 +139,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Array.Copy(_cache, index, b, 0, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -301,8 +301,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Array.Copy(_cache, index, b, 0, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -495,8 +495,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -582,7 +582,7 @@ namespace DataService
             }
             else
             {
-                result = (IPAddress.HostToNetworkOrder(_cache[startIndex]) << 16) | ((ushort)IPAddress.HostToNetworkOrder(_cache[startIndex + 1]));
+                result = (_cache[startIndex + 1] << 16) | ((ushort)_cache[startIndex]);
             }
             return new ItemData<int>(result, 0, QUALITIES.QUALITY_GOOD);
         }
@@ -694,8 +694,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -863,8 +863,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 
@@ -1029,8 +1029,8 @@ namespace DataService
         public int WriteString(DeviceAddress address, string str)
         {
             byte[] b = Encoding.ASCII.GetBytes(str);
-            int index = address.CacheIndex;
-            Buffer.BlockCopy(_cache, index, b, 0, b.Length);
+            int index = address.CacheIndex * 2;
+            Buffer.BlockCopy(b, 0, _cache, index, b.Length);
             return 0;
         }
 

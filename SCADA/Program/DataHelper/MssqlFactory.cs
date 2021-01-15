@@ -12,6 +12,11 @@ namespace DatabaseLib
             DataHelper.AddErrorLog(new Exception(message));
         }
 
+        public void CallException(Exception e)
+        {
+            DataHelper.AddErrorLog(e);
+        }
+
         public bool ConnectionTest()
         {
             //创建连接对象
@@ -30,7 +35,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(e.Message);
+                    CallException(e);
                 }
             }
             //mySqlConnection   is   a   SqlConnection   object 
@@ -77,7 +82,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(SQL + "        " + e.Message);
+                    CallException(new Exception(SQL + "        " + e.Message, e));
                 }
             }
             return ds;
@@ -104,7 +109,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(SQL + "        " + e.Message);
+                    CallException(new Exception(SQL + "        " + e.Message, e));
                 }
             }
             return ds;
@@ -135,7 +140,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(SQLs + "        " + e.Message);
+                    CallException(new Exception(SQLs + "        " + e.Message, e));
                 }
             }
             return ds;
@@ -162,7 +167,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(SQL + "        " + e.Message);
+                    CallException(new Exception(SQL + "        " + e.Message, e));
                 }
             }
             return dt;
@@ -198,7 +203,7 @@ namespace DatabaseLib
                 {
                     if (sqlT != null)
                         sqlT.Rollback();
-                    CallException(SQL + "   " + e.Message);
+                    CallException(new Exception(SQL + "   " + e.Message, e));
                     return -1;
                 }
                 return res;
@@ -235,7 +240,7 @@ namespace DatabaseLib
                 {
                     if (sqlT != null)
                         sqlT.Rollback();
-                    CallException(SQLs + "        " + e.Message);
+                    CallException(new Exception(SQLs + "        " + e.Message, e));
                     res = -1;
                 }
                 return res;
@@ -278,7 +283,7 @@ namespace DatabaseLib
                 {
                     if (sqlT != null)
                         sqlT.Rollback();
-                    CallException(SQLs + "        " + e.Message);
+                    CallException(new Exception(SQLs + "        " + e.Message, e));
                     res = -1;
                 }
                 return res;
@@ -308,7 +313,7 @@ namespace DatabaseLib
             }
             catch (Exception e)
             {
-                CallException(SQL + "        " + e.Message);
+                CallException(new Exception(SQL + "        " + e.Message, e));
             }
         }
 
@@ -345,7 +350,7 @@ namespace DatabaseLib
             }
             catch (Exception e)
             {
-                CallException(sSQL + "        " + e.Message);
+                CallException(new Exception(sSQL + "        " + e.Message, e));
                 return null;
             }
         }
@@ -379,7 +384,7 @@ namespace DatabaseLib
                 {
                     if (sqlT != null)
                         sqlT.Rollback();
-                    CallException(sSQL + "        " + e.Message);
+                    CallException(new Exception(sSQL + "        " + e.Message, e));
                     return null;
                 }
             }
@@ -423,7 +428,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return -1;
                 }
             }
@@ -450,7 +455,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return false;
                 }
             }
@@ -489,7 +494,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return null;
                 }
             }
@@ -518,7 +523,7 @@ namespace DatabaseLib
 
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return null;
                 }
             }
@@ -555,7 +560,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return null;
                 }
             }
@@ -586,7 +591,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return null;
                 }
             }
@@ -624,7 +629,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return null;
                 }
             }
@@ -662,7 +667,7 @@ namespace DatabaseLib
                 }
                 catch (Exception e)
                 {
-                    CallException(ProName + "        " + e.Message);
+                    CallException(new Exception(ProName + "        " + e.Message, e));
                     return null;
                 }
             }
@@ -701,7 +706,44 @@ namespace DatabaseLib
                     if (sqlT != null)
                         sqlT.Rollback();
                     m_Conn.Close();
-                    CallException(e.Message);
+                    CallException(e);
+                    return false;
+                }
+            }
+        }
+
+        public bool BulkCopy(DataTable reader, string tableName, string command = null, SqlBulkCopyOptions options = SqlBulkCopyOptions.Default)
+        {
+            using (SqlConnection m_Conn = new SqlConnection(DataHelper.ConnectString))
+            {
+                SqlTransaction sqlT = null;
+                try
+                {
+                    if (m_Conn.State == ConnectionState.Closed)
+                        m_Conn.Open();
+                    sqlT = m_Conn.BeginTransaction();
+                    if (!string.IsNullOrEmpty(command))
+                    {
+                        SqlCommand cmd = new SqlCommand(command, m_Conn);
+                        cmd.Transaction = sqlT;
+                        cmd.ExecuteNonQuery();
+                    }
+                    SqlBulkCopy copy = new SqlBulkCopy(m_Conn, options, sqlT);
+                    copy.DestinationTableName = tableName;
+                    copy.BulkCopyTimeout = 100000;
+                    //copy.BatchSize = _capacity;
+                    copy.WriteToServer(reader);//如果写入失败，考虑不能无限增加线程数
+                    //Clear();
+                    sqlT.Commit();
+                    m_Conn.Close();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    if (sqlT != null)
+                        sqlT.Rollback();
+                    m_Conn.Close();
+                    CallException(e);
                     return false;
                 }
             }
