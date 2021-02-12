@@ -1224,7 +1224,7 @@ namespace BatchCoreService
             DataHelper.Instance.ExecuteStoredProcedure("AddEventLog",
                 DataHelper.CreateParam("@StartTime", SqlDbType.DateTime, tag.TimeStamp),
                 DataHelper.CreateParam("@Source", SqlDbType.NVarChar, tag.ID.ToString(), 50),
-                DataHelper.CreateParam("@StartTime", SqlDbType.NVarChar, tag.ToString(), 50));
+                DataHelper.CreateParam("@Comment", SqlDbType.NVarChar, tag.ToString(), 50));
         }
 
         public HistoryData[] BatchRead(DataSource source, bool sync, params ITag[] itemArray)
