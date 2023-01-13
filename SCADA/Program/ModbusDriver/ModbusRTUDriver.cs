@@ -414,6 +414,17 @@ namespace ModbusDriver
                         dv.Bit--;
                     }
                     break;
+                case '5':
+                    {
+                        dv.DBNumber = Modbus.fctWriteSingleCoil;
+                        int st;
+                        int.TryParse(address.Substring(1), out st);
+                        dv.Bit = (byte)(st % 16);
+                        st /= 16;
+                        dv.Start = st;
+                        dv.Bit--;
+                    }
+                    break;
                 case '1':
                     {
                         dv.DBNumber = Modbus.fctReadDiscreteInputs;
@@ -445,6 +456,22 @@ namespace ModbusDriver
                     {
                         int index = address.IndexOf('.');
                         dv.DBNumber = Modbus.fctReadInputRegister;
+                        if (index > 0)
+                        {
+                            dv.Start = int.Parse(address.Substring(1, index - 1));
+                            dv.Bit = byte.Parse(address.Substring(index + 1));
+                        }
+                        else
+                            dv.Start = int.Parse(address.Substring(1));
+                        dv.Start--;
+                        dv.Bit--;
+                        dv.ByteOrder = ByteOrder.BigEndian;
+                    }
+                    break;
+                case 'F':
+                    {
+                        int index = address.IndexOf('.');
+                        dv.DBNumber = Modbus.fctWriteMultipleRegister;
                         if (index > 0)
                         {
                             dv.Start = int.Parse(address.Substring(1, index - 1));
